@@ -1,20 +1,10 @@
-<script setup></script>
+<script setup>
+import NavBar from '@/components/TheNavBar.vue'
+</script>
+
 <template>
   <div id="app" class="max-w-screen grid min-h-screen">
-    <header class="sticky flex h-20 w-full items-center bg-gray-900 shadow-xl">
-      <div class="container mx-auto px-2">
-        <div class="flex items-center">
-          <img
-            src="https://res.cloudinary.com/dg5ybbkbh/image/upload/v1649391973/cv/cav-logo-part-white.svg"
-            alt=""
-            class="h-14"
-          />
-          <p class="ml-1 text-left text-xl font-bold leading-none text-white">
-            Campervan <br />Village
-          </p>
-        </div>
-      </div>
-    </header>
+    <NavBar></NavBar>
     <main class="-mt-20 min-h-screen bg-gray-100 pt-20">
       <router-view />
     </main>
@@ -22,6 +12,7 @@
 </template>
 
 <style lang="postcss">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 #app {
   font-family: "Poppins", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
