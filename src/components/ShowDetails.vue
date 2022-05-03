@@ -93,10 +93,10 @@
 
 <script>
 import smoothReflow from 'vue-smooth-reflow'
-import Mixins from "@/Mixins.js";
+// import Mixins from "@/Mixins.js";
 import ModifyDriver from "@/components/ModifyDriver.vue";
 export default {
-  mixins: [Mixins, smoothReflow],
+  mixins: [smoothReflow],
   components: { ModifyDriver },
   data() {
     return {

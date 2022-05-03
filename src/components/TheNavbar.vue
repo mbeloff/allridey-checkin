@@ -6,10 +6,9 @@
           <img
             src="../assets/allridey_text_outline.svg"
             alt="Go to Allridey homepage"
-            class="w-32 flex-grow md:w-48"
+            class="w-32 flex-grow"
           />
         </a>
-
         <a
           href="tel:0417740307"
           class="ml-auto min-w-max font-bold text-blue-800 hover:text-blue-600"
@@ -19,6 +18,7 @@
     </div>
   </div>
 </template>
-<script></script>
 
-<style lang="postcss"></style>
+<script setup></script>
+
+<style lang="scss" scoped></style>

@@ -1,95 +1,83 @@
 <template>
   <div class="relative grid h-full content-start gap-5 bg-gray-700 py-10 px-2">
-    <the-summary
-      v-if="gotBooking"
-      :bookinginfo="this.$store.state.bookinginfo"
-    ></the-summary>
-    <show-details v-if="gotBooking" @update="bookingInfo()"></show-details>
+    <the-summary v-if="gotBooking" :bookinginfo="store.bookinginfo"></the-summary>
+    <!-- <show-details v-if="gotBooking" @update="bookingInfo()"></show-details> -->
   </div>
 </template>
 
-<script>
-import Mixins from "@/Mixins.js";
-import LoadingOverlay from "@/components/LoadingOverlay.vue";
+<script setup>
+import { ref, computed, onBeforeMount, provide, inject } from "vue";
+import { useStore } from "@/store";
+import { useRouter } from "vue-router";
 import TheSummary from "@/components/Summary.vue";
-import ShowDetails from "@/components/ShowDetails.vue";
+// import ShowDetails from "@/components/ShowDetails.vue";
 
-export default {
-  components: {
-    LoadingOverlay,
-    ShowDetails,
-    TheSummary,
-  },
-  mixins: [Mixins],
-  data() {
-    return {
-      loading: true,
-      ready: false,
-    };
-  },
-  created() {
-    this.getCountries();
-    this.bookingInfo();
-  },
-  computed: {
-    gotBooking() {
-      if (this.$store.state.bookinginfo.bookinginfo) {
-        return true;
-      }
-    },
-  },
-  methods: {
-    getCountries() {
-      let method = {
-        method: "countries",
-      };
-      Mixins.methods.postapiCall(method).then((results) => {
-        this.$store.dispatch("countries", results.results);
-      });
-    },
-    bookingInfo() {
-      let resref = this.$store.state.resref;
-      this.loading = true;
-      this.ready = false;
-      let params = {
-        method: "bookinginfo",
-        reservationref: resref,
-      };
-      Mixins.methods
-        .postapiCall(params)
-        .then((response) => {
-          if (response.status == "OK") {
-            if (
-              response.results.bookinginfo[0].reservationstatus != "Reservation"
-            ) {
-              this.$router.push({ name: "Home", query: { valid: false } });
-            }
-            this.loading = false;
-            this.$store.dispatch("bookinginfo", response.results);
-            this.ready = true;
-          } else if (response.status == "ERR") {
-            console.log(response.error);
-            this.$router.push({
-              name: "home",
-            });
-          }
-          if (response.Message) {
-            console.log(response.Message);
-            this.$router.push({
-              name: "Home",
-            });
-          }
-          this.loading = false;
-        })
-        .catch((err) => {
-          console.log("could't get booking info: " + err);
-          this.$router.push({
-            name: "Home",
-          });
+const rcm = inject("rcm");
+
+const router = useRouter();
+const store = useStore();
+const loading = ref(true);
+const ready = ref(false);
+
+// const bookinginfo = computed(() => store.bookinginfo);
+const gotBooking = computed(() => {
+  if (store.bookinginfo.bookinginfo) return true;
+});
+
+function getCountries() {
+  let method = {
+    method: "countries",
+  };
+  rcm(method).then((results) => {
+    store.countries = results.results;
+  });
+}
+
+function bookingInfo() {
+  let resref = store.resref;
+  loading.value = true;
+  ready.value = false;
+  let params = {
+    method: "bookinginfo",
+    reservationref: resref,
+  };
+  rcm(params)
+    .then((response) => {
+      if (response.status == "OK") {
+        if (
+          response.results.bookinginfo[0].reservationstatus != "Reservation"
+        ) {
+          router.push({ name: "Home", query: { valid: false } });
+        }
+        loading.value = false;
+        store.bookinginfo = response.results;
+        ready.value = true;
+      } else if (response.status == "ERR") {
+        console.log(response.error);
+        router.push({
+          name: "home",
         });
-    },
-  },
-};
+      }
+      if (response.Message) {
+        console.log(response.Message);
+        router.push({
+          name: "Home",
+        });
+      }
+      loading.value = false;
+    })
+    .catch((err) => {
+      console.log("could't get booking info: " + err);
+      router.push({
+        name: "Home",
+      });
+    });
+}
+
+onBeforeMount(() => {
+  getCountries();
+  bookingInfo();
+});
 </script>
 
 <style lang="postcss">

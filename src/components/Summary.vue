@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import Mixins from "@/Mixins.js";
+// import Mixins from "@/Mixins.js";
 export default {
   name: "Summary",
   props: {
@@ -42,7 +42,7 @@ export default {
       required: true,
     },
   },
-  Mixins: [Mixins],
+  // Mixins: [Mixins],
   computed: {
     trip() {
       return this.bookinginfo.bookinginfo[0];

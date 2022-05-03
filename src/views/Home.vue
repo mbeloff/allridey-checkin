@@ -4,7 +4,6 @@
     <div class="my-2 h-12">
       <p v-show="error" class="text-center text-red-500">{{ error }}</p>
     </div>
-
     <form for="resno" class="mx-auto flex max-w-sm flex-col text-left">
       <label class="group flex flex-grow flex-col">
         <div class="relative flex flex-row place-items-center">
@@ -47,85 +46,114 @@
     </form>
   </div>
 </template>
-<!-- <script setup>
-import LoadingOverlay from '@/components/LoadingOverlay.vue'
-import Mixins from '@/mixins'
-</script> -->
-<script>
+<script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-import Mixins from "../Mixins";
-export default {
-  components: {
-    LoadingOverlay,
-  },
-  mixins: [Mixins],
-  data() {
-    return {
-      // resno: "211841",
-      // lastname: "test",
-      resno: "",
-      lastname: "",
-      missinginput: false,
-      error: "",
-      loading: true,
-    };
-  },
-  computed: {
-    token() {
-      return this.$store.state.token;
-    },
-  },
-  watch: {
-    token: {
-      handler(val) {
-        if (val) {
-          this.loading = false;
-        }
-      },
-    },
-  },
-  mounted() {
-    Mixins.methods.getToken();
-    if (this.$route.query.valid == "false") {
-      this.error =
-        "This reservation is not ready for online check-in at this time.";
-    }
-  },
-  methods: {
-    findBooking(resno, lastname) {
-      this.loading = true;
-      this.error = "";
-      let method = {
-        method: "findbooking",
-        reservationno: resno,
-        lastname: lastname,
-      };
-      if (!resno || !lastname) {
-        this.error = "Please enter reservation number and your last name.";
-        this.missinginput = true;
-        this.loading = false;
-        return;
+import { ref, computed, watch, onMounted, inject } from "vue";
+import { useStore } from "@/store";
+import { useRouter, useRoute } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
+const store = useStore();
+
+const resno = ref("88");
+const lastname = ref("TEST");
+const missinginput = ref(false);
+const error = ref("");
+const loading = ref(true);
+const token = computed(() => store.token);
+
+const rcm = inject("rcm");
+const getToken = inject("getToken");
+
+watch(token, (val) => {
+  if (val) {
+    loading.value = false;
+  }
+});
+
+onMounted(() => {
+  console.log(store.token);
+  if (!store.token) {
+    getToken();
+  } else {
+    loading.value = false;
+  }
+  if (route.query.valid == "false") {
+    error.value =
+      "This reservation is not ready for online check-in at this time.";
+  }
+});
+
+function findBooking(resno, lastname) {
+  loading.value = true;
+  error.value = "";
+  let method = {
+    method: "findbooking",
+    reservationno: resno,
+    lastname: lastname,
+  };
+  if (!resno || !lastname) {
+    error.value = "Please enter reservation number and your last name.";
+    missinginput.value = true;
+    loading.value = false;
+    return;
+  }
+  rcm(method)
+    .then((res) => {
+      if (res.status == "OK") {
+        let resref = res.results[0].reservationref;
+        store.resref = resref;
+        router.push({ name: "Checkin" });
+      } else if (res.status == "ERR") {
+        throw res.error;
       }
-      Mixins.methods
-        .rcm(method)
-        .then((res) => {
-          if (res.status == "OK") {
-            // console.log(res.results);
-            let resref = res.results[0].reservationref;
-            this.$store.dispatch("resref", resref);
-            this.$router.push({ name: "Checkin" });
-          } else if (res.status == "ERR") {
-            throw res.error;
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.error = err;
-          console.log("find booking (error): " + err);
-        });
-    },
-  },
-};
+    })
+    .catch((err) => {
+      this.loading = false;
+      this.error = err;
+      console.log("find booking (error): " + err);
+    });
+}
+
+// const getToken = () => {
+//   var requestOptions = {
+//     method: "POST",
+//     redirect: "follow",
+//   };
+//   fetch("/.netlify/functions/getToken", requestOptions)
+//     .then((response) => response.text())
+//     .then((result) => {
+//       const res = JSON.parse(result);
+//       store.token = res.access_token;
+//       store.tokenexp = res[".expires"];
+//     })
+//     .catch((error) => console.log("error", error));
+// };
+
+// const postapiCall = async (method) => {
+//   let token = store.token;
+//   let tokenexpired = new Date(store.tokenExp).getTime() < new Date().getTime();
+//   if (tokenexpired) {
+//     console.log("refreshing token");
+//     this.getToken();
+//   }
+//   var requestOptions = {
+//     headers: {
+//       Authorization: "Bearer " + token,
+//       "Content-Type": "application/json",
+//     },
+//     method: "POST",
+//     body: JSON.stringify(method),
+//   };
+//   return await fetch("https://api.rentalcarmanager.com/v32/api", requestOptions)
+//     .then((response) => response.text())
+//     .then((result) => {
+//       return JSON.parse(result);
+//     });
+// };
+
+// provide("postapiCall", postapiCall);
 </script>
 
 <style lang="postcss">
@@ -144,7 +172,6 @@ export default {
 .input-error {
   @apply ring-2 ring-orange-400;
 }
-
 .my-input:focus + .form-i {
   @apply text-blue-600;
 }
