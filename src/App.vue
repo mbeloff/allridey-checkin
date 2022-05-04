@@ -47,12 +47,13 @@ const rcm = async (method) => {
   return await fetch("https://api.rentalcarmanager.com/v32/api", requestOptions)
     .then((response) => response.text())
     .then((result) => {
+      // console.log(JSON.parse(result));
       return JSON.parse(result);
     });
 };
 
-provide('rcm', rcm)
-provide('getToken', getToken)
+provide("rcm", rcm);
+provide("getToken", getToken);
 </script>
 
 <style lang="postcss">

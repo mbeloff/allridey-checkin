@@ -1,7 +1,10 @@
 <template>
-  <div class="relative grid h-full content-start gap-5 bg-gray-700 py-10 px-2">
-    <the-summary v-if="gotBooking" :bookinginfo="store.bookinginfo"></the-summary>
-    <!-- <show-details v-if="gotBooking" @update="bookingInfo()"></show-details> -->
+  <div class="relative grid h-full content-start gap-5 bg-gray-300 py-10 px-2">
+    <the-summary
+      v-if="gotBooking"
+      :bookinginfo="store.bookinginfo"
+    ></the-summary>
+    <checkin-steps @update="getBooking()" v-if="gotBooking"></checkin-steps>
   </div>
 </template>
 
@@ -10,7 +13,7 @@ import { ref, computed, onBeforeMount, provide, inject } from "vue";
 import { useStore } from "@/store";
 import { useRouter } from "vue-router";
 import TheSummary from "@/components/Summary.vue";
-// import ShowDetails from "@/components/ShowDetails.vue";
+import CheckinSteps from "@/components/new/CheckinSteps.vue";
 
 const rcm = inject("rcm");
 
@@ -19,7 +22,6 @@ const store = useStore();
 const loading = ref(true);
 const ready = ref(false);
 
-// const bookinginfo = computed(() => store.bookinginfo);
 const gotBooking = computed(() => {
   if (store.bookinginfo.bookinginfo) return true;
 });
@@ -33,7 +35,7 @@ function getCountries() {
   });
 }
 
-function bookingInfo() {
+function getBooking() {
   let resref = store.resref;
   loading.value = true;
   ready.value = false;
@@ -75,8 +77,9 @@ function bookingInfo() {
 }
 
 onBeforeMount(() => {
+  console.log("checkin before mount");
   getCountries();
-  bookingInfo();
+  getBooking();
 });
 </script>
 

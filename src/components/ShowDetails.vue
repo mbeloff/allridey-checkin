@@ -107,7 +107,6 @@ export default {
       actionRequiredAdditional: {},
     };
   },
-  beforeMount() {},
   computed: {
     customer() {
       return JSON.parse(
@@ -125,8 +124,6 @@ export default {
       return count;
     },
   },
-  created() {},
-  methods: {},
   mounted() {
     this.$smoothReflow()
   }
