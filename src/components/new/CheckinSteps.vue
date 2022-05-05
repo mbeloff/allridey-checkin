@@ -27,11 +27,19 @@
       v-if="extraDrivers.length < 4"
       :toggle="showNewDriver"
       @toggle="showNewDriver = !showNewDriver"
+      :label="'Add New Driver'"
     >
       <modify-driver
         :newDriver="true"
         @update="emit('update'), (showNewDriver = false)"
       ></modify-driver>
+    </expand-section>
+
+    <expand-section
+    :label="'Payment Method'"
+    :toggle="showVault"
+    @toggle="showVault = !showVault">
+      <card-vault></card-vault>
     </expand-section>
   </div>
 </template>
@@ -39,6 +47,7 @@
 <script setup>
 import ModifyDriver from "@/components/new/ModifyDriver.vue";
 import ExpandSection from "@/components/new/ExpandSection.vue";
+import CardVault from "@/components/new/CardVault.vue";
 import { ref, computed } from "vue";
 import { useStore } from "@/store";
 
@@ -49,6 +58,7 @@ const store = useStore();
 const showNewDriver = ref(false);
 const showCustomer = ref(false);
 const showExtraDrivers = ref(false);
+const showVault = ref(false)
 
 const customer = computed(() => store.bookinginfo.customerinfo[0]);
 const extraDrivers = computed(() => store.bookinginfo.extradrivers);

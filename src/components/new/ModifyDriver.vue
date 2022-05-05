@@ -225,10 +225,15 @@
       ></signature-section>
     </div> -->
   </div>
+  <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
+    <loading-overlay v-if="savingChanges"></loading-overlay>
+    <modify-uploads :cid="data.customerid"></modify-uploads>
+  </div>
 </template>
 
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
+import ModifyUploads from "@/components/new/ModifyUploads.vue";
 import "v-calendar/dist/style.css";
 import { ref, computed, inject, watch, onMounted, toRefs } from "vue";
 import { useStore } from "@/store";
@@ -241,7 +246,6 @@ const savingChanges = ref(false);
 const data = ref({});
 const dateofbirth = ref(new Date());
 const licenseexpires = ref(new Date());
-
 
 const emit = defineEmits(["update"]);
 
@@ -355,7 +359,7 @@ function addExtraDriver(id) {
   rcm(params)
     .then((res) => {
       emit("update");
-      data.value = customer.value
+      data.value = customer.value;
       savingChanges.value = false;
     })
     .catch((err) => console.log(err));

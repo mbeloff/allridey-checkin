@@ -115,45 +115,6 @@ function findBooking(resno, lastname) {
       console.log("find booking (error): " + err);
     });
 }
-
-// const getToken = () => {
-//   var requestOptions = {
-//     method: "POST",
-//     redirect: "follow",
-//   };
-//   fetch("/.netlify/functions/getToken", requestOptions)
-//     .then((response) => response.text())
-//     .then((result) => {
-//       const res = JSON.parse(result);
-//       store.token = res.access_token;
-//       store.tokenexp = res[".expires"];
-//     })
-//     .catch((error) => console.log("error", error));
-// };
-
-// const postapiCall = async (method) => {
-//   let token = store.token;
-//   let tokenexpired = new Date(store.tokenExp).getTime() < new Date().getTime();
-//   if (tokenexpired) {
-//     console.log("refreshing token");
-//     this.getToken();
-//   }
-//   var requestOptions = {
-//     headers: {
-//       Authorization: "Bearer " + token,
-//       "Content-Type": "application/json",
-//     },
-//     method: "POST",
-//     body: JSON.stringify(method),
-//   };
-//   return await fetch("https://api.rentalcarmanager.com/v32/api", requestOptions)
-//     .then((response) => response.text())
-//     .then((result) => {
-//       return JSON.parse(result);
-//     });
-// };
-
-// provide("postapiCall", postapiCall);
 </script>
 
 <style lang="postcss">

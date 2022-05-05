@@ -4,15 +4,10 @@
       class="flex h-16 w-full items-center justify-between px-2 text-white md:px-5"
       @click="emit('toggle')"
     >
-      <p v-if="label" class="text-center text-xl font-bold">
+      <p class="text-center text-xl font-bold">
         {{ label }}
         <span v-if="actionRequired" class="text-sm font-normal text-orange-300"
           ><i class="far fa-warning"></i> action required</span
-        >
-      </p>
-      <p v-else class="text-center text-xl font-bold">
-        <span
-          ><i class="fas fa-plus-circle text-green-500"></i> Add a Driver</span
         >
       </p>
       <i class="far fa-chevron-down" :class="{ 'rotate-180': toggle }"></i>
