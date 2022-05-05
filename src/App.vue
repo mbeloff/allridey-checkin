@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="max-w-screen grid min-h-screen">
-    <TheNavBar></TheNavBar>
+    <TheNavbar></TheNavbar>
     <main class="-mt-20 min-h-screen bg-gray-100 pt-20">
       <router-view />
     </main>
@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import TheNavBar from "@/components/TheNavBar.vue";
+import TheNavbar from "@/components/TheNavbar.vue";
 import { provide } from "vue";
 import { useStore } from "@/store";
 
