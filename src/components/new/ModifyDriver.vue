@@ -310,18 +310,12 @@ const months = [
 function setDates() {
   if (props.newDriver == false) {
     if (props.customer.dateofbirth) {
-      let dob = replaceMonth(props.customer.dateofbirth);
-      dob = dob.split(" ");
-      dob = new Date(dob[2], dob[1] - 1, dob[0]);
-      dateofbirth.value = dob;
+      dateofbirth.value = new Date(props.customer.dateofbirth)
     } else {
       dateofbirth.value = new Date(2000, 0, 1);
     }
     if (props.customer.licenseexpires) {
-      let exp = replaceMonth(props.customer.licenseexpires);
-      exp = exp.split(" ");
-      exp = new Date(exp[2], exp[1] - 1, exp[0]);
-      licenseexpires.value = exp;
+      licenseexpires.value = new Date(props.customer.licenseexpires);
     } else {
       licenseexpires.value = new Date();
     }
