@@ -179,7 +179,7 @@
         />
       </div>
 
-      <div class="mt-auto grid h-8 grid-cols-2 gap-3">
+      <div class="mt-auto grid h-9 grid-cols-2 gap-3">
         <button
           v-if="!newDriver && !isPrimary"
           class="btn-red"
@@ -188,7 +188,7 @@
           Delete Driver <i class="fas fa-trash-can-xmark"></i>
         </button>
         <button
-          v-if="!isPrimary"
+          v-if="!isPrimary && unsaved.length"
           class="btn-green col-start-2"
           @click="addExtraDriver(data.customerid)"
         >
@@ -196,7 +196,7 @@
           <i class="far fa-cloud-upload"></i>
         </button>
         <button
-          v-if="isPrimary"
+          v-if="isPrimary && unsaved.length"
           class="btn-green col-start-2"
           @click="editBooking()"
         >
@@ -205,14 +205,6 @@
       </div>
     </div>
     <!-- 
-    <div class="my-10" v-if="!newDriver">
-      <p class="my-3 text-xl font-bold">Document Uploads</p>
-      <modify-uploads
-        @update-section-status="uploadMissing = $event"
-        :cid="customer.customerid"
-      ></modify-uploads>
-    </div>
-
     <div class="" v-if="!newDriver">
       <p class="my-3 text-xl font-bold">E-signature</p>
       <p class="text-sm italic text-gray-600">
@@ -225,7 +217,10 @@
       ></signature-section>
     </div> -->
   </div>
-  <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
+  <div
+    v-if="!newDriver"
+    class="relative gap-y-5 rounded border bg-white p-2 text-left"
+  >
     <loading-overlay v-if="savingChanges"></loading-overlay>
     <modify-uploads :cid="data.customerid"></modify-uploads>
   </div>
@@ -235,17 +230,23 @@
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import ModifyUploads from "@/components/new/ModifyUploads.vue";
 import "v-calendar/dist/style.css";
-import { ref, computed, inject, watch, onMounted, toRefs } from "vue";
+import { ref, computed, inject, watch, onMounted } from "vue";
 import { useStore } from "@/store";
 
 const rcm = inject("rcm");
 const store = useStore();
-const cid = computed(() => customer.value.customerid);
+const cid = computed(() => props.customer.customerid);
 const countries = computed(() => store.countries);
 const savingChanges = ref(false);
 const data = ref({});
 const dateofbirth = ref(new Date());
 const licenseexpires = ref(new Date());
+const unsaved = computed(() => {
+  let diffs = Object.keys(data.value).filter((key) => {
+    return data.value[key] !== props.customer[key];
+  });
+  return diffs;
+});
 
 const emit = defineEmits(["update"]);
 
@@ -283,8 +284,6 @@ const props = defineProps({
   },
 });
 
-const { newDriver, isPrimary, customer } = toRefs(props);
-
 const months = [
   ["Jan", "01"],
   ["Feb", "02"],
@@ -300,20 +299,18 @@ const months = [
   ["Dec", "12"],
 ];
 
-onMounted(() => {
-  data.value = JSON.parse(JSON.stringify(customer.value));
-
-  if (newDriver.value == false) {
-    if (customer.value.dateofbirth) {
-      let dob = replaceMonth(customer.value.dateofbirth);
+function setDates() {
+  if (props.newDriver == false) {
+    if (props.customer.dateofbirth) {
+      let dob = replaceMonth(props.customer.dateofbirth);
       dob = dob.split(" ");
       dob = new Date(dob[2], dob[1] - 1, dob[0]);
       dateofbirth.value = dob;
     } else {
       dateofbirth.value = new Date(2000, 0, 1);
     }
-    if (customer.value.licenseexpires) {
-      let exp = replaceMonth(customer.value.licenseexpires);
+    if (props.customer.licenseexpires) {
+      let exp = replaceMonth(props.customer.licenseexpires);
       exp = exp.split(" ");
       exp = new Date(exp[2], exp[1] - 1, exp[0]);
       licenseexpires.value = exp;
@@ -324,13 +321,30 @@ onMounted(() => {
     dateofbirth.value = new Date(2000, 0, 1);
     licenseexpires.value = new Date();
   }
+}
+
+onMounted(() => {
+  data.value = JSON.parse(JSON.stringify(props.customer));
+  setDates();
 });
 
 watch(dateofbirth, () => {
-  data.value.dateofbirth = dateofbirth.value.toLocaleDateString("en-AU");
+  data.value.dateofbirth = dateofbirth.value
+    .toLocaleDateString("en-AU", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+    .replaceAll(" ", "/");
 });
 watch(licenseexpires, () => {
-  data.value.licenseexpires = licenseexpires.value.toLocaleDateString("en-AU");
+  data.value.licenseexpires = licenseexpires.value
+    .toLocaleDateString("en-AU", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+    .replaceAll(" ", "/");
 });
 
 function replaceMonth(str) {
@@ -359,7 +373,7 @@ function addExtraDriver(id) {
   rcm(params)
     .then((res) => {
       emit("update");
-      data.value = customer.value;
+      data.value = props.customer;
       savingChanges.value = false;
     })
     .catch((err) => console.log(err));
@@ -396,7 +410,6 @@ function editBooking() {
       ...data.value,
     },
   };
-  console.log(params);
   rcm(params).then((res) => {
     emit("update");
     savingChanges.value = false;
