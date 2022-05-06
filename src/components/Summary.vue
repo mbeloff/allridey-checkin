@@ -9,17 +9,12 @@
       {{ trip.vehiclecategory }}
     </p>
 
-    <div class="flex items-center font-bold">
-      <span class="flex-grow text-right">{{ trip.pickuplocationname }}</span>
-      <i class="fas fa-route fa-fw mx-4 text-lg text-blue-500"></i>
-      <span class="flex-grow text-left">{{ trip.pickuplocationname }}</span>
-    </div>
-    <div class="mb-5 flex items-center">
-      <span class="flex-grow text-right">{{
+    <div class="flex items-center font-bold mb-5">
+      <span class="flex-grow text-right">{{ trip.pickuplocationname }}<br>{{
         new Date(trip.pickupdate).toDateString()
-      }}</span>
-      <i class="fas fa-minus fa-fw invisible mx-4 text-lg text-blue-500"></i>
-      <span class="flex-grow text-left">{{
+      }} </span>
+      <i class="fas fa-route fa-fw mx-4 text-lg text-blue-500"></i>
+      <span class="flex-grow text-left">{{ trip.pickuplocationname }}<br>{{
         new Date(trip.dropoffdate).toDateString()
       }}</span>
     </div>

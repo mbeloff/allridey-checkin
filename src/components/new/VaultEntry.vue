@@ -21,7 +21,7 @@
 
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-import { inject, onBeforeMount, onMounted, ref, defineEmits, onUnmounted } from "vue";
+import { inject, onBeforeMount, onMounted, ref, onUnmounted } from "vue";
 import { useStore } from "@/store";
 
 const rcm = inject("rcm");
@@ -64,15 +64,12 @@ onBeforeMount(() => {
   getVaultUrl();
 });
 
-let eventMethod = window.addEventListener
-  ? "addEventListener"
-  : "attachEvent";
+let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 let eventer = window[eventMethod];
 let messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
-onMounted(() => {  
-  eventer(messageEvent, listenFn),
-  false;
+onMounted(() => {
+  eventer(messageEvent, listenFn), false;
 });
 
 function listenFn(e) {
@@ -88,9 +85,9 @@ function listenFn(e) {
   }
 }
 
-onUnmounted(()=>{
+onUnmounted(() => {
   window.removeEventListener(messageEvent, listenFn);
-})
+});
 </script>
 
 <style lang="scss"></style>

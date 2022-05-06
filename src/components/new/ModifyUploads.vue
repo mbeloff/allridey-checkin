@@ -1,7 +1,6 @@
 <template>
-  <div
-    class="grid w-full grid-cols-1 gap-1 rounded bg-white md:w-max md:grid-cols-3"
-  >
+  <div class="grid w-full grid-cols-1 gap-1 rounded bg-white md:grid-cols-3">
+    <p class="my-3 text-xl font-bold col-span-full">Upload Documents</p>
     <loading-overlay v-if="loading"></loading-overlay>
     <div
       v-for="doc in doclist"
@@ -18,7 +17,7 @@
           'border-green-500': doc.isuploaded,
           'border-orange-500': !doc.isuploaded,
         }"
-        class="relative mx-auto flex h-full w-full max-w-full cursor-pointer flex-col rounded border bg-gray-200 hover:ring-2 md:w-56"
+        class="relative mx-auto flex h-full w-full max-w-full cursor-pointer flex-col rounded border bg-gray-200 hover:ring-2"
         @click="handleDoc(doc)"
       >
         <div class="flex items-center justify-between pr-2">
@@ -67,7 +66,7 @@
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import { useStore } from "@/store";
-import { defineProps, ref, onBeforeMount, computed, inject } from "vue";
+import { ref, onBeforeMount, computed, inject } from "vue";
 
 const rcm = inject("rcm");
 
@@ -139,7 +138,6 @@ function uploadFile($event, doc) {
   })
     .then((res) => res.text())
     .then((res) => {
-      console.log(res);
       let data = JSON.parse(res);
       processUploadResult(doc, data);
     });

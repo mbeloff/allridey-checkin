@@ -77,7 +77,6 @@ function getBooking() {
 }
 
 onBeforeMount(() => {
-  console.log("checkin before mount");
   getCountries();
   getBooking();
 });

@@ -1,6 +1,10 @@
 <template>
   <div class="mx-auto flex w-full max-w-screen-md flex-col gap-5">
-    <expand-section :toggle="showCustomer" :label="'Main Hirer'" @toggle="showCustomer = !showCustomer">
+    <expand-section
+      :toggle="showCustomer"
+      :label="'Main Hirer'"
+      @toggle="showCustomer = !showCustomer"
+    >
       <modify-driver
         :key="customer.customerid"
         :customer="customer"
@@ -36,9 +40,10 @@
     </expand-section>
 
     <expand-section
-    :label="'Payment Method'"
-    :toggle="showVault"
-    @toggle="showVault = !showVault">
+      :label="'Payment Method'"
+      :toggle="showVault"
+      @toggle="showVault = !showVault"
+    >
       <card-vault></card-vault>
     </expand-section>
   </div>
@@ -58,9 +63,14 @@ const store = useStore();
 const showNewDriver = ref(false);
 const showCustomer = ref(false);
 const showExtraDrivers = ref(false);
-const showVault = ref(false)
+const showVault = ref(false);
 
-const customer = computed(() => store.bookinginfo.customerinfo[0]);
+const customer = computed(() => {
+  let customer = store.bookinginfo.customerinfo[0];
+  delete customer.country;
+  delete customer.fulladdress;
+  return customer;
+});
 const extraDrivers = computed(() => store.bookinginfo.extradrivers);
 </script>
 
