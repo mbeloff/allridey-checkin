@@ -24,21 +24,20 @@ const getToken = () => {
     .then((result) => {
       const res = JSON.parse(result);
       store.token = res.access_token;
-      store.tokenexp = res[".expires"];
+      store.tokenExp = res[".expires"];
     })
     .catch((error) => console.log("error", error));
 };
 
 const rcm = async (method) => {
-  let token = store.token;
   let tokenexpired = new Date(store.tokenExp).getTime() < new Date().getTime();
   if (tokenexpired) {
     console.log("refreshing token");
-    this.getToken();
+    getToken();
   }
   var requestOptions = {
     headers: {
-      Authorization: "Bearer " + token,
+      Authorization: "Bearer " + store.token,
       "Content-Type": "application/json",
     },
     method: "POST",
@@ -47,8 +46,8 @@ const rcm = async (method) => {
   return await fetch("https://api.rentalcarmanager.com/v32/api", requestOptions)
     .then((response) => response.text())
     .then((result) => {
-      // console.log(JSON.parse(result));
-      return JSON.parse(result);
+      let response = JSON.parse(result);
+      return response;
     });
 };
 
