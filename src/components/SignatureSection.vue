@@ -1,8 +1,6 @@
 <template>
-  <div
-    v-for="(signature, i) in signatureList"
-    :key="signature.signaturetemplateid"
-  >
+  <p class="col-span-full my-3 text-xl font-bold">E-signature</p>
+  <div v-for="signature in signatureList" :key="signature.signaturetemplateid">
     <signature-block
       @update-signature="getSignatures"
       :signature="signature"
@@ -12,7 +10,7 @@
 
 <script setup>
 import SignatureBlock from "@/components/SignatureBlock.vue";
-import { inject, onBeforeMount } from "vue";
+import { inject, onBeforeMount, ref, computed } from "vue";
 import { useStore } from "@/store";
 
 const rcm = inject("rcm");

@@ -73,7 +73,6 @@ watch(token, (val) => {
 });
 
 onMounted(() => {
-  console.log(store.token);
   if (!store.token) {
     getToken();
   } else {

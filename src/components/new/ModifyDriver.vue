@@ -224,11 +224,19 @@
     <loading-overlay v-if="savingChanges"></loading-overlay>
     <modify-uploads :cid="data.customerid"></modify-uploads>
   </div>
+  <div
+    v-if="!newDriver"
+    class="relative gap-y-5 rounded border bg-white p-2 text-left"
+  >
+    <loading-overlay v-if="savingChanges"></loading-overlay>
+    <signature-section :cid="customer.customerid"></signature-section>
+  </div>
 </template>
 
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import ModifyUploads from "@/components/new/ModifyUploads.vue";
+import SignatureSection from "@/components/SignatureSection.vue";
 import "v-calendar/dist/style.css";
 import { ref, computed, inject, watch, onMounted } from "vue";
 import { useStore } from "@/store";
