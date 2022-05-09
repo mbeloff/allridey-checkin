@@ -200,7 +200,7 @@
           class="btn-green col-start-2"
           @click="editBooking()"
         >
-          Update <i class="far fa-cloud-upload"></i>
+          Save Changes <i class="far fa-cloud-upload"></i>
         </button>
       </div>
     </div>
@@ -222,14 +222,20 @@
     class="relative gap-y-5 rounded border bg-white p-2 text-left"
   >
     <loading-overlay v-if="savingChanges"></loading-overlay>
-    <modify-uploads :cid="data.customerid"></modify-uploads>
+    <modify-uploads
+      :cid="data.customerid"
+      @missing="missing($event, 'uploads')"
+    ></modify-uploads>
   </div>
   <div
     v-if="!newDriver"
     class="relative gap-y-5 rounded border bg-white p-2 text-left"
   >
     <loading-overlay v-if="savingChanges"></loading-overlay>
-    <signature-section :cid="customer.customerid"></signature-section>
+    <signature-section
+      :cid="customer.customerid"
+      @missing="missing($event, 'signatures')"
+    ></signature-section>
   </div>
 </template>
 
@@ -249,6 +255,8 @@ const savingChanges = ref(false);
 const data = ref({});
 const dateofbirth = ref(new Date());
 const licenseexpires = ref(new Date());
+const missinguploads = ref(0);
+const missingsignatures = ref(0);
 const unsaved = computed(() => {
   let diffs = Object.keys(data.value).filter((key) => {
     return data.value[key] !== props.customer[key];
@@ -256,7 +264,17 @@ const unsaved = computed(() => {
   return diffs;
 });
 
-const emit = defineEmits(["update"]);
+function missing($event, type) {
+  if (type == "uploads") {
+    missinguploads.value = $event;
+  }
+  if (type == "signatures") {
+    missingsignatures.value = $event;
+  }
+  emit("missing", { uploads: missinguploads, signatures: missingsignatures });
+}
+
+const emit = defineEmits(["update", "missing"]);
 
 const props = defineProps({
   newDriver: {

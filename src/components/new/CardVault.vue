@@ -33,8 +33,9 @@
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import VaultEntry from "@/components/new/VaultEntry.vue";
-import { ref, onBeforeMount, inject } from "vue";
+import { ref, onBeforeMount, inject, watch } from "vue";
 import { useStore } from "@/store";
+import { valuesIn } from "lodash";
 
 const store = useStore();
 const rcm = inject("rcm");
@@ -42,6 +43,13 @@ const rcm = inject("rcm");
 const loading = ref(true);
 const vaultlist = ref([]);
 const showVault = ref(false);
+
+const emit = defineEmits(["missing"]);
+
+watch(vaultlist, () => {
+  console.log(!vaultlist.value.length);
+  emit("missing", { vault: !vaultlist.value.length });
+});
 
 onBeforeMount(() => {
   getVaultList();

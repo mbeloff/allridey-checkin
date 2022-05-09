@@ -1,16 +1,27 @@
 <template>
-  <div class="rounded bg-blue-800">
+  <div
+    class="rounded bg-blue-700"
+    :class="{
+      'ring-2 ring-orange-500 ring-offset-2': actionRequired,
+    }"
+  >
     <button
-      class="flex h-16 w-full items-center justify-between px-2 text-white md:px-5"
+      class="flex h-16 w-full items-center justify-between rounded px-2 md:px-5"
       @click="emit('toggle')"
     >
-      <p class="text-center text-xl font-bold">
+      <p class="text-center text-xl font-bold text-white">
         {{ label }}
-        <span v-if="actionRequired" class="text-sm font-normal text-orange-300"
+        <span v-if="actionRequired" class="text-lg font-normal text-orange-400"
           ><i class="far fa-warning"></i> action required</span
         >
+        <span v-if="actionRequired == false"
+          ><i class="far fa-check-circle text-green-500"></i
+        ></span>
       </p>
-      <i class="far fa-chevron-down" :class="{ 'rotate-180': toggle }"></i>
+      <i
+        class="far fa-chevron-down text-white"
+        :class="{ 'rotate-180': toggle }"
+      ></i>
     </button>
     <div v-show="toggle" class="flex flex-col gap-5 px-2 pb-5 md:px-5">
       <slot></slot>

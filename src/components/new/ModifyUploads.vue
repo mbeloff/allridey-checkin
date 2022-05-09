@@ -1,6 +1,6 @@
 <template>
   <div class="grid w-full grid-cols-1 gap-1 rounded bg-white md:grid-cols-3">
-    <p class="my-3 text-xl font-bold col-span-full">Upload Documents</p>
+    <p class="col-span-full my-3 text-xl font-bold">Upload Documents</p>
     <loading-overlay v-if="loading"></loading-overlay>
     <div
       v-for="doc in doclist"
@@ -66,12 +66,10 @@
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import { useStore } from "@/store";
-import { ref, onBeforeMount, computed, inject } from "vue";
+import { ref, onBeforeMount, computed, inject, watch } from "vue";
 
 const rcm = inject("rcm");
-
 const store = useStore();
-
 const props = defineProps({
   cid: Number,
 });
@@ -81,6 +79,11 @@ const doclist = ref([]);
 
 const missing = computed(() => {
   return doclist.value.filter((doc) => !doc.isuploaded).length;
+});
+
+const emit = defineEmits(["missing"]);
+watch(missing, (val) => {
+  emit("missing", val);
 });
 
 function getDocumentList() {

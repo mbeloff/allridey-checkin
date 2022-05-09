@@ -10,7 +10,7 @@
 
 <script setup>
 import SignatureBlock from "@/components/SignatureBlock.vue";
-import { inject, onBeforeMount, ref, computed } from "vue";
+import { inject, onBeforeMount, ref, computed, watch } from "vue";
 import { useStore } from "@/store";
 
 const rcm = inject("rcm");
@@ -22,10 +22,13 @@ const props = defineProps({
 });
 
 const signatureList = ref([]);
-
+const emit = defineEmits(['missing'])
 const missing = computed(() => {
   return signatureList.value.filter((sig) => !sig.issigned).length;
 });
+watch(missing, (val)=> {
+  emit('missing', val)
+})
 
 function getSignatures() {
   let params = {
