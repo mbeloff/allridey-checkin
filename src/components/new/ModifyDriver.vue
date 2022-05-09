@@ -2,6 +2,8 @@
   <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
     <loading-overlay v-if="savingChanges"></loading-overlay>
     <p class="my-3 text-xl font-bold">Driver Details</p>
+    <p v-if="newDriver" class="my-3 text-sm text-gray-500">You may add up to 4 additional drivers to your booking. All drivers will need to sign the rental agreement and provide a copy of their driver's license.</p>
+    <p v-else class="my-3 text-sm text-gray-500">Please check that all details are correct.</p>
     <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
       <div class="group flex flex-grow flex-col">
         <label :for="'fName' + cid" class="my-label">First Name</label>
@@ -204,18 +206,6 @@
         </button>
       </div>
     </div>
-    <!-- 
-    <div class="" v-if="!newDriver">
-      <p class="my-3 text-xl font-bold">E-signature</p>
-      <p class="text-sm italic text-gray-600">
-        Please read and sign each required section using your mouse or
-        touch-screen. Click save when you are finished.
-      </p>
-      <signature-section
-        @update-section-status="signatureMissing = $event"
-        :cid="customer.customerid"
-      ></signature-section>
-    </div> -->
   </div>
   <div
     v-if="!newDriver"

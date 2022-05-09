@@ -1,5 +1,5 @@
 <template>
-  <div class="relative grid h-full content-start gap-5 bg-gray-300 py-10 px-2">
+  <div class="relative grid h-full content-start gap-5 bg-gray-600 py-10 px-2">
     <the-summary
       v-if="gotBooking"
       :bookinginfo="store.bookinginfo"

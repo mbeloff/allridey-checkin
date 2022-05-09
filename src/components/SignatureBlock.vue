@@ -1,6 +1,8 @@
 <template>
-  <div class="mb-2 flex flex-col gap-1 p-1">
+  <div class="mb-2 flex flex-col gap-1">
+    
     <div class="relative" v-if="showSig">
+      <loading-overlay v-if="loading"></loading-overlay>
       <VueSignaturePad
         class="aspect-[4/1] max-w-[400px] rounded border border-orange-500"
         :ref="'pad'"
@@ -18,8 +20,6 @@
     <div class="relative" v-if="props.signature.pngsig && sigid">
       <div
         :id="sigid"
-        src=""
-        alt=""
         class="aspect-[4/1] max-w-[400px] rounded border border-green-500 bg-cover bg-no-repeat"
       ></div>
       <div
@@ -48,6 +48,7 @@
 </template>
 
 <script setup>
+import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import { inject, onMounted, onUpdated, ref, computed } from "vue";
 import { useStore } from "@/store";
 
@@ -56,6 +57,7 @@ const rcm = inject("rcm");
 const emit = defineEmits(["updateSignature"]);
 const props = defineProps({ signature: Object });
 const started = ref(false);
+const loading = ref(false);
 const saved = ref(false);
 const agreement = computed(() => store.bookinginfo.bookinginfo[0].agreementurl);
 const showSig = computed(() => {
@@ -94,11 +96,17 @@ async function save() {
     extradriverid: isExtraDriver ? props.signature.customerid : "",
   };
   if (!isEmpty) {
+    loading.value = true;
     rcm(params).then((res) => {
+      if (res.status == "ERR") {
+        alert("Error: " + res.error);
+        clear();
+      }
       if (res.results.savesignature == true) {
         emit("updateSignature");
         saved.value = true;
       }
+      loading.value = false;
     });
   }
 }

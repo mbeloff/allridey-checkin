@@ -1,5 +1,6 @@
 <template>
   <p class="col-span-full my-3 text-xl font-bold">E-signature</p>
+  <p class="my-3 text-sm text-gray-500">Please read and sign each required area using your mouse, or finger/stylus if you are using a touch-screen device.</p>
   <div v-for="signature in signatureList" :key="signature.signaturetemplateid">
     <signature-block
       @update-signature="getSignatures"
@@ -47,58 +48,6 @@ function getSignatures() {
 onBeforeMount(() => {
   getSignatures();
 });
-</script>
-
-<script>
-// import Mixins from "@/Mixins.js";
-// import LoadingOverlay from "@/components/LoadingOverlay.vue";
-// import SignatureBlock from "@/components/SignatureBlock.vue";
-export default {
-  // props: {
-  //   cid: { type: Number, required: true },
-  // },
-  // emits: ["update-section-status"],
-  // components: {
-  //   LoadingOverlay,
-  //   SignatureBlock,
-  // },
-  // data() {
-  //   return {
-  //     signatureList: [],
-  //   };
-  // },
-  // mixins: [Mixins],
-  // beforeMount() {
-  //   this.getSignatures();
-  // },
-  // watch: {
-  //   signatureList: function (val) {
-  //     let missing = false;
-  //     val.forEach((el) => {
-  //       if (!el.issigned) {
-  //         missing = true;
-  //       }
-  //     });
-  //     this.$emit("update-section-status", missing);
-  //   },
-  // },
-  methods: {
-    // getSignatures() {
-    //   let params = {
-    //     method: "signaturelist",
-    //     reservationref: this.$store.state.resref,
-    //   };
-    //   Mixins.methods
-    //     .postapiCall(params)
-    //     .then((res) => {
-    //       this.signatureList = res.results.filter(
-    //         (el) => el.customerid == this.cid
-    //       );
-    //     })
-    //     .catch((err) => console.log(err));
-    // },
-  },
-};
 </script>
 
 <style lang="scss"></style>

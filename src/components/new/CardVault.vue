@@ -1,6 +1,6 @@
 <template>
   <div class="gap-y-5 rounded border bg-white p-2 text-left">
-    <p class="my-3">Store your credit card details securely in our vault.</p>
+    <p class="my-3 text-sm text-gray-500">Safely store your credit card in our vault. Payment will only be taken once your vehicle has been confirmed.</p>
     <div class="relative py-5">
       <loading-overlay v-if="loading"></loading-overlay>
       <div v-if="vaultlist.length" class="grid grid-cols-4 border-b font-bold">
