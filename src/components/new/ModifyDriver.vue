@@ -274,7 +274,7 @@ const props = defineProps({
         customerid: 0,
         firstname: "",
         lastname: "",
-        dateofbirth: "",
+        dateofbirth: "1/JAN/2000",
         email: "",
         phone: "",
         mobile: "",
@@ -292,37 +292,11 @@ const props = defineProps({
   },
 });
 
-const months = [
-  ["Jan", "01"],
-  ["Feb", "02"],
-  ["Mar", "03"],
-  ["Apr", "04"],
-  ["May", "05"],
-  ["Jun", "06"],
-  ["Jul", "07"],
-  ["Aug", "08"],
-  ["Sep", "09"],
-  ["Oct", "10"],
-  ["Nov", "11"],
-  ["Dec", "12"],
-];
-
 function setDates() {
-  if (props.newDriver == false) {
-    if (props.customer.dateofbirth) {
-      dateofbirth.value = new Date(props.customer.dateofbirth)
-    } else {
-      dateofbirth.value = new Date(2000, 0, 1);
-    }
-    if (props.customer.licenseexpires) {
-      licenseexpires.value = new Date(props.customer.licenseexpires);
-    } else {
-      licenseexpires.value = new Date();
-    }
-  } else {
-    dateofbirth.value = new Date(2000, 0, 1);
+  dateofbirth.value = new Date(props.customer.dateofbirth);
+  if (props.customer.licenseexpires == "") {
     licenseexpires.value = new Date();
-  }
+  } else licenseexpires.value = new Date(props.customer.licenseexpires);
 }
 
 onMounted(() => {
@@ -330,8 +304,8 @@ onMounted(() => {
   setDates();
 });
 
-watch(dateofbirth, () => {
-  data.value.dateofbirth = dateofbirth.value
+watch(dateofbirth, (val) => {
+  data.value.dateofbirth = new Date(val)
     .toLocaleDateString("en-AU", {
       day: "2-digit",
       month: "short",
@@ -339,8 +313,8 @@ watch(dateofbirth, () => {
     })
     .replaceAll(" ", "/");
 });
-watch(licenseexpires, () => {
-  data.value.licenseexpires = licenseexpires.value
+watch(licenseexpires, (val) => {
+  data.value.licenseexpires = new Date(val)
     .toLocaleDateString("en-AU", {
       day: "2-digit",
       month: "short",
@@ -348,14 +322,6 @@ watch(licenseexpires, () => {
     })
     .replaceAll(" ", "/");
 });
-
-function replaceMonth(str) {
-  let newStr = str.replaceAll("/", " ");
-  months.forEach((el) => {
-    newStr = newStr.replaceAll(el[0], el[1]);
-  });
-  return newStr;
-}
 
 function addExtraDriver(id) {
   savingChanges.value = true;
