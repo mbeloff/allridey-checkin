@@ -1,6 +1,9 @@
 <template>
   <div class="gap-y-5 rounded border bg-white p-2 text-left">
-    <p class="my-3 text-sm text-gray-500">Safely store your credit card in our vault. Payment will only be taken once your vehicle has been confirmed.</p>
+    <p class="my-3 text-sm text-gray-500">
+      Safely store your credit card in our vault. Payment will only be taken
+      once your vehicle has been confirmed.
+    </p>
     <div class="relative py-5">
       <loading-overlay v-if="loading"></loading-overlay>
       <div v-if="vaultlist.length" class="grid grid-cols-4 border-b font-bold">
@@ -35,7 +38,6 @@ import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import VaultEntry from "@/components/new/VaultEntry.vue";
 import { ref, onBeforeMount, inject, watch } from "vue";
 import { useStore } from "@/store";
-import { valuesIn } from "lodash";
 
 const store = useStore();
 const rcm = inject("rcm");
@@ -47,7 +49,6 @@ const showVault = ref(false);
 const emit = defineEmits(["missing"]);
 
 watch(vaultlist, () => {
-  console.log(!vaultlist.value.length);
   emit("missing", { vault: !vaultlist.value.length });
 });
 

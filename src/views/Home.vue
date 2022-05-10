@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex h-full flex-col justify-center bg-gray-300">
+  <div class="relative flex h-full flex-col justify-center">
     <loading-overlay v-if="loading" class="z-10"></loading-overlay>
     <div class="my-2 h-12">
       <p v-show="error" class="text-center text-red-500">{{ error }}</p>

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative grid h-full content-start gap-5 bg-gray-600 py-10 px-2">
+  <div class="relative grid h-full content-start gap-5 bg-gray-700/90 py-10 px-2">
     <the-summary
       v-if="gotBooking"
       :bookinginfo="store.bookinginfo"
@@ -14,6 +14,7 @@ import { useStore } from "@/store";
 import { useRouter } from "vue-router";
 import TheSummary from "@/components/Summary.vue";
 import CheckinSteps from "@/components/new/CheckinSteps.vue";
+import LoadingOverlay from '@/components/LoadingOverlay.vue';
 
 const rcm = inject("rcm");
 

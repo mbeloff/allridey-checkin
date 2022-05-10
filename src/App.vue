@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="max-w-screen grid min-h-screen">
     <TheNavbar></TheNavbar>
-    <main class="-mt-20 min-h-screen bg-gray-200 pt-20">
+    <main class="-mt-20 min-h-screen bg-gray-300 pt-20">
       <router-view />
     </main>
   </div>
