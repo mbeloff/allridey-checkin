@@ -1,5 +1,8 @@
 <template>
-  <div class="relative grid h-full content-start gap-5 bg-gray-700/90 py-10 px-2">
+  <div
+    class="relative grid h-full content-start gap-5 bg-gray-700/80 py-10 px-2"
+  >
+    <loading-overlay v-if="loading"></loading-overlay>
     <the-summary
       v-if="gotBooking"
       :bookinginfo="store.bookinginfo"
@@ -9,20 +12,18 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeMount, provide, inject } from "vue";
+import { ref, computed, onBeforeMount, inject } from "vue";
 import { useStore } from "@/store";
 import { useRouter } from "vue-router";
 import TheSummary from "@/components/Summary.vue";
-import CheckinSteps from "@/components/new/CheckinSteps.vue";
-import LoadingOverlay from '@/components/LoadingOverlay.vue';
+import CheckinSteps from "@/components/CheckinSteps.vue";
+import LoadingOverlay from "@/components/LoadingOverlay.vue";
 
 const rcm = inject("rcm");
-
 const router = useRouter();
 const store = useStore();
 const loading = ref(true);
 const ready = ref(false);
-
 const gotBooking = computed(() => {
   if (store.bookinginfo.bookinginfo) return true;
 });
@@ -36,6 +37,17 @@ function getCountries() {
   });
 }
 
+function checkStatus(trip) {
+  if (trip.isquotation != trip.isvalidquotation) {
+    router.push({ name: "Home", query: { validquote: false } });
+  }
+  let s = trip.reservationstatus;
+  if (s != "Reservation" && s != "Quotation" && s != "Reservation Request") {
+    router.push({ name: "Home", query: { validres: false } });
+  }
+  store.resType = s;
+}
+
 function getBooking() {
   let resref = store.resref;
   loading.value = true;
@@ -47,11 +59,7 @@ function getBooking() {
   rcm(params)
     .then((response) => {
       if (response.status == "OK") {
-        if (
-          response.results.bookinginfo[0].reservationstatus != "Reservation"
-        ) {
-          router.push({ name: "Home", query: { valid: false } });
-        }
+        checkStatus(response.results.bookinginfo[0]);
         loading.value = false;
         store.bookinginfo = response.results;
         ready.value = true;

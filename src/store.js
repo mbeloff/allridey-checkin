@@ -7,6 +7,7 @@ export const useStore = defineStore("store", {
       token: "",
       tokenExp: "",
       resref: "",
+      resType: undefined,
       bookinginfo: {},
       countries: [],
     };
