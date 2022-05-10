@@ -21,18 +21,18 @@
           >
           <a
             href="https://www.allridey.com.au"
-            class="shadow-inset ml-5 max-w-max rounded bg-white bg-gradient-to-tr from-blue-400 to-blue-600 px-5 py-3 text-sm text-white shadow-lg shadow-blue-500/20 hover:from-blue-500/30 hover:to-blue-600/30 hover:text-blue-800"
-            >Exit <i class="fal fa-person-to-portal ml-3"></i
+            class="shadow-inset ml-5 max-w-max rounded bg-white bg-gradient-to-tr from-blue-400 to-blue-600 px-5 py-3 text-white shadow-lg shadow-blue-500/20 hover:from-blue-500/30 hover:to-blue-600/30 hover:text-blue-800"
+            >Exit <i class="fad fa-person-to-portal fa-fw ml-2"></i
           ></a>
         </div>
       </div>
       <div
-        class="mr-1 flex h-full place-items-center text-blue-300 md:hidden"
+        class="mr-1 flex h-full place-items-center text-blue-300/80 md:hidden"
         @click="expand = !expand"
       >
         <a
           href="tel:0417740307"
-          class="hover:blue-600 ml-auto mr-4 min-w-max font-bold text-blue-100"
+          class="hover:blue-600 ml-auto mr-4 min-w-max font-bold text-blue-100/80"
           >0417 740 307</a
         >
         <i v-if="!expand" class="fal fa-bars fa-2x fa-fw"></i>

@@ -2,14 +2,14 @@
   <div
     class="rounded bg-gray-800"
     :class="{
-      'ring-2 ring-orange-500 ring-offset-2': actionRequired,
+      'ring-2 ring-orange-500/70': actionRequired,
     }"
   >
     <button
       class="flex h-16 w-full items-center justify-between rounded px-2 md:px-5"
       @click="emit('toggle')"
     >
-      <p class="text-center text-xl text-white">
+      <p class="text-center text-xl text-blue-100/70">
         {{ label }}
         <span v-if="actionRequired" class="text-lg font-normal text-orange-400"
           ><i class="far fa-warning"></i> action required</span
