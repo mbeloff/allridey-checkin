@@ -76,7 +76,6 @@ const props = defineProps({
 
 const loading = ref(false);
 const doclist = ref([]);
-
 const missing = computed(() => {
   return doclist.value.filter((doc) => !doc.isuploaded).length;
 });
@@ -173,16 +172,6 @@ onBeforeMount(() => {
 <script>
 export default {
   methods: {
-    iconClass(doc) {
-      return {
-        "opacity-20": doc.isuploaded == 1,
-        "fa-id-card":
-          doc.title == "Take a photo of the front of your driving license",
-        "fa-image-user": doc.title == "Take a Selfie",
-        "fa-credit-card-blank fa-flip-vertical":
-          doc.title == "Take a photo of the back of your driving license",
-      };
-    },
     replaceDocText(text) {
       if (text == "Take a photo of the front of your driving license") {
         return "Take a photo of the front of your driver's license";

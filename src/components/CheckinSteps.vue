@@ -56,9 +56,9 @@
 </template>
 
 <script setup>
-import ModifyDriver from "@/components/new/ModifyDriver.vue";
-import ExpandSection from "@/components/new/ExpandSection.vue";
-import CardVault from "@/components/new/CardVault.vue";
+import ModifyDriver from "@/components/ModifyDriver.vue";
+import ExpandSection from "@/components/ExpandSection.vue";
+import CardVault from "@/components/CardVault.vue";
 import { ref, computed } from "vue";
 import { useStore } from "@/store";
 

@@ -35,7 +35,7 @@
 
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-import VaultEntry from "@/components/new/VaultEntry.vue";
+import VaultEntry from "@/components/VaultEntry.vue";
 import { ref, onBeforeMount, inject, watch } from "vue";
 import { useStore } from "@/store";
 

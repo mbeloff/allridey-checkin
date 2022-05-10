@@ -231,7 +231,7 @@
 
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-import ModifyUploads from "@/components/new/ModifyUploads.vue";
+import ModifyUploads from "@/components/ModifyUploads.vue";
 import SignatureSection from "@/components/SignatureSection.vue";
 import "v-calendar/dist/style.css";
 import { ref, computed, inject, watch, onMounted } from "vue";

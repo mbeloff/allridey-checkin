@@ -1,9 +1,10 @@
 <template>
   <div
-    class="mx-auto flex w-full max-w-screen-md flex-col justify-between rounded bg-gray-300 py-4 text-sm"
+    class="mx-auto mb-5 flex w-full max-w-screen-md flex-col justify-between rounded bg-gray-300 py-4 text-sm"
   >
     <p class="mb-5 font-bold">
-      Booking: {{ bookinginfo.bookinginfo[0].reservationdocumentno }}
+      {{ store.resType }}:
+      {{ bookinginfo.bookinginfo[0].reservationdocumentno }}
     </p>
     <p class="mb-5">
       {{ trip.vehiclecategory }}
@@ -64,12 +65,15 @@
 </template>
 
 <script setup>
+import { useStore } from "@/store.js";
 const props = defineProps({
   bookinginfo: {
     type: Object,
     default: null,
   },
 });
+
+const store = useStore()
 
 const trip = props.bookinginfo.bookinginfo[0];
 const fees = props.bookinginfo.extrafees;
