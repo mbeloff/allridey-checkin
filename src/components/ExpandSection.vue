@@ -21,11 +21,14 @@
         :class="{ 'rotate-180': toggle }"
       ></i>
     </button>
-    <transition name="fade">
-      <div v-show="toggle" class="flex flex-col gap-5 px-2 pb-5 md:px-5">
-        <slot></slot>
-      </div>
-    </transition>
+    <!-- ! TRY define target for reflow -->
+    <div class="reflow">
+      <transition name="fade">
+        <div class="flex flex-col gap-5 px-2 pb-5 md:px-5" v-show="toggle">
+          <slot></slot>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 <script setup>
@@ -51,8 +54,10 @@ export default {
   mixins: [smoothReflow],
   mounted() {
     this.$smoothReflow({
-      property: ["height"],
-      transition: "height 1s ease-in-out",
+      el: ".reflow",
+      transitionEvent: {
+        selector: "div",
+      },
     });
   },
 };
@@ -63,7 +68,7 @@ export default {
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter, .fade-leave-to {
   opacity: 0;
 }
 </style>
