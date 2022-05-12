@@ -23,10 +23,15 @@
         <span>{{ card.carddate }}</span>
       </div>
     </div>
-    <button class="btn-green" @click="showVault = !showVault">
-      <div v-if="!showVault"><i class="far fa-plus-circle"></i> Add a Card</div>
-      <div v-else><i class="far fa-minus-circle"></i> Cancel</div>
-    </button>
+    <div class="grid place-items-center">
+      <button class="btn-green py-2 px-4" @click="showVault = !showVault">
+        <div v-if="!showVault">
+          <i class="far fa-plus-circle"></i> Add a Card
+        </div>
+        <div v-else><i class="far fa-minus-circle"></i> Cancel</div>
+      </button>
+    </div>
+
     <div v-if="showVault">
       <vault-entry @update="getVaultList()"></vault-entry>
     </div>

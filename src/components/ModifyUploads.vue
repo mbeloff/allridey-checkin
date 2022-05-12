@@ -17,7 +17,7 @@
           'border-green-500': doc.isuploaded,
           'border-orange-500': !doc.isuploaded,
         }"
-        class="relative mx-auto flex h-full w-full max-w-full cursor-pointer flex-col rounded border bg-gray-200 hover:ring-2"
+        class="group relative mx-auto flex h-full w-full max-w-full cursor-pointer flex-col rounded border bg-gray-200 hover:bg-gray-300"
         @click="handleDoc(doc)"
       >
         <div class="flex items-center justify-between pr-2">
@@ -26,19 +26,19 @@
           </p>
           <div
             v-show="doc.isuploaded == 0"
-            class="absolute top-1 right-1 rounded border border-green-500 bg-white px-2 text-sm text-green-500"
+            class="absolute top-1 right-1 rounded bg-white px-2 text-sm text-green-500 group-hover:bg-green-600 group-hover:text-white"
           >
             upload
           </div>
           <div
             v-show="doc.isuploaded"
-            class="absolute top-1 right-1 rounded border border-green-500 bg-white px-2 text-sm"
+            class="absolute top-1 right-1 rounded border-green-500 bg-white px-2 text-sm group-hover:bg-red-500 group-hover:text-white"
           >
             <i class="fas fa-trash-can-xmark"></i>
           </div>
         </div>
 
-        <div class="mb-1 flex flex-1 rounded border text-left text-sm md:mb-0">
+        <div class="mb-1 flex flex-1 rounded text-left text-sm md:mb-0">
           <div class="flex flex-grow flex-col justify-between pb-5">
             <p class="px-2">{{ replaceDocText(doc.title) }}</p>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class=" relative flex h-full flex-col justify-center">
+  <div class="relative flex h-full flex-col justify-center">
     <loading-overlay v-if="loading" class="z-10"></loading-overlay>
     <div class="my-2 h-12">
       <p v-show="error" class="text-center text-red-500">{{ error }}</p>
@@ -79,12 +79,10 @@ onMounted(() => {
     loading.value = false;
   }
   if (route.query.validquote == "false") {
-    error.value =
-      "This quotation is no longer valid.";
+    error.value = "This quotation is no longer valid.";
   }
   if (route.query.validres == "false") {
-    error.value =
-      "Online checkin is no longer available for this reservation.";
+    error.value = "Online checkin is no longer available for this reservation.";
   }
 });
 
@@ -122,16 +120,16 @@ function findBooking(resno, lastname) {
 
 <style lang="postcss">
 .btn-green {
-  @apply rounded border border-green-500 px-2 text-sm text-green-600;
+  @apply rounded bg-green-500 text-sm text-white;
 }
 .btn-green:hover {
-  @apply hover:bg-green-500 hover:text-white;
+  @apply hover:bg-green-700 hover:text-green-200;
 }
 .btn-red {
-  @apply rounded border border-red-400 px-2 text-sm text-red-600;
+  @apply rounded bg-red-500 text-sm text-white;
 }
 .btn-red:hover {
-  @apply hover:bg-red-400 hover:text-white;
+  @apply hover:bg-red-700 hover:text-red-200;
 }
 .input-error {
   @apply ring-2 ring-orange-400;
@@ -139,5 +137,4 @@ function findBooking(resno, lastname) {
 .my-input:focus + .form-i {
   @apply text-blue-600;
 }
-
 </style>
