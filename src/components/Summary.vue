@@ -50,7 +50,7 @@
         (includes GST of: {{ trip.currencysymbol + trip.gst }})
       </p>
     </div>
-    <div class="bg-gray-200">
+    <div v-if="store.resType != 'Quotation'" class="bg-gray-200">
       <div
         class="mx-auto flex w-full max-w-[400px] justify-between py-5 px-2 font-bold"
       >

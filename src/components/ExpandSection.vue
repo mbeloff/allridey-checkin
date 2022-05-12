@@ -21,7 +21,6 @@
         :class="{ 'rotate-180': toggle }"
       ></i>
     </button>
-    <!-- ! TRY define target for reflow -->
     <div class="reflow">
       <transition name="fade">
         <div class="flex flex-col gap-5 px-2 pb-5 md:px-5" v-show="toggle">
