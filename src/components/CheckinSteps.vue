@@ -36,12 +36,22 @@
       :toggle="showNewDriver"
       @toggle="showNewDriver = !showNewDriver"
       :label="'Add New Driver'"
-      :actionRequired="null"
+      :actionRequired="false"
     >
       <modify-driver
         :newDriver="true"
         @update="emit('update'), (showNewDriver = false)"
       ></modify-driver>
+    </expand-section>
+
+    <expand-section
+      :toggle="showFees"
+      @toggle="showFees = !showFees"
+      :label="'Booking Options'"
+    >
+      <suspense>
+        <modify-fees></modify-fees>
+      </suspense>
     </expand-section>
 
     <expand-section
@@ -58,7 +68,9 @@
 <script setup>
 import ModifyDriver from "@/components/ModifyDriver.vue";
 import ExpandSection from "@/components/ExpandSection.vue";
+import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import CardVault from "@/components/CardVault.vue";
+import ModifyFees from "@/components/ModifyFees.vue";
 import { ref, computed } from "vue";
 import { useStore } from "@/store";
 
@@ -70,6 +82,7 @@ const showNewDriver = ref(false);
 const showCustomer = ref(false);
 const showExtraDrivers = ref(false);
 const showVault = ref(false);
+const showFees = ref(false);
 
 const missing = ref({
   main: false,
