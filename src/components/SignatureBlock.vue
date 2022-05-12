@@ -1,39 +1,39 @@
 <template>
   <div class="mb-2 flex flex-col gap-1">
-    
-    <div class="relative" v-if="showSig">
-      <loading-overlay v-if="loading"></loading-overlay>
-      <VueSignaturePad
-        class="aspect-[4/1] max-w-[400px] rounded border border-orange-500"
-        :ref="'pad'"
-        :options="{ onBegin }"
-        :scaleToDevicePixelRatio="false"
-      />
-      <div
-        class="absolute bottom-0 flex w-max items-center gap-2 rounded-bl rounded-tr border border-orange-500 bg-white px-1 text-xs text-orange-500"
-      >
-        <span> signature required</span>
-        <i class="fas fa-warning"></i>
+    <div class="max-w-[400px] select-none">
+      <div class="relative" v-if="showSig">
+        <loading-overlay v-if="loading"></loading-overlay>
+        <VueSignaturePad
+          class="aspect-[4/1] max-w-[400px] rounded border border-orange-500"
+          :ref="'pad'"
+          :options="{ onBegin }"
+          :scaleToDevicePixelRatio="false"
+        />
+        <div
+          class="absolute bottom-0 flex w-max items-center gap-2 rounded-bl rounded-tr border border-orange-500 bg-white px-1 text-xs text-orange-500"
+        >
+          <span> signature required</span>
+          <i class="fas fa-warning"></i>
+        </div>
+      </div>
+      <div v-if="started && !saved" class="mt-2 grid grid-cols-2 gap-2">
+        <button class="btn-green" @click="save">Submit</button>
+        <button class="btn-red" @click="clear">Clear</button>
+      </div>
+      <div class="relative" v-if="props.signature.pngsig && sigid">
+        <div
+          :id="sigid"
+          class="aspect-[4/1] max-w-[400px] rounded border border-green-500 bg-cover bg-no-repeat"
+        ></div>
+        <div
+          class="absolute bottom-0 flex w-max items-center gap-2 rounded-bl rounded-tr border border-green-500 bg-white px-1 text-xs text-green-600"
+        >
+          <span> signed: {{ props.signature.signeddatetime }}</span>
+          <i class="fas fa-check-circle"></i>
+        </div>
       </div>
     </div>
 
-    <div class="relative" v-if="props.signature.pngsig && sigid">
-      <div
-        :id="sigid"
-        class="aspect-[4/1] max-w-[400px] rounded border border-green-500 bg-cover bg-no-repeat"
-      ></div>
-      <div
-        class="absolute bottom-0 flex w-max items-center gap-2 rounded-bl rounded-tr border border-green-500 bg-white px-1 text-xs text-green-600"
-      >
-        <span> signed: {{ props.signature.signeddatetime }}</span>
-        <i class="fas fa-check-circle"></i>
-      </div>
-    </div>
-
-    <div v-if="started && !saved" class="flex gap-2">
-      <button class="btn-green" @click="save">Save</button>
-      <button class="btn-red" @click="clear">Clear</button>
-    </div>
     <div class="text-xs text-gray-600">
       <p v-if="props.signature.signaturetemplateid == 0">
         I hereby agree to the terms and conditions of
@@ -81,11 +81,14 @@ function clear() {
   pad.value.clearSignature();
 }
 async function save() {
+  if (isEmpty) {
+    alert('No signature to save. Please sign before clicking "Submit".');
+    return;
+  }
   let isExtraDriver =
     store.bookinginfo.customerinfo[0].customerid != props.signature.customerid;
   const { isEmpty, data } = pad.value.saveSignature();
   let resized = await resizedataURL(data, 200, 50);
-
   let split = resized.split(",");
   let base64 = split[1];
   let params = {
@@ -95,20 +98,18 @@ async function save() {
     signaturepng: base64,
     extradriverid: isExtraDriver ? props.signature.customerid : "",
   };
-  if (!isEmpty) {
-    loading.value = true;
-    rcm(params).then((res) => {
-      if (res.status == "ERR") {
-        alert("Error: " + res.error);
-        clear();
-      }
-      if (res.results.savesignature == true) {
-        emit("updateSignature");
-        saved.value = true;
-      }
-      loading.value = false;
-    });
-  }
+  loading.value = true;
+  rcm(params).then((res) => {
+    if (res.status == "ERR") {
+      alert("Error: " + res.error);
+      clear();
+    }
+    if (res.results.savesignature == true) {
+      emit("updateSignature");
+      saved.value = true;
+    }
+    loading.value = false;
+  });
 }
 
 function resizedataURL(datas, wantedWidth, wantedHeight) {
