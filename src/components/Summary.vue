@@ -66,31 +66,18 @@
 
 <script setup>
 import { useStore } from "@/store.js";
+import { computed } from "vue";
 const props = defineProps({
   bookinginfo: {
     type: Object,
     default: null,
+    required: true,
   },
 });
-
-const store = useStore()
-
-const trip = props.bookinginfo.bookinginfo[0];
-const fees = props.bookinginfo.extrafees;
-const rate = props.bookinginfo.rateinfo[0];
-</script>
-
-<script>
-export default {
-  // mounted() {
-  //   let params = {
-  //     method: "workflowchecklist",
-  //     reservationref: this.trip.reservationref,
-  //     workflowcode: "checkin",
-  //   };
-  //   Mixins.methods.postapiCall(params).then((res) => console.log(res));
-  // },
-};
+const store = useStore();
+const trip = computed(() => props.bookinginfo.bookinginfo[0]);
+const fees = computed(() => props.bookinginfo.extrafees);
+const rate = computed(() => props.bookinginfo.rateinfo[0]);
 </script>
 
 <style lang="scss"></style>
