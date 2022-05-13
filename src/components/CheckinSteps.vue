@@ -25,6 +25,7 @@
       <modify-driver
         v-for="driver in extraDrivers"
         :key="driver.customerid"
+        :is-extra="true"
         :customer="driver"
         @update="emit('update')"
         @missing="setMissing($event, 'extras')"
@@ -39,7 +40,7 @@
       :actionRequired="false"
     >
       <modify-driver
-        :newDriver="true"
+        :is-new="true"
         @update="emit('update'), (showNewDriver = false)"
       ></modify-driver>
     </expand-section>
@@ -50,7 +51,7 @@
       :label="'Booking Options'"
     >
       <suspense>
-        <modify-fees></modify-fees>
+        <modify-fees @update="emit('update')"></modify-fees>
       </suspense>
     </expand-section>
 
@@ -68,7 +69,6 @@
 <script setup>
 import ModifyDriver from "@/components/ModifyDriver.vue";
 import ExpandSection from "@/components/ExpandSection.vue";
-import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import CardVault from "@/components/CardVault.vue";
 import ModifyFees from "@/components/ModifyFees.vue";
 import { ref, computed } from "vue";
@@ -93,6 +93,8 @@ const missing = ref({
 function setMissing({ uploads, signatures, vault }, section) {
   if (uploads || signatures) {
     missing.value[section] = true;
+  } else {
+    missing.value[section] = false;
   }
   if (vault) {
     missing.value.vault = vault;

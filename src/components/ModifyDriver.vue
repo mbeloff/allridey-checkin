@@ -2,8 +2,14 @@
   <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
     <loading-overlay v-if="savingChanges"></loading-overlay>
     <p class="my-3 text-xl font-bold">Driver Details</p>
-    <p v-if="newDriver" class="my-3 text-sm text-gray-500">You may add up to 4 additional drivers to your booking. All drivers will need to sign the rental agreement and provide a copy of their driver's license.</p>
-    <p v-else class="my-3 text-sm text-gray-500">Please check that all details are correct.</p>
+    <p v-if="isNew" class="my-3 text-sm text-gray-500">
+      You may add up to 4 additional drivers to your booking. All drivers will
+      need to sign the rental agreement and provide a copy of their driver's
+      license.
+    </p>
+    <p v-else class="my-3 text-sm text-gray-500">
+      Please check that all details are correct.
+    </p>
     <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
       <div class="group flex flex-grow flex-col">
         <label :for="'fName' + cid" class="my-label">First Name</label>
@@ -183,22 +189,23 @@
 
       <div class="mt-auto grid h-9 grid-cols-2 gap-3">
         <button
-          v-if="!newDriver && !isPrimary"
+          v-if="isExtra"
           class="btn-red"
           @click="deleteExtraDriver(-data.customerid)"
         >
           Delete Driver <i class="fas fa-trash-can-xmark"></i>
         </button>
         <button
-          v-if="!isPrimary && unsaved.length"
+          v-if="isExtra || isNew"
           class="btn-green col-start-2"
           @click="addExtraDriver(data.customerid)"
         >
-          {{ !newDriver ? "Update" : "Add" }}
+          {{ isNew ? "Add Driver" : "Update Driver" }}
           <i class="far fa-cloud-upload"></i>
         </button>
+
         <button
-          v-if="isPrimary && unsaved.length"
+          v-if="isPrimary"
           class="btn-green col-start-2"
           @click="editBooking()"
         >
@@ -208,7 +215,7 @@
     </div>
   </div>
   <div
-    v-if="!newDriver"
+    v-if="!isNew"
     class="relative gap-y-5 rounded border bg-white p-2 text-left"
   >
     <loading-overlay v-if="savingChanges"></loading-overlay>
@@ -218,7 +225,7 @@
     ></modify-uploads>
   </div>
   <div
-    v-if="!newDriver"
+    v-if="!isNew"
     class="relative gap-y-5 rounded border bg-white p-2 text-left"
   >
     <loading-overlay v-if="savingChanges"></loading-overlay>
@@ -242,17 +249,29 @@ const store = useStore();
 const cid = computed(() => props.customer.customerid);
 const countries = computed(() => store.countries);
 const savingChanges = ref(false);
-const data = ref({});
+const data = ref(props.customer);
 const dateofbirth = ref(new Date());
 const licenseexpires = ref(new Date());
 const missinguploads = ref(0);
 const missingsignatures = ref(0);
-const unsaved = computed(() => {
-  let diffs = Object.keys(data.value).filter((key) => {
-    return data.value[key] !== props.customer[key];
-  });
-  return diffs;
-});
+const defaultDriver = {
+  customerid: 0,
+  firstname: "",
+  lastname: "",
+  dateofbirth: "1/JAN/2000",
+  email: "",
+  phone: "",
+  mobile: "",
+  address: "",
+  city: "",
+  state: "",
+  postcode: "",
+  countryid: 7,
+  country: "Australia",
+  licenseno: "",
+  licenseexpires: "",
+  licenseissued: "Australia",
+};
 
 function missing($event, type) {
   if (type == "uploads") {
@@ -261,17 +280,24 @@ function missing($event, type) {
   if (type == "signatures") {
     missingsignatures.value = $event;
   }
-  emit("missing", { uploads: missinguploads, signatures: missingsignatures });
+  emit("missing", {
+    uploads: missinguploads.value,
+    signatures: missingsignatures.value,
+  });
 }
 
 const emit = defineEmits(["update", "missing"]);
 
 const props = defineProps({
-  newDriver: {
+  isNew: {
     type: Boolean,
     default: false,
   },
   isPrimary: {
+    type: Boolean,
+    default: false,
+  },
+  isExtra: {
     type: Boolean,
     default: false,
   },
@@ -308,9 +334,13 @@ function setDates() {
 }
 
 onMounted(() => {
-  data.value = JSON.parse(JSON.stringify(props.customer));
   setDates();
 });
+
+function resetCustomer() {
+  data.value = defaultDriver;
+  setDates();
+}
 
 watch(dateofbirth, (val) => {
   data.value.dateofbirth = new Date(val)
@@ -349,7 +379,9 @@ function addExtraDriver(id) {
   rcm(params)
     .then((res) => {
       emit("update");
-      data.value = props.customer;
+      if (props.isNew) {
+        resetCustomer();
+      }
       savingChanges.value = false;
     })
     .catch((err) => console.log(err));

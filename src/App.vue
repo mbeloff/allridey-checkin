@@ -68,6 +68,6 @@ provide("getToken", getToken);
   @apply flex-1 rounded border bg-gray-200 py-3 pl-2;
 }
 .my-input:focus {
-  @apply outline-none ring-2 ring-blue-500;
+  @apply bg-white outline-none ring-2 ring-blue-500;
 }
 </style>

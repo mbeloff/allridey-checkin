@@ -3,10 +3,7 @@
     class="relative grid h-full content-start gap-5 bg-gray-700/80 py-10 px-2"
   >
     <loading-overlay v-if="loading"></loading-overlay>
-    <the-summary
-      v-if="gotBooking"
-      :bookinginfo="store.bookinginfo"
-    ></the-summary>
+    <the-summary v-if="gotBooking" :bookinginfo="bookinginfo"></the-summary>
     <checkin-steps @update="getBooking()" v-if="gotBooking"></checkin-steps>
   </div>
 </template>
@@ -27,6 +24,8 @@ const ready = ref(false);
 const gotBooking = computed(() => {
   if (store.bookinginfo.bookinginfo) return true;
 });
+
+const bookinginfo = computed(() => store.bookinginfo);
 
 function getCountries() {
   let method = {

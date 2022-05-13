@@ -81,13 +81,13 @@ function clear() {
   pad.value.clearSignature();
 }
 async function save() {
+  let isExtraDriver =
+    store.bookinginfo.customerinfo[0].customerid != props.signature.customerid;
+  const { isEmpty, data } = pad.value.saveSignature();
   if (isEmpty) {
     alert('No signature to save. Please sign before clicking "Submit".');
     return;
   }
-  let isExtraDriver =
-    store.bookinginfo.customerinfo[0].customerid != props.signature.customerid;
-  const { isEmpty, data } = pad.value.saveSignature();
   let resized = await resizedataURL(data, 200, 50);
   let split = resized.split(",");
   let base64 = split[1];

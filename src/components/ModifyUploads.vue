@@ -113,6 +113,7 @@ function deleteUpload(id) {
 }
 
 function handleDoc(doc) {
+  loading.value = true;
   let el = document.getElementById(
     doc.customerid + "-" + doc.documentlinksetupid
   );
@@ -161,6 +162,7 @@ function processUploadResult(doc, res) {
   };
   rcm(params).then((res) => {
     getDocumentList();
+    loading.value = false;
   });
 }
 
