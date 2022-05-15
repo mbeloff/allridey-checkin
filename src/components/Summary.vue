@@ -30,10 +30,10 @@
           rate.numberofdays +
           " days @ " +
           trip.currencysymbol +
-          rate.dailyrateafterdiscount +
+          rate.dailyrateafterdiscount.toFixed(2) +
           "/day"
         }}</span>
-        <span>{{ trip.currencysymbol + rate.ratesubtotal }}</span>
+        <span>{{ trip.currencysymbol + rate.ratesubtotal.toFixed(2) }}</span>
       </div>
       <div
         class="flex justify-between"
@@ -41,10 +41,10 @@
         :key="item.extrafeeid"
       >
         <span>{{ item.name }}</span
-        ><span>{{ trip.currencysymbol + item.totalfeeamount }}</span>
+        ><span>{{ trip.currencysymbol + item.totalfeeamount.toFixed(2) }}</span>
       </div>
       <div class="mt-4 flex justify-between">
-        <span>Total</span><span>{{ trip.totalcost }}</span>
+        <span>Total</span><span>{{ trip.totalcost.toFixed(2) }}</span>
       </div>
       <p class="mt-1 text-right">
         (includes GST of: {{ trip.currencysymbol + trip.gst }})
@@ -57,7 +57,7 @@
         <span>Balance Due:</span
         ><span
           >{{ trip.currencyname + trip.currencysymbol
-          }}{{ trip.balancedue }}</span
+          }}{{ trip.balancedue.toFixed(2) }}</span
         >
       </div>
     </div>
