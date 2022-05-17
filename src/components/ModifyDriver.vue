@@ -214,19 +214,10 @@
       </div>
     </div>
   </div>
-
-  <modify-uploads v-if="!isNew" :cid="data.customerid"></modify-uploads>
-
-  <modify-signatures
-    v-if="!isNew"
-    :cid="customer.customerid"
-  ></modify-signatures>
 </template>
 
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-import ModifyUploads from "@/components/ModifyUploads.vue";
-import ModifySignatures from "@/components/ModifySignatures.vue";
 import "v-calendar/dist/style.css";
 import { ref, computed, inject, watch, onMounted } from "vue";
 import { useStore } from "@/store";

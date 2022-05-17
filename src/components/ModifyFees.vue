@@ -1,7 +1,7 @@
 <template>
   <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
     <loading-overlay v-if="loading"></loading-overlay>
-    <p class="my-3 text-sm text-gray-500" v-if="store.resType != 'Quotation'">
+    <p class="my-3 text-sm text-gray-500" v-if="store.mode == 2">
       Add extra options on your booking. Please note you may not be able to
       downgrade or remove options you have previously selected. Please contact
       us if you wish to change these options.
@@ -111,11 +111,11 @@ const availablefees = await rcm({
 });
 
 function isDowngrade(price, booked) {
-  if (store.resType != "Quotation") return price < booked;
+  if (store.mode == 2) return price < booked;
 }
 function isDisabled(id) {
   if (
-    store.resType != "Quotation" &&
+    store.mode == 2 &&
     store.bookinginfo.extrafees.find((el) => el.extrafeeid == id)
   ) {
     return true;
@@ -148,7 +148,7 @@ function editbooking() {
   let params = {
     method: "editbooking",
     reservationref: store.resref,
-    bookingtype: store.resType == "Quotation" ? 1 : 2,
+    bookingtype: store.mode,
     insuranceid: selecteddamage.value,
     extrakmsid: selectedkm.value,
     customer: store.bookinginfo.customerinfo[0],
