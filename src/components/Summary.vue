@@ -3,7 +3,7 @@
     class="mx-auto mb-5 flex w-full max-w-screen-md flex-col justify-between rounded bg-gray-300 py-4 text-sm"
   >
     <p class="mb-5 font-bold">
-      {{ store.resType }}:
+      {{ bookinginfo.bookinginfo[0].reservationstatus }}:
       {{ bookinginfo.bookinginfo[0].reservationdocumentno }}
     </p>
     <p class="mb-5">
@@ -50,7 +50,7 @@
         (includes GST of: {{ trip.currencysymbol + trip.gst }})
       </p>
     </div>
-    <div v-if="store.resType != 'Quotation'" class="bg-gray-200">
+    <div v-if="store.mode == 2" class="bg-gray-200">
       <div
         class="mx-auto flex w-full max-w-[400px] justify-between py-5 px-2 font-bold"
       >

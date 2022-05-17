@@ -44,7 +44,7 @@ function checkStatus(trip) {
   if (s != "Reservation" && s != "Quotation" && s != "Reservation Request") {
     router.push({ name: "Home", query: { validres: false } });
   }
-  store.resType = s;
+  store.mode = s == "Quotation" ? 1 : 2;
 }
 
 function getBooking() {
