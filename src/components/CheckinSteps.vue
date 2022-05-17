@@ -12,26 +12,32 @@
         :is-primary="true"
         @update="emit('update')"
       ></modify-driver>
+
+      <modify-uploads :cid="customer.customerid"></modify-uploads>
+
+      <modify-signatures :cid="customer.customerid"></modify-signatures>
     </expand-section>
 
     <expand-section
-      v-if="extraDrivers.length"
+      v-if="extraDrivers.length && store.mode == 2"
       :toggle="showExtraDrivers"
       @toggle="showExtraDrivers = !showExtraDrivers"
       :label="'Extra Drivers'"
       :actionRequired="hasMissing()"
     >
-      <modify-driver
-        v-for="driver in extraDrivers"
-        :key="driver.customerid"
-        :is-extra="true"
-        :customer="driver"
-        @update="emit('update')"
-      ></modify-driver
-    ></expand-section>
+      <template v-for="driver in extraDrivers" :key="driver.customerid">
+        <modify-driver
+          :is-extra="true"
+          :customer="driver"
+          @update="emit('update')"
+        ></modify-driver>
+        <modify-uploads :cid="driver.customerid"></modify-uploads>
+        <modify-signatures :cid="driver.customerid"></modify-signatures>
+      </template>
+    </expand-section>
 
     <expand-section
-      v-if="extraDrivers.length < 4"
+      v-if="extraDrivers.length < 4 && store.mode == 2"
       :toggle="showNewDriver"
       @toggle="showNewDriver = !showNewDriver"
       :label="'Add New Driver'"
@@ -69,13 +75,14 @@ import ModifyDriver from "@/components/ModifyDriver.vue";
 import ExpandSection from "@/components/ExpandSection.vue";
 import CardVault from "@/components/CardVault.vue";
 import ModifyFees from "@/components/ModifyFees.vue";
+import ModifyUploads from "@/components/ModifyUploads.vue";
+import ModifySignatures from "./ModifySignatures.vue";
 import { ref, computed } from "vue";
 import { useStore } from "@/store";
 
 const emit = defineEmits(["update"]);
 
 const store = useStore();
-
 const showNewDriver = ref(false);
 const showCustomer = ref(false);
 const showExtraDrivers = ref(false);
