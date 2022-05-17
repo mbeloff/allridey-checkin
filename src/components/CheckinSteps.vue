@@ -41,7 +41,7 @@
       :toggle="showNewDriver"
       @toggle="showNewDriver = !showNewDriver"
       :label="'Add New Driver'"
-      :actionRequired="false"
+      :actionRequired="null"
     >
       <modify-driver
         :is-new="true"
@@ -53,6 +53,7 @@
       :toggle="showFees"
       @toggle="showFees = !showFees"
       :label="'Booking Options'"
+      :actionRequired="null"
     >
       <suspense>
         <modify-fees @update="emit('update')"></modify-fees>

@@ -2,7 +2,7 @@
   <div
     class="rounded bg-gray-800"
     :class="{
-      'ring-2 ring-orange-500/70': actionRequired,
+      'ring-2 ring-orange-500': actionRequired,
     }"
   >
     <button
@@ -14,7 +14,12 @@
         <span v-if="actionRequired" class="text-lg font-normal text-orange-400"
           ><i class="far fa-warning mr-2"></i>action required</span
         >
-        <span v-else><i class="far fa-check-circle text-green-500"></i></span>
+        <span v-if="actionRequired == false"
+          ><i class="far fa-check-circle text-green-500"></i
+        ></span>
+        <span v-if="actionRequired == null"
+          ><i class="far fa-plus-circle text-green-500"></i
+        ></span>
       </p>
       <i
         class="far fa-chevron-down text-white"
@@ -67,7 +72,8 @@ export default {
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>
