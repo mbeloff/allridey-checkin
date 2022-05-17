@@ -10,6 +10,10 @@ export const useStore = defineStore("store", {
       resType: undefined,
       bookinginfo: {},
       countries: [],
+      missing: {
+        customers: {},
+        vault: false,
+      },
     };
   },
 });

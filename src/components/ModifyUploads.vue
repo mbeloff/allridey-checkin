@@ -1,5 +1,7 @@
 <template>
-  <div class="grid w-full grid-cols-1 gap-1 rounded bg-white md:grid-cols-3">
+  <div
+    class="grid w-full grid-cols-1 gap-1 rounded bg-white p-2 text-left md:grid-cols-3"
+  >
     <p class="col-span-full my-3 text-xl font-bold">Upload Documents</p>
     <loading-overlay v-if="loading"></loading-overlay>
     <div
@@ -80,9 +82,8 @@ const missing = computed(() => {
   return doclist.value.filter((doc) => !doc.isuploaded).length;
 });
 
-const emit = defineEmits(["missing"]);
 watch(missing, (val) => {
-  emit("missing", val);
+  store.missing.customers[props.cid]['uploads'] = val;
 });
 
 function getDocumentList() {

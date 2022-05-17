@@ -214,32 +214,19 @@
       </div>
     </div>
   </div>
-  <div
+
+  <modify-uploads v-if="!isNew" :cid="data.customerid"></modify-uploads>
+
+  <modify-signatures
     v-if="!isNew"
-    class="relative gap-y-5 rounded border bg-white p-2 text-left"
-  >
-    <loading-overlay v-if="savingChanges"></loading-overlay>
-    <modify-uploads
-      :cid="data.customerid"
-      @missing="missing($event, 'uploads')"
-    ></modify-uploads>
-  </div>
-  <div
-    v-if="!isNew"
-    class="relative gap-y-5 rounded border bg-white p-2 text-left"
-  >
-    <loading-overlay v-if="savingChanges"></loading-overlay>
-    <signature-section
-      :cid="customer.customerid"
-      @missing="missing($event, 'signatures')"
-    ></signature-section>
-  </div>
+    :cid="customer.customerid"
+  ></modify-signatures>
 </template>
 
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import ModifyUploads from "@/components/ModifyUploads.vue";
-import SignatureSection from "@/components/SignatureSection.vue";
+import ModifySignatures from "@/components/ModifySignatures.vue";
 import "v-calendar/dist/style.css";
 import { ref, computed, inject, watch, onMounted } from "vue";
 import { useStore } from "@/store";
@@ -252,8 +239,6 @@ const savingChanges = ref(false);
 const data = ref(props.customer);
 const dateofbirth = ref(new Date());
 const licenseexpires = ref(new Date());
-const missinguploads = ref(0);
-const missingsignatures = ref(0);
 const defaultDriver = {
   customerid: 0,
   firstname: "",
@@ -273,20 +258,7 @@ const defaultDriver = {
   licenseissued: "Australia",
 };
 
-function missing($event, type) {
-  if (type == "uploads") {
-    missinguploads.value = $event;
-  }
-  if (type == "signatures") {
-    missingsignatures.value = $event;
-  }
-  emit("missing", {
-    uploads: missinguploads.value,
-    signatures: missingsignatures.value,
-  });
-}
-
-const emit = defineEmits(["update", "missing"]);
+const emit = defineEmits(["update"]);
 
 const props = defineProps({
   isNew: {
@@ -335,7 +307,17 @@ function setDates() {
 
 onMounted(() => {
   setDates();
+  addToStore();
 });
+
+function addToStore() {
+  if (props.customer.customerid == 0) return;
+  store.missing.customers[props.customer.customerid] = {
+    signatures: 0,
+    uploads: 0,
+    extra: props.isExtra,
+  };
+}
 
 function resetCustomer() {
   data.value = defaultDriver;
@@ -397,6 +379,7 @@ function deleteExtraDriver(id) {
   rcm(params)
     .then((res) => {
       emit("update");
+      delete store.missing.customers[cid.value];
     })
     .catch((err) => console.log(err));
 }

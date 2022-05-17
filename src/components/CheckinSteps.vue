@@ -4,14 +4,13 @@
       :toggle="showCustomer"
       :label="'Main Hirer'"
       @toggle="showCustomer = !showCustomer"
-      :actionRequired="missing.main"
+      :actionRequired="hasMissing(customer.customerid)"
     >
       <modify-driver
         :key="customer.customerid"
         :customer="customer"
         :is-primary="true"
         @update="emit('update')"
-        @missing="setMissing($event, 'main')"
       ></modify-driver>
     </expand-section>
 
@@ -20,7 +19,7 @@
       :toggle="showExtraDrivers"
       @toggle="showExtraDrivers = !showExtraDrivers"
       :label="'Extra Drivers'"
-      :actionRequired="missing.extras"
+      :actionRequired="hasMissing()"
     >
       <modify-driver
         v-for="driver in extraDrivers"
@@ -28,7 +27,6 @@
         :is-extra="true"
         :customer="driver"
         @update="emit('update')"
-        @missing="setMissing($event, 'extras')"
       ></modify-driver
     ></expand-section>
 
@@ -59,9 +57,9 @@
       :label="'Payment Method'"
       :toggle="showVault"
       @toggle="showVault = !showVault"
-      :actionRequired="missing.vault"
+      :actionRequired="store.missing.vault"
     >
-      <card-vault @missing="setMissing($event, 'payment')"></card-vault>
+      <card-vault></card-vault>
     </expand-section>
   </div>
 </template>
@@ -84,20 +82,21 @@ const showExtraDrivers = ref(false);
 const showVault = ref(false);
 const showFees = ref(false);
 
-const missing = ref({
-  main: false,
-  extras: false,
-  vault: false,
-});
-
-function setMissing({ uploads, signatures, vault }, section) {
-  if (uploads || signatures) {
-    missing.value[section] = true;
+function hasMissing(cid) {
+  if (store.missing.customers.hasOwnProperty(cid)) {
+    return (
+      store.missing.customers[cid].uploads > 0 ||
+      store.missing.customers[cid].signatures > 0
+    );
   } else {
-    missing.value[section] = false;
-  }
-  if (vault) {
-    missing.value.vault = vault;
+    return (
+      Object.values(store.missing.customers).some(
+        (val) => val.extra && val.uploads
+      ) > 0 ||
+      Object.values(store.missing.customers).some(
+        (val) => val.extra && val.signatures
+      ) > 0
+    );
   }
 }
 
@@ -107,6 +106,7 @@ const customer = computed(() => {
   delete customer.fulladdress;
   return customer;
 });
+
 const extraDrivers = computed(() => store.bookinginfo.extradrivers);
 </script>
 
