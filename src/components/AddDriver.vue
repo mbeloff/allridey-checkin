@@ -1,0 +1,147 @@
+<template>
+  <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
+    <loading-overlay v-if="savingChanges"></loading-overlay>
+    <p class="my-3 text-xl font-bold">Driver Details</p>
+    <p class="my-3 text-sm text-gray-500">
+      You may add up to 4 additional drivers to your booking. All drivers will
+      need to sign the rental agreement and provide a copy of their driver's
+      license.
+    </p>
+    <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+      <div class="group flex flex-grow flex-col">
+        <label :for="'fName' + cid" class="my-label">First Name</label>
+        <input
+          :id="'fName' + cid"
+          v-model="data.firstname"
+          maxlength="30"
+          required
+          type="text"
+          class="my-input"
+          :class="{ 'ring-2 ring-orange-500': v.data.firstname.$error }"
+          placeholder="required"
+        />
+      </div>
+      <div class="group flex flex-grow flex-col">
+        <label :for="'lName' + cid" class="my-label">Last Name</label>
+        <input
+          :id="'lName' + cid"
+          v-model="data.lastname"
+          maxlength="40"
+          required
+          type="text"
+          class="my-input"
+          :class="{ 'ring-2 ring-orange-500': v.data.lastname.$error }"
+          placeholder="required"
+        />
+      </div>
+      <div class="group flex flex-grow flex-col">
+        <label :for="'email' + cid" class="my-label">Email</label>
+        <input
+          :id="'email' + cid"
+          v-model="data.email"
+          maxlength="50"
+          required
+          type="email"
+          class="my-input"
+          :class="{ 'ring-2 ring-orange-500': v.data.email.$error }"
+          placeholder="required"
+        />
+      </div>
+      <div class="group flex flex-grow flex-col">
+        <label :for="'phone' + cid" class="my-label">Phone</label>
+        <input
+          :id="'phone' + cid"
+          v-model="data.mobile"
+          maxlength="25"
+          required
+          type="tel"
+          class="my-input"
+        />
+      </div>
+    </div>
+    <div class="mt-5 grid place-items-center">
+      <button
+        class="btn-green py-2 px-4"
+        @click="addExtraDriver(data.customerid)"
+      >
+        Add a Driver
+        <i class="far fa-cloud-upload"></i>
+      </button>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import LoadingOverlay from "@/components/LoadingOverlay.vue";
+import "v-calendar/dist/style.css";
+import { ref, inject, onMounted } from "vue";
+import { useStore } from "@/store";
+import useVuelidate from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
+
+const rcm = inject("rcm");
+const store = useStore();
+const cid = 0;
+const savingChanges = ref(false);
+const data = ref({
+  customerid: 0,
+  firstname: "",
+  lastname: "",
+  dateofbirth: "",
+  email: "",
+  phone: "",
+  mobile: "",
+  address: "",
+  city: "",
+  state: "",
+  postcode: "",
+  countryid: 7,
+  country: "Australia",
+  licenseno: "",
+  licenseexpires: "",
+  licenseissued: "Australia",
+});
+
+const rules = {
+  data: {
+    firstname: { required },
+    lastname: { required },
+    email: { required, email },
+  },
+};
+
+const v = useVuelidate(rules, { data }, { $autoDirty: true });
+
+const emit = defineEmits(["update"]);
+
+function addExtraDriver(id) {
+  savingChanges.value = true;
+  let params = {
+    method: "extradriver",
+    reservationref: store.resref,
+    customerid: id,
+    customer: {
+      ...data.value,
+    },
+  };
+  if (!data.value.firstname || !data.value.lastname || !data.value.email) {
+    v.value.$touch();
+    alert("please fill all required fields");
+    savingChanges.value = false;
+    return;
+  }
+  rcm(params)
+    .then((res) => {
+      emit("update");
+      (data.value.firstname = ""),
+        (data.value.lastname = ""),
+        (data.value.email = ""),
+        (data.value.mobile = "");
+      v.value.$reset;
+      savingChanges.value = false;
+    })
+    .catch((err) => console.log(err));
+}
+</script>
+
+<style lang="postcss" scoped></style>

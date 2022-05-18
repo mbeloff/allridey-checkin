@@ -2,14 +2,6 @@
   <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
     <loading-overlay v-if="savingChanges"></loading-overlay>
     <p class="my-3 text-xl font-bold">Driver Details</p>
-    <p v-if="isNew" class="my-3 text-sm text-gray-500">
-      You may add up to 4 additional drivers to your booking. All drivers will
-      need to sign the rental agreement and provide a copy of their driver's
-      license.
-    </p>
-    <p v-else class="my-3 text-sm text-gray-500">
-      Please check that all details are correct.
-    </p>
     <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
       <div class="group flex flex-grow flex-col">
         <label :for="'fName' + cid" class="my-label">First Name</label>
@@ -21,7 +13,7 @@
           type="text"
           class="my-input"
           :disabled="isPrimary"
-          :class="{ 'text-gray-400': isPrimary }"
+          :class="{ 'text-gray-400': isPrimary },{ 'ring-2 ring-orange-500' : v.data.firstname.$error }"
           placeholder="required"
         />
       </div>
@@ -35,7 +27,7 @@
           type="text"
           class="my-input"
           :disabled="isPrimary"
-          :class="{ 'text-gray-400': isPrimary }"
+          :class="{ 'text-gray-400': isPrimary },{ 'ring-2 ring-orange-500' : v.data.lastname.$error }"
           placeholder="required"
         />
       </div>
@@ -49,7 +41,7 @@
           type="email"
           class="my-input"
           :disabled="isPrimary"
-          :class="{ 'text-gray-400': isPrimary }"
+          :class="{ 'text-gray-400': isPrimary },{ 'ring-2 ring-orange-500' : v.data.email.$error }"
           placeholder="required"
         />
       </div>
@@ -188,21 +180,24 @@
       </div>
 
       <div class="mt-auto grid h-9 grid-cols-2 gap-3">
+        <template v-if="isExtra">
         <button
-          v-if="isExtra"
+
           class="btn-red"
           @click="deleteExtraDriver(-data.customerid)"
         >
           Delete Driver <i class="fas fa-trash-can-xmark"></i>
         </button>
         <button
-          v-if="isExtra || isNew"
+
           class="btn-green col-start-2"
           @click="addExtraDriver(data.customerid)"
         >
-          {{ isNew ? "Add Driver" : "Update Driver" }}
+          Update Driver
           <i class="far fa-cloud-upload"></i>
         </button>
+        </template>
+        
 
         <button
           v-if="isPrimary"
@@ -221,6 +216,8 @@ import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import "v-calendar/dist/style.css";
 import { ref, computed, inject, watch, onMounted } from "vue";
 import { useStore } from "@/store";
+import useVuelidate from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
 
 const rcm = inject("rcm");
 const store = useStore();
@@ -248,6 +245,24 @@ const defaultDriver = {
   licenseexpires: "",
   licenseissued: "Australia",
 };
+
+const rules = {
+  data: {
+    firstname: { required },
+    lastname: { required },
+    email: { required, email },
+    licenseno: { required },
+    licnseexpires: { required }
+  },
+};
+
+const v = useVuelidate(rules, {data},{$autoDirty: true})
+
+onMounted(() => {
+  setDates();
+  addToStore();
+  v.value.$touch()
+});
 
 const emit = defineEmits(["update"]);
 
@@ -296,10 +311,7 @@ function setDates() {
   } else licenseexpires.value = new Date(props.customer.licenseexpires);
 }
 
-onMounted(() => {
-  setDates();
-  addToStore();
-});
+
 
 function addToStore() {
   if (props.customer.customerid == 0) return;
@@ -345,6 +357,7 @@ function addExtraDriver(id) {
     },
   };
   if (!data.value.firstname || !data.value.lastname || !data.value.email) {
+    v.value.$touch()
     alert("please fill all required fields");
     savingChanges.value = false;
     return;
@@ -399,11 +412,6 @@ function editBooking() {
 }
 </script>
 
-<style lang="postcss" scoped>
-.my-input {
-  padding: 0.35rem;
-}
-.my-label {
-  @apply text-xs;
-}
+<style lang="postcss" >
+
 </style>
