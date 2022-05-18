@@ -34,7 +34,7 @@
           placeholder="required"
         />
       </div>
-      <div class="group flex flex-grow flex-col">
+      <div class="group relative flex flex-grow flex-col">
         <label :for="'email' + cid" class="my-label">Email</label>
         <input
           :id="'email' + cid"
@@ -46,6 +46,11 @@
           :class="{ 'ring-2 ring-orange-500': v.data.email.$error }"
           placeholder="required"
         />
+        <span
+          class="absolute -bottom-5 text-xs text-red-500"
+          v-if="v.data.email.email.$invalid"
+          >Please enter a valid email address</span
+        >
       </div>
       <div class="group flex flex-grow flex-col">
         <label :for="'phone' + cid" class="my-label">Phone</label>
@@ -74,7 +79,7 @@
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import "v-calendar/dist/style.css";
-import { ref, inject, onMounted } from "vue";
+import { ref, inject } from "vue";
 import { useStore } from "@/store";
 import useVuelidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
@@ -124,12 +129,14 @@ function addExtraDriver(id) {
       ...data.value,
     },
   };
-  if (!data.value.firstname || !data.value.lastname || !data.value.email) {
-    v.value.$touch();
-    alert("please fill all required fields");
+
+  v.value.$touch();
+
+  if (v.value.$errors.length) {
     savingChanges.value = false;
     return;
   }
+  
   rcm(params)
     .then((res) => {
       emit("update");

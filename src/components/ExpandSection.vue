@@ -58,10 +58,10 @@ export default {
   mixins: [smoothReflow],
   mounted() {
     this.$smoothReflow({
-      el: ".reflow",
-      transitionEvent: {
-        selector: "div",
-      },
+      // el: ".reflow",
+      // transitionEvent: {
+      //   selector: "div",
+      // },
     });
   },
 };

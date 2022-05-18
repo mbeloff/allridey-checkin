@@ -36,7 +36,7 @@
 
     <div class="text-xs text-gray-600">
       <p v-if="props.signature.signaturetemplateid == 0">
-        I hereby agree to the terms and conditions of
+        I, {{ props.fullname }}, hereby agree to the terms and conditions of
         <a class="text-blue-500" target="_blank" :href="agreement" download
           >the Vehicle Rental Agreement</a
         >
@@ -55,7 +55,7 @@ import { useStore } from "@/store";
 const store = useStore();
 const rcm = inject("rcm");
 const emit = defineEmits(["updateSignature"]);
-const props = defineProps({ signature: Object });
+const props = defineProps({ signature: Object, fullname: String });
 const started = ref(false);
 const loading = ref(false);
 const saved = ref(false);

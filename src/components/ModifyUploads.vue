@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid w-full grid-cols-1 gap-1 rounded bg-white p-2 text-left md:grid-cols-3"
+    class="relative grid w-full grid-cols-1 gap-1 rounded bg-white p-2 text-left md:grid-cols-3"
   >
     <p class="col-span-full my-3 text-xl font-bold">Upload Documents</p>
     <loading-overlay v-if="loading"></loading-overlay>
@@ -83,7 +83,7 @@ const missing = computed(() => {
 });
 
 watch(missing, (val) => {
-  store.missing.customers[props.cid]['uploads'] = val;
+  store.missing.customers[props.cid]["uploads"] = val;
 });
 
 function getDocumentList() {
@@ -114,7 +114,6 @@ function deleteUpload(id) {
 }
 
 function handleDoc(doc) {
-  loading.value = true;
   let el = document.getElementById(
     doc.customerid + "-" + doc.documentlinksetupid
   );
@@ -129,6 +128,7 @@ function handleDoc(doc) {
 }
 
 function uploadFile($event, doc) {
+  loading.value = true
   console.log("uploading");
   const file = $event.target.files[0];
   const formData = new FormData();

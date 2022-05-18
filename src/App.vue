@@ -65,9 +65,13 @@ provide("getToken", getToken);
   color: #2c3e50;
 }
 .my-input {
-  @apply flex-1 rounded border bg-gray-200 py-3 pl-2;
+  padding: 0.35rem;
+  @apply flex-1 rounded border bg-gray-200;
 }
 .my-input:focus {
   @apply bg-white outline-none ring-2 ring-blue-500;
+}
+.my-label {
+  @apply text-xs;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="mx-auto flex w-full max-w-screen-md flex-col gap-5">
     <expand-section
-      :toggle="showCustomer"
+      :toggle="tab == 'main'"
       :label="'Main Hirer'"
-      @toggle="showCustomer = !showCustomer"
+      @toggle="toggle('main')"
       :actionRequired="hasMissing(customer.customerid)"
     >
       <modify-driver
@@ -20,8 +20,8 @@
 
     <expand-section
       v-if="extraDrivers.length && store.mode == 2"
-      :toggle="showExtraDrivers"
-      @toggle="showExtraDrivers = !showExtraDrivers"
+      :toggle="tab == 'extras'"
+      @toggle="toggle('extras')"
       :label="'Extra Drivers'"
       :actionRequired="hasMissing()"
     >
@@ -38,20 +38,17 @@
 
     <expand-section
       v-if="extraDrivers.length < 4 && store.mode == 2"
-      :toggle="showNewDriver"
-      @toggle="showNewDriver = !showNewDriver"
+      :toggle="tab == 'add'"
+      @toggle="toggle('add')"
       :label="'Add New Driver'"
       :actionRequired="null"
     >
-      <modify-driver
-        :is-new="true"
-        @update="emit('update'), (showNewDriver = false)"
-      ></modify-driver>
+      <add-driver @update="emit('update')"></add-driver>
     </expand-section>
 
     <expand-section
-      :toggle="showFees"
-      @toggle="showFees = !showFees"
+      :toggle="tab == 'fees'"
+      @toggle="toggle('fees')"
       :label="'Booking Options'"
       :actionRequired="null"
     >
@@ -62,8 +59,8 @@
 
     <expand-section
       :label="'Payment Method'"
-      :toggle="showVault"
-      @toggle="showVault = !showVault"
+      :toggle="tab == 'vault'"
+      @toggle="toggle('vault')"
       :actionRequired="store.missing.vault"
     >
       <card-vault></card-vault>
@@ -73,6 +70,7 @@
 
 <script setup>
 import ModifyDriver from "@/components/ModifyDriver.vue";
+import AddDriver from "@/components/AddDriver.vue";
 import ExpandSection from "@/components/ExpandSection.vue";
 import CardVault from "@/components/CardVault.vue";
 import ModifyFees from "@/components/ModifyFees.vue";
@@ -89,6 +87,16 @@ const showCustomer = ref(false);
 const showExtraDrivers = ref(false);
 const showVault = ref(false);
 const showFees = ref(false);
+
+const tab = ref("");
+
+function toggle(clicked) {
+  if (tab.value == clicked) {
+    tab.value = "";
+  } else {
+    tab.value = clicked;
+  }
+}
 
 function hasMissing(cid) {
   if (store.missing.customers.hasOwnProperty(cid)) {

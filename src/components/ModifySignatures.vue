@@ -10,6 +10,7 @@
       :key="signature.signaturetemplateid"
     >
       <signature-block
+        :fullname="fullname"
         @update-signature="getSignatures"
         :signature="signature"
       ></signature-block>
@@ -26,6 +27,18 @@ const rcm = inject("rcm");
 const store = useStore();
 const props = defineProps({
   cid: Number,
+});
+const isPrimary = computed(() => {
+  return store.bookinginfo.customerinfo[0].customerid == props.cid;
+});
+const fullname = computed(() => {
+  if (isPrimary.value)
+    return `${store.bookinginfo.customerinfo[0].firstname} ${store.bookinginfo.customerinfo[0].lastname}`;
+
+  let customer = store.bookinginfo.extradrivers.find(
+    (driver) => driver.customerid == props.cid
+  );
+  return `${customer.firstname} ${customer.lastname}`;
 });
 const signatureList = ref([]);
 const missing = computed(() => {

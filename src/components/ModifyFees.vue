@@ -80,7 +80,7 @@
         </div>
       </div>
     </div>
-    <div class="my-5 grid place-items-center">
+    <div class="mt-5 grid place-items-center">
       <button
         v-show="changes.length"
         class="btn-green py-2 px-4"
