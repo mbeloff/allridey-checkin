@@ -34,8 +34,10 @@ const getToken = () => {
 const rcm = async (method) => {
   let expired = new Date(store.tokenexpires).getTime() < new Date().getTime();
   if (expired) {
+    store.token = "";
+    store.tokenexpires = "";
     alert("Your session has expired. The page will now refresh.");
-    router.push({ name: "Home" });
+    window.location.reload();
     return;
   }
   var requestOptions = {
