@@ -2,7 +2,7 @@
   <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
     <loading-overlay v-if="savingChanges"></loading-overlay>
     <p class="my-3 text-xl font-bold text-green-500">{{data.firstname + ' ' + data.lastname}}</p>
-    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 pt-3">
+    <div class="grid grid-cols-1 gap-1 sm:grid-cols-2 pt-3">
       <div class="group flex flex-grow flex-col">
         <label :for="'fName' + cid" class="my-label">First Name</label>
         <input

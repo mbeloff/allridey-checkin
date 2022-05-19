@@ -33,7 +33,7 @@
           placeholder="required"
         />
       </div>
-      <div class="group relative flex flex-grow flex-col mb-2">
+      <div class="group relative flex flex-grow flex-col mb-2 sm:mb-0">
         <label :for="'email' + cid" class="my-label">Email</label>
         <input
           :id="'email' + cid"

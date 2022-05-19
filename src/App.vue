@@ -68,12 +68,12 @@ provide("getToken", getToken);
 }
 .my-input {
   padding: 0.35rem;
-  @apply flex-1 rounded border bg-gray-200;
+  @apply flex-1 rounded border bg-gray-200 accent-green-500;
 }
 .my-input:focus {
   @apply bg-white outline-none ring-2 ring-blue-500;
 }
 .my-label {
-  @apply text-xs;
+  @apply text-xs text-gray-500;
 }
 </style>

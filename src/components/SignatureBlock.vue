@@ -1,6 +1,6 @@
 <template>
   <div class="mb-2 flex flex-col gap-1">
-    <div class="max-w-[400px] select-none">
+    <div class="max-w-[400px]">
       <div class="relative" v-if="showSig">
         <loading-overlay v-if="loading"></loading-overlay>
         <VueSignaturePad

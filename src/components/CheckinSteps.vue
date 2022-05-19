@@ -12,9 +12,7 @@
         :is-primary="true"
         @update="emit('update')"
       ></modify-driver>
-
       <modify-uploads :cid="customer.customerid"></modify-uploads>
-
       <modify-signatures :cid="customer.customerid"></modify-signatures>
     </expand-section>
 
@@ -26,7 +24,9 @@
       :actionRequired="hasMissing()"
     >
       <template v-for="(driver, i) in extraDrivers" :key="driver.customerid">
-        <div class="rounded px-2 py-1 bg-gray-700 text-gray-400">Extra Driver #{{ i + 1 }}</div>
+        <div class="rounded bg-gray-700 px-2 py-1 text-gray-400">
+          Extra Driver #{{ i + 1 }}
+        </div>
         <modify-driver
           :is-extra="true"
           :customer="driver"
