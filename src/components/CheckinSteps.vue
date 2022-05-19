@@ -13,7 +13,10 @@
         @update="emit('update')"
       ></modify-driver>
       <modify-uploads :cid="customer.customerid"></modify-uploads>
-      <modify-signatures :cid="customer.customerid"></modify-signatures>
+      <modify-signatures
+        :cid="customer.customerid"
+        :tabopen="tab == 'main'"
+      ></modify-signatures>
     </expand-section>
 
     <expand-section
@@ -33,7 +36,10 @@
           @update="emit('update')"
         ></modify-driver>
         <modify-uploads :cid="driver.customerid"></modify-uploads>
-        <modify-signatures :cid="driver.customerid"></modify-signatures>
+        <modify-signatures
+          :cid="driver.customerid"
+          :tabopen="tab == 'extras'"
+        ></modify-signatures>
       </template>
     </expand-section>
 

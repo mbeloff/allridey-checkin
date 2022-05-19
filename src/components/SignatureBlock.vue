@@ -49,13 +49,25 @@
 
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-import { inject, onMounted, onUpdated, ref, computed } from "vue";
+import {
+  inject,
+  onMounted,
+  onUpdated,
+  ref,
+  computed,
+  watch,
+  nextTick,
+} from "vue";
 import { useStore } from "@/store";
 
 const store = useStore();
 const rcm = inject("rcm");
 const emit = defineEmits(["updateSignature"]);
-const props = defineProps({ signature: Object, fullname: String });
+const props = defineProps({
+  signature: Object,
+  fullname: String,
+  tabopen: Boolean,
+});
 const started = ref(false);
 const loading = ref(false);
 const saved = ref(false);
@@ -70,6 +82,12 @@ const sigid = computed(() => {
     "s" +
     props.signature.signaturetemplateid;
   return str;
+});
+watch(showSig, () => {
+  async () => {
+    await nextTick();
+    pad.value.resizeCanvas();
+  };
 });
 const pad = ref(null);
 
