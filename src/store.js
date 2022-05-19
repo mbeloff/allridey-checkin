@@ -5,7 +5,7 @@ export const useStore = defineStore("store", {
   state: () => {
     return {
       token: "",
-      tokenExp: "",
+      tokenexpires: "",
       resref: "",
       mode: undefined,
       bookinginfo: {},

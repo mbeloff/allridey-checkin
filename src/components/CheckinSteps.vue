@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto flex w-full max-w-screen-md flex-col gap-5">
+  <div class="flex w-full flex-col gap-5">
     <expand-section
       :toggle="tab == 'main'"
       :label="'Main Hirer'"

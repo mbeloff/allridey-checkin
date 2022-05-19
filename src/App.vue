@@ -11,8 +11,10 @@
 import TheNavbar from "@/components/TheNavbar.vue";
 import { provide } from "vue";
 import { useStore } from "@/store";
+import { useRouter } from "vue-router";
 
 const store = useStore();
+const router = useRouter();
 
 const getToken = () => {
   var requestOptions = {
@@ -21,19 +23,20 @@ const getToken = () => {
   };
   fetch("/.netlify/functions/getToken", requestOptions)
     .then((response) => response.text())
-    .then((result) => {
-      const res = JSON.parse(result);
+    .then((response) => {
+      const res = JSON.parse(response);
       store.token = res.access_token;
-      store.tokenExp = res[".expires"];
+      store.tokenexpires = res[".expires"];
     })
     .catch((error) => console.log("error", error));
 };
 
 const rcm = async (method) => {
-  let tokenexpired = new Date(store.tokenExp).getTime() < new Date().getTime();
-  if (tokenexpired) {
-    console.log("refreshing token");
-    getToken();
+  let expired = new Date(store.tokenexpires).getTime() < new Date().getTime();
+  if (expired) {
+    alert("Your session has expired. The page will now refresh.");
+    router.push({ name: "Home" });
+    return;
   }
   var requestOptions = {
     headers: {
@@ -45,9 +48,8 @@ const rcm = async (method) => {
   };
   return await fetch("https://api.rentalcarmanager.com/v32/api", requestOptions)
     .then((response) => response.text())
-    .then((result) => {
-      let response = JSON.parse(result);
-      return response;
+    .then((response) => {
+      return JSON.parse(response);
     });
 };
 

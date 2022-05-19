@@ -133,10 +133,11 @@ function addExtraDriver(id) {
   v.value.$touch();
 
   if (v.value.$errors.length) {
+    alert("Please fill all required fields.");
     savingChanges.value = false;
     return;
   }
-  
+
   rcm(params)
     .then((res) => {
       emit("update");

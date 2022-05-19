@@ -107,12 +107,11 @@ function findBooking(resno, lastname) {
         store.resref = resref;
         router.push({ name: "Checkin" });
       } else if (res.status == "ERR") {
-        throw res.error;
+        this.error = res.error;
       }
     })
     .catch((err) => {
       this.loading = false;
-      this.error = err;
       console.log("find booking (error): " + err);
     });
 }

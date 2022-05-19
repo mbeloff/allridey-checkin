@@ -1,6 +1,6 @@
 <template>
   <div class="relative z-10 h-20 w-full bg-gray-800 shadow-lg print:hidden">
-    <div class="container mx-auto flex h-full justify-between px-2">
+    <div class="max-w-screen-lg mx-auto flex h-full justify-between px-2">
       <div class="left flex w-full content-center items-center gap-x-4">
         <a href="/" class="left flex -ml-2">
           <img

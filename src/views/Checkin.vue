@@ -3,8 +3,10 @@
     class="relative grid h-full content-start gap-5 bg-gray-700/80 py-10 px-2"
   >
     <loading-overlay v-if="loading"></loading-overlay>
-    <the-summary v-if="gotBooking" :bookinginfo="bookinginfo"></the-summary>
-    <checkin-steps @update="getBooking()" v-if="gotBooking"></checkin-steps>
+    <div class="mx-auto w-full max-w-screen-lg">
+      <the-summary v-if="gotBooking" :bookinginfo="bookinginfo"></the-summary>
+      <checkin-steps @update="getBooking()" v-if="gotBooking"></checkin-steps>
+    </div>
   </div>
 </template>
 

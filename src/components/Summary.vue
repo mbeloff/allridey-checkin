@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mx-auto mb-5 flex w-full max-w-screen-md flex-col justify-between rounded bg-gray-300 py-4 text-sm"
+    class="mx-auto mb-5 flex w-full flex-col justify-between rounded bg-gray-300 py-4 text-sm"
   >
     <p class="mb-5 font-bold">
       {{ bookinginfo.bookinginfo[0].reservationstatus }}:
