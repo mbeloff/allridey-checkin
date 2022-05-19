@@ -1,8 +1,8 @@
 <template>
   <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
     <loading-overlay v-if="savingChanges"></loading-overlay>
-    <p class="my-3 text-xl font-bold">Driver Details</p>
-    <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+    <p class="my-3 text-xl font-bold text-green-500">{{data.firstname + ' ' + data.lastname}}</p>
+    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 pt-3">
       <div class="group flex flex-grow flex-col">
         <label :for="'fName' + cid" class="my-label">First Name</label>
         <input
@@ -66,7 +66,7 @@
         <template #default="{ inputValue, inputEvents }">
           <label :for="'dob' + cid" class="my-label">Date of Birth</label>
           <div class="flex flex-row place-items-center">
-            <i class="fal fa-calendar fa-fw mr-2"></i>
+            <!-- <i class="fal fa-calendar fa-fw mr-2"></i> -->
             <input
               :id="'dob' + cid"
               class="my-input w-8"
@@ -78,7 +78,7 @@
       </date-picker>
 
       <div class="group flex flex-grow flex-col">
-        <label :for="'licenseno' + cid" class="my-label">License #</label>
+        <label :for="'licenseno' + cid" class="my-label">License Number</label>
         <input
           :id="'licenseno' + cid"
           v-model="data.licenseno"
@@ -87,8 +87,8 @@
           class="my-input"
         />
       </div>
-
-      <date-picker
+<div class="grid grid-cols-2 gap-2">
+   <date-picker
         v-model="licenseexpires"
         :min-date="new Date()"
         :update-on-input="false"
@@ -97,7 +97,7 @@
         <template #default="{ inputValue, inputEvents }">
           <label :for="'licexp' + cid" class="my-label">License Expiry</label>
           <div class="flex flex-row place-items-center">
-            <i class="form-i fal fa-calendar fa-fw mr-2"></i>
+            <!-- <i class="form-i fal fa-calendar fa-fw mr-2"></i> -->
             <input
               :id="'licexp' + cid"
               class="my-input w-8"
@@ -125,6 +125,8 @@
           </option>
         </select>
       </div>
+</div>
+     
 
       <div class="group flex flex-grow flex-col">
         <label :for="'address' + cid" class="my-label">Street Address</label>
@@ -146,7 +148,8 @@
           class="my-input"
         />
       </div>
-      <div class="group flex flex-col">
+      <div class="grid grid-cols-2 gap-2">
+        <div class="group flex flex-col">
         <label :for="'state' + cid" class="my-label">State</label>
         <input
           :id="'state' + cid"
@@ -168,6 +171,8 @@
           </option>
         </select>
       </div>
+      </div>
+      
       <div class="group flex flex-grow flex-col md:mb-0">
         <label :for="'postcode' + cid" class="my-label">Postcode</label>
         <input

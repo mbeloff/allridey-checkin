@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full flex-col gap-5">
+  <div class="flex w-full flex-col gap-2">
     <expand-section
       :toggle="tab == 'main'"
       :label="'Main Hirer'"
@@ -25,7 +25,8 @@
       :label="'Extra Drivers'"
       :actionRequired="hasMissing()"
     >
-      <template v-for="driver in extraDrivers" :key="driver.customerid">
+      <template v-for="(driver, i) in extraDrivers" :key="driver.customerid">
+        <div class="rounded px-2 py-1 bg-gray-700 text-gray-400">Extra Driver #{{ i + 1 }}</div>
         <modify-driver
           :is-extra="true"
           :customer="driver"

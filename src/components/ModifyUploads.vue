@@ -2,7 +2,7 @@
   <div
     class="relative grid w-full grid-cols-1 gap-1 rounded bg-white p-2 text-left md:grid-cols-3"
   >
-    <p class="col-span-full my-3 text-xl font-bold">Upload Documents</p>
+    <p class="col-span-full my-3 text-xl font-bold text-green-500">Upload Documents</p>
     <loading-overlay v-if="loading"></loading-overlay>
     <div
       v-for="doc in doclist"

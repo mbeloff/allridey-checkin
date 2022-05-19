@@ -1,13 +1,12 @@
 <template>
   <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
     <loading-overlay v-if="savingChanges"></loading-overlay>
-    <p class="my-3 text-xl font-bold">Driver Details</p>
     <p class="my-3 text-sm text-gray-500">
       You may add up to 4 additional drivers to your booking. All drivers will
       need to sign the rental agreement and provide a copy of their driver's
       license.
     </p>
-    <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
       <div class="group flex flex-grow flex-col">
         <label :for="'fName' + cid" class="my-label">First Name</label>
         <input
@@ -34,7 +33,7 @@
           placeholder="required"
         />
       </div>
-      <div class="group relative flex flex-grow flex-col">
+      <div class="group relative flex flex-grow flex-col mb-2">
         <label :for="'email' + cid" class="my-label">Email</label>
         <input
           :id="'email' + cid"
@@ -145,7 +144,8 @@ function addExtraDriver(id) {
         (data.value.lastname = ""),
         (data.value.email = ""),
         (data.value.mobile = "");
-      v.value.$reset;
+      v.value.$reset();
+      alert('Extra driver successfully added.');
       savingChanges.value = false;
     })
     .catch((err) => console.log(err));
