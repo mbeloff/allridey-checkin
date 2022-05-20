@@ -5,7 +5,7 @@
         <loading-overlay v-if="loading"></loading-overlay>
         <VueSignaturePad
           class="aspect-[4/1] max-w-[400px] rounded border border-orange-500"
-          :ref="'pad'"
+          ref="pad"
           :options="{ onBegin }"
           :scaleToDevicePixelRatio="true"
         />
@@ -83,22 +83,24 @@ const sigid = computed(() => {
     props.signature.signaturetemplateid;
   return str;
 });
-// watch(showSig, () => {
-//   async () => {
-//     await nextTick();
-//     pad.value.resizeCanvas();
-//   };
-// });
-// const pad = ref();
+watch(showSig, () => {
+  async () => {
+    await nextTick();
+    pad.value.resizeCanvas();
+  };
+});
+const pad = ref();
 
 // const onBegin = () => {
 //   console.log("begin-----", pad.value);
 //   pad.value.resizeCanvas();
 //   started.value = true;
 // };
-function clear() {
-  pad.value.clearSignature();
-}
+
+// function clear() {
+//   pad.value.clearSignature();
+// }
+
 async function save() {
   let isExtraDriver =
     store.bookinginfo.customerinfo[0].customerid != props.signature.customerid;
@@ -164,19 +166,17 @@ onUpdated(() => {
 
 <script>
 export default {
-  computed: {
-    pad() {
-      return this.$refs["pad"];
-    },
-    showSig() {
-      return !this.signature.issigned && !this.saved;
-    },
+  mounted() {
+    console.log("mounted----", this, this.pad);
   },
   methods: {
     onBegin() {
       console.log("---started---");
       this.pad.resizeCanvas();
       this.started = true;
+    },
+    clear() {
+      this.pad.clearSignature();
     },
   },
 };
