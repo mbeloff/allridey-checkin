@@ -92,8 +92,9 @@ const sigid = computed(() => {
 const pad = ref();
 
 const onBegin = () => {
+  let _pad = pad;
   console.log("begin-----", pad.value);
-  pad.value.resizeCanvas();
+  _pad.value.resizeCanvas();
   started.value = true;
 };
 function clear() {
