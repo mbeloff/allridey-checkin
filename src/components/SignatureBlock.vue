@@ -89,13 +89,13 @@ const sigid = computed(() => {
 //     pad.value.resizeCanvas();
 //   };
 // });
-const pad = ref();
+// const pad = ref();
 
-const onBegin = () => {
-  console.log("begin-----", pad.value.signaturePad);
-  pad.value.resizeCanvas();
-  started.value = true;
-};
+// const onBegin = () => {
+//   console.log("begin-----", pad.value);
+//   pad.value.resizeCanvas();
+//   started.value = true;
+// };
 function clear() {
   pad.value.clearSignature();
 }
@@ -163,5 +163,21 @@ onUpdated(() => {
 </script>
 
 <script>
-export default {};
+export default {
+  computed: {
+    pad() {
+      return this.$refs["pad"];
+    },
+    showSig() {
+      return !this.signature.issigned && !this.saved;
+    },
+  },
+  methods: {
+    onBegin() {
+      console.log("---started---");
+      this.pad.resizeCanvas();
+      this.started = true;
+    },
+  },
+};
 </script>
