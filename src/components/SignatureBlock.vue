@@ -89,7 +89,7 @@ watch(showSig, () => {
     pad.value.resizeCanvas();
   };
 });
-const pad = ref();
+// const pad = ref();
 
 // const onBegin = () => {
 //   console.log("begin-----", pad.value);
@@ -168,6 +168,11 @@ onUpdated(() => {
 export default {
   mounted() {
     console.log("mounted----", this, this.pad);
+  },
+  computed: {
+    pad() {
+      return this.$refs["pad"];
+    },
   },
   methods: {
     onBegin() {
