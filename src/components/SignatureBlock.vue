@@ -89,13 +89,13 @@ const sigid = computed(() => {
 //     pad.value.resizeCanvas();
 //   };
 // });
-const pad = ref(null);
+const pad = ref();
 
-function onBegin() {
+const onBegin = () => {
   console.log("begin-----", pad.value);
   pad.value.resizeCanvas();
   started.value = true;
-}
+};
 function clear() {
   pad.value.clearSignature();
 }
