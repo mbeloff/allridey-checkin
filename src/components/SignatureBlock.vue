@@ -5,9 +5,9 @@
         <loading-overlay v-if="loading"></loading-overlay>
         <VueSignaturePad
           class="aspect-[4/1] max-w-[400px] rounded border border-orange-500"
-          ref="pad"
+          :ref="sigid"
           :options="{ onBegin }"
-          :scaleToDevicePixelRatio="true"
+          :scaleToDevicePixelRatio="false"
         />
         <div
           class="absolute bottom-0 flex w-max items-center gap-2 rounded-bl rounded-tr border border-orange-500 bg-white px-1 text-xs text-orange-500"
@@ -49,15 +49,7 @@
 
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-import {
-  inject,
-  onMounted,
-  onUpdated,
-  ref,
-  computed,
-  watch,
-  nextTick,
-} from "vue";
+import { inject, onMounted, onUpdated, ref, computed } from "vue";
 import { useStore } from "@/store";
 
 const store = useStore();
@@ -83,72 +75,6 @@ const sigid = computed(() => {
     props.signature.signaturetemplateid;
   return str;
 });
-watch(showSig, () => {
-  async () => {
-    await nextTick();
-    pad.value.resizeCanvas();
-  };
-});
-// const pad = ref();
-
-// const onBegin = () => {
-//   console.log("begin-----", pad.value);
-//   pad.value.resizeCanvas();
-//   started.value = true;
-// };
-
-// function clear() {
-//   pad.value.clearSignature();
-// }
-
-async function save() {
-  let isExtraDriver =
-    store.bookinginfo.customerinfo[0].customerid != props.signature.customerid;
-  const { isEmpty, data } = pad.value.saveSignature();
-  if (isEmpty) {
-    alert('No signature to save. Please sign before clicking "Submit".');
-    return;
-  }
-  let resized = await resizedataURL(data, 200, 50);
-  let split = resized.split(",");
-  let base64 = split[1];
-  let params = {
-    method: "savesignature",
-    reservationref: store.resref,
-    signaturetemplateid: props.signature.signaturetemplateid,
-    signaturepng: base64,
-    extradriverid: isExtraDriver ? props.signature.customerid : "",
-  };
-  loading.value = true;
-  rcm(params).then((res) => {
-    if (res.status == "ERR") {
-      alert("Error: " + res.error);
-      clear();
-    }
-    if (res.results.savesignature == true) {
-      emit("updateSignature");
-      saved.value = true;
-    }
-    loading.value = false;
-  });
-}
-
-function resizedataURL(datas, wantedWidth, wantedHeight) {
-  return new Promise(async function (resolve, reject) {
-    var img = document.createElement("img");
-    img.onload = function () {
-      var canvas = document.createElement("canvas");
-      var ctx = canvas.getContext("2d");
-      canvas.width = wantedWidth;
-      canvas.height = wantedHeight;
-      ctx.drawImage(this, 0, 0, wantedWidth, wantedHeight);
-      var dataURI = canvas.toDataURL();
-
-      resolve(dataURI);
-    };
-    img.src = datas;
-  });
-}
 
 function setPng() {
   if (props.signature.issigned && props.signature.pngsig) {
@@ -166,12 +92,19 @@ onUpdated(() => {
 
 <script>
 export default {
-  mounted() {
-    console.log("mounted----", this, this.pad);
+  watch: {
+    showSig: function (value) {
+      this.$nextTick(function () {
+        this.pad.resizeCanvas();
+      });
+    },
   },
   computed: {
     pad() {
-      return this.$refs["pad"];
+      return this.$refs[this.sigid];
+    },
+    showSig() {
+      return !this.props.signature.issigned && !this.saved;
     },
   },
   methods: {
@@ -182,6 +115,52 @@ export default {
     },
     clear() {
       this.pad.clearSignature();
+    },
+    async save() {
+      let isExtraDriver =
+        this.store.bookinginfo.customerinfo[0].customerid !=
+        this.props.signature.customerid;
+      const { isEmpty, data } = this.pad.saveSignature();
+      console.log(isEmpty);
+      console.log(data);
+      let resized = await this.resizedataURL(data, 200, 50);
+
+      let split = resized.split(",");
+      let base64 = split[1];
+      console.log(resized);
+      let params = {
+        method: "savesignature",
+        reservationref: this.store.resref,
+        signaturetemplateid: this.props.signature.signaturetemplateid,
+        signaturepng: base64,
+        extradriverid: isExtraDriver ? this.props.signature.customerid : "",
+      };
+      if (!isEmpty) {
+        this.rcm(params).then((res) => {
+          console.log(res);
+          if (res.results.savesignature == true) {
+            console.log("signature saved successfully");
+            this.emit("updateSignature");
+            this.saved = true;
+          }
+        });
+      }
+    },
+    resizedataURL(datas, wantedWidth, wantedHeight) {
+      return new Promise(async function (resolve, reject) {
+        var img = document.createElement("img");
+        img.onload = function () {
+          var canvas = document.createElement("canvas");
+          var ctx = canvas.getContext("2d");
+          canvas.width = wantedWidth;
+          canvas.height = wantedHeight;
+          ctx.drawImage(this, 0, 0, wantedWidth, wantedHeight);
+          var dataURI = canvas.toDataURL();
+
+          resolve(dataURI);
+        };
+        img.src = datas;
+      });
     },
   },
 };
