@@ -7,7 +7,7 @@
           class="aspect-[4/1] max-w-[400px] rounded border border-orange-500"
           :ref="'pad'"
           :options="{ onBegin }"
-          :scaleToDevicePixelRatio="false"
+          :scaleToDevicePixelRatio="true"
         />
         <div
           class="absolute bottom-0 flex w-max items-center gap-2 rounded-bl rounded-tr border border-orange-500 bg-white px-1 text-xs text-orange-500"
@@ -83,15 +83,16 @@ const sigid = computed(() => {
     props.signature.signaturetemplateid;
   return str;
 });
-watch(showSig, () => {
-  async () => {
-    await nextTick();
-    pad.value.resizeCanvas();
-  };
-});
+// watch(showSig, () => {
+//   async () => {
+//     await nextTick();
+//     pad.value.resizeCanvas();
+//   };
+// });
 const pad = ref(null);
 
 function onBegin() {
+  console.log("begin-----", pad.value);
   pad.value.resizeCanvas();
   started.value = true;
 }
