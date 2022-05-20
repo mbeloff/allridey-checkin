@@ -92,9 +92,8 @@ const sigid = computed(() => {
 const pad = ref();
 
 const onBegin = () => {
-  let _pad = pad;
-  console.log("begin-----", pad.value);
-  _pad.value.resizeCanvas();
+  console.log("begin-----", pad.value.signaturePad);
+  pad.value.resizeCanvas();
   started.value = true;
 };
 function clear() {
