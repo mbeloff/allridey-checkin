@@ -50,25 +50,14 @@
 </template>
 
 <script setup>
-import { inject, computed } from "vue";
+import { inject } from "vue";
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-import { useStore } from "@/store";
 const rcm = inject("rcm");
-const store = useStore();
-const agreement = computed(() => store.bookinginfo.bookinginfo[0].agreementurl);
-const isExtraDriver = computed(() => {
-  return (
-    store.bookinginfo.customerinfo[0].customerid != props.signature.customerid
-  );
-});
-const props = defineProps({
-  signature: Object,
-  fullname: String,
-  tabopen: Boolean,
-});
 </script>
 
 <script>
+import { mapState } from "pinia";
+import { useStore } from "@/store";
 export default {
   name: "SignatureBlock",
   emits: ["updateSignature"],
@@ -79,6 +68,9 @@ export default {
     },
     fullname: {
       type: String,
+    },
+    tabopen: {
+      type: Boolean,
     },
   },
   data() {
@@ -96,6 +88,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(useStore, ["bookinginfo", "resref"]),
     sigid() {
       let str =
         "c" +
@@ -104,11 +97,19 @@ export default {
         this.signature.signaturetemplateid;
       return str;
     },
+    isExtraDriver() {
+      return (
+        this.bookinginfo.customerinfo[0].customerid != this.signature.customerid
+      );
+    },
     pad() {
       return this.$refs[this.sigid];
     },
     showSig() {
       return !this.signature.issigned && !this.saved;
+    },
+    agreement() {
+      return this.bookinginfo.bookinginfo[0].agreementurl;
     },
   },
   mounted() {
@@ -119,7 +120,7 @@ export default {
   },
   methods: {
     test() {
-      console.log(this.store);
+      console.log(this.resref);
     },
     setPng() {
       if (this.signature.issigned && this.signature.pngsig) {
@@ -146,7 +147,7 @@ export default {
       let base64 = split[1];
       let params = {
         method: "savesignature",
-        reservationref: this.store.resref,
+        reservationref: this.resref,
         signaturetemplateid: this.signature.signaturetemplateid,
         signaturepng: base64,
         extradriverid: this.isExtraDriver ? this.signature.customerid : "",
