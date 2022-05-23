@@ -45,6 +45,7 @@
       </p>
       <p v-else v-html="signature.signaturetemplatetext"></p>
     </div>
+    <button class="btn-red text-xl" @click="test()">test</button>
   </div>
 </template>
 
@@ -55,6 +56,16 @@ import { useStore } from "@/store";
 const rcm = inject("rcm");
 const store = useStore();
 const agreement = computed(() => store.bookinginfo.bookinginfo[0].agreementurl);
+const isExtraDriver = computed(() => {
+  return (
+    store.bookinginfo.customerinfo[0].customerid != props.signature.customerid
+  );
+});
+const props = defineProps({
+  signature: Object,
+  fullname: String,
+  tabopen: Boolean,
+});
 </script>
 
 <script>
@@ -107,6 +118,9 @@ export default {
     this.setPng();
   },
   methods: {
+    test() {
+      console.log(this.store);
+    },
     setPng() {
       if (this.signature.issigned && this.signature.pngsig) {
         document.getElementById(this.sigid).style.backgroundImage =
@@ -122,9 +136,6 @@ export default {
       this.pad.clearSignature();
     },
     async save() {
-      let isExtraDriver =
-        this.store.bookinginfo.customerinfo[0].customerid !=
-        this.signature.customerid;
       const { isEmpty, data } = this.pad.saveSignature();
       if (isEmpty) {
         alert('No signature to save. Please sign before clicking "Submit".');
@@ -138,7 +149,7 @@ export default {
         reservationref: this.store.resref,
         signaturetemplateid: this.signature.signaturetemplateid,
         signaturepng: base64,
-        extradriverid: isExtraDriver ? this.signature.customerid : "",
+        extradriverid: this.isExtraDriver ? this.signature.customerid : "",
       };
       this.loading = true;
       if (!isEmpty) {
