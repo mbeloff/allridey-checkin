@@ -49,11 +49,12 @@
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { inject, computed } from "vue";
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-import { useStore } from "@/store.js";
+import { useStore } from "@/store";
 const rcm = inject("rcm");
 const store = useStore();
+const agreement = computed(() => store.bookinginfo.bookinginfo[0].agreementurl);
 </script>
 
 <script>
@@ -91,9 +92,6 @@ export default {
         "s" +
         this.signature.signaturetemplateid;
       return str;
-    },
-    agreement() {
-      return this.store.bookinginfo.bookinginfo[0].agreementurl;
     },
     pad() {
       return this.$refs[this.sigid];
@@ -135,7 +133,6 @@ export default {
       let resized = await this.resizedataURL(data, 200, 50);
       let split = resized.split(",");
       let base64 = split[1];
-      console.log(resized);
       let params = {
         method: "savesignature",
         reservationref: this.store.resref,
