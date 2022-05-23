@@ -37,7 +37,8 @@
 
     <div class="text-xs text-gray-600">
       <p v-if="signature.signaturetemplateid == 0">
-        I, {{ fullname }}, hereby agree to the terms and conditions of
+        I, <span class="font-bold">{{ fullname }}</span
+        >, hereby agree to the terms and conditions of
         <a class="text-blue-500" target="_blank" :href="agreement" download
           >the Vehicle Rental Agreement</a
         >
@@ -49,16 +50,19 @@
   </div>
 </template>
 
-<script setup>
-import { inject } from "vue";
-import LoadingOverlay from "@/components/LoadingOverlay.vue";
-const rcm = inject("rcm");
-</script>
-
 <script>
 import { mapState } from "pinia";
 import { useStore } from "@/store";
+import { inject } from "vue";
+import LoadingOverlay from "@/components/LoadingOverlay.vue";
 export default {
+  setup() {
+    const rcm = inject("rcm");
+    return { rcm };
+  },
+  components: {
+    LoadingOverlay,
+  },
   name: "SignatureBlock",
   emits: ["updateSignature"],
   props: {
