@@ -4,7 +4,7 @@ import NotFound from "./views/NotFound.vue";
 
 /** @type {import('vue-router').RouterOptions['routes']} */
 export const routes = [
-  { path: "/", name: "Home", component: Main, meta: { title: "Home" } },
+  { path: "/", name: "Sign In", component: Main, meta: { title: "Sign In" } },
   {
     path: "/checkin",
     name: "Checkin",

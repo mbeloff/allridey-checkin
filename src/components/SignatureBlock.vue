@@ -46,7 +46,6 @@
       </p>
       <p v-else v-html="signature.signaturetemplatetext"></p>
     </div>
-    <button class="btn-red text-xl" @click="test()">test</button>
   </div>
 </template>
 
@@ -123,9 +122,6 @@ export default {
     this.setPng();
   },
   methods: {
-    test() {
-      console.log(this.resref);
-    },
     setPng() {
       if (this.signature.issigned && this.signature.pngsig) {
         document.getElementById(this.sigid).style.backgroundImage =
@@ -181,7 +177,6 @@ export default {
           canvas.height = wantedHeight;
           ctx.drawImage(this, 0, 0, wantedWidth, wantedHeight);
           var dataURI = canvas.toDataURL();
-
           resolve(dataURI);
         };
         img.src = datas;

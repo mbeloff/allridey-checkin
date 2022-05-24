@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative grid h-full content-start gap-5 bg-gray-700/80 py-10 px-2"
+    class="relative grid h-full content-start gap-5 bg-gray-700 py-10 px-2"
   >
     <loading-overlay v-if="loading"></loading-overlay>
     <div class="mx-auto w-full max-w-screen-lg">
@@ -40,11 +40,11 @@ function getCountries() {
 
 function checkStatus(trip) {
   if (trip.isquotation != trip.isvalidquotation) {
-    router.push({ name: "Home", query: { validquote: false } });
+    router.push({ name: "Sign In", query: { validquote: false } });
   }
   let s = trip.reservationstatus;
   if (s != "Reservation" && s != "Quotation" && s != "Reservation Request") {
-    router.push({ name: "Home", query: { validres: false } });
+    router.push({ name: "Sign In", query: { validres: false } });
   }
   store.mode = s == "Quotation" ? 1 : 2;
 }
@@ -67,13 +67,13 @@ function getBooking() {
       } else if (response.status == "ERR") {
         console.log(response.error);
         router.push({
-          name: "home",
+          name: "Sign In",
         });
       }
       if (response.Message) {
         console.log(response.Message);
         router.push({
-          name: "Home",
+          name: "Sign In",
         });
       }
       loading.value = false;
@@ -81,7 +81,7 @@ function getBooking() {
     .catch((err) => {
       console.log("could't get booking info: " + err);
       router.push({
-        name: "Home",
+        name: "Sign In",
       });
     });
 }

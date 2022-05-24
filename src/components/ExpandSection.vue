@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded bg-gray-800"
+    class="rounded bg-gray-800 shadow shadow-blue-200/20"
     :class="{
       'ring-2 ring-orange-500': actionRequired,
     }"

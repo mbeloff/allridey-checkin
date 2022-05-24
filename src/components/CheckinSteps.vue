@@ -12,8 +12,12 @@
         :is-primary="true"
         @update="emit('update')"
       ></modify-driver>
-      <modify-uploads :cid="customer.customerid"></modify-uploads>
+      <modify-uploads
+        v-if="store.mode == 2"
+        :cid="customer.customerid"
+      ></modify-uploads>
       <modify-signatures
+        v-if="store.mode == 2"
         :cid="customer.customerid"
         :tabopen="tab == 'main'"
       ></modify-signatures>
@@ -89,11 +93,6 @@ import { useStore } from "@/store";
 const emit = defineEmits(["update"]);
 
 const store = useStore();
-const showNewDriver = ref(false);
-const showCustomer = ref(false);
-const showExtraDrivers = ref(false);
-const showVault = ref(false);
-const showFees = ref(false);
 
 const tab = ref("");
 

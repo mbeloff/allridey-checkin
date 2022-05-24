@@ -1,8 +1,10 @@
 <template>
   <div
-    class="relative grid w-full grid-cols-1 gap-1 rounded bg-white p-2 text-left md:grid-cols-3"
+    class="relative grid w-full grid-cols-1 gap-x-2 gap-y-2 rounded bg-white p-2 text-left md:grid-cols-3"
   >
-    <p class="col-span-full my-3 text-xl font-bold text-green-500">Upload Documents</p>
+    <p class="col-span-full my-3 text-xl font-bold text-green-500">
+      Upload Documents
+    </p>
     <loading-overlay v-if="loading"></loading-overlay>
     <div
       v-for="doc in doclist"
@@ -19,7 +21,7 @@
           'border-green-500': doc.isuploaded,
           'border-orange-500': !doc.isuploaded,
         }"
-        class="group relative mx-auto flex h-full w-full max-w-full cursor-pointer flex-col rounded border bg-gray-200 hover:bg-gray-300"
+        class="group relative mx-auto flex h-full w-full cursor-pointer flex-col rounded border bg-gray-200 hover:bg-gray-300"
         @click="handleDoc(doc)"
       >
         <div class="flex items-center justify-between pr-2">
@@ -28,9 +30,9 @@
           </p>
           <div
             v-show="doc.isuploaded == 0"
-            class="absolute top-1 right-1 rounded bg-white px-2 text-sm text-green-500 group-hover:bg-green-600 group-hover:text-white"
+            class="absolute top-1 right-1 rounded bg-white px-2 text-sm"
           >
-            upload
+            upload <i class="fas fa-camera"></i>
           </div>
           <div
             v-show="doc.isuploaded"
@@ -128,7 +130,7 @@ function handleDoc(doc) {
 }
 
 function uploadFile($event, doc) {
-  loading.value = true
+  loading.value = true;
   console.log("uploading");
   const file = $event.target.files[0];
   const formData = new FormData();

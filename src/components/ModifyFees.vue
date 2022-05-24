@@ -3,50 +3,82 @@
     <loading-overlay v-if="loading"></loading-overlay>
     <p class="my-3 text-sm text-gray-500" v-if="store.mode == 2">
       Add extra options on your booking. Please note you may not be able to
-      downgrade or remove options you have previously selected. Please contact
-      us if you wish to change these options.
+      downgrade or remove certain options you have previously selected. Please
+      contact us if you wish to change these options.
     </p>
     <div v-if="availablefees">
-      <div v-if="availablefees.optionalfees.length">
+      <div class="flex flex-col gap-1" v-if="availablefees.optionalfees.length">
         <p class="my-3 text-xl font-bold">Optional Extras</p>
-        <div v-for="item in availablefees.optionalfees" :key="item.id">
-          <label :for="'option' + item.id" class="flex justify-between">
-            <div>
+        <div
+          v-for="item in availablefees.optionalfees"
+          :key="item.id"
+          class="rounded px-2 py-2"
+          :class="{
+            'bg-gray-200': selectedoptions.find((el) => el.id == item.id),
+          }"
+        >
+          <label :for="'option' + item.id">
+            <div class="flex justify-between">
               <input
+                hidden
                 :disabled="isDisabled(item.id)"
-                class="mr-2 accent-green-600"
                 type="checkbox"
                 :name="'option' + item.id"
                 :id="'option' + item.id"
                 v-model="selectedoptions"
                 :value="{ id: item.id, qty: item.qty || 1 }"
-              />{{ item.name }}
+              />
+              <div>{{ item.name }}</div>
+              <div class="flex items-center min-w-[70px]">
+                <i class="fal fa-plus-circle mr-2"></i
+                >{{ currencysymbol + item.totalfeeamount }}
+              </div>
             </div>
-            <span>{{ currencysymbol + item.totalfeeamount }}</span>
+            <div
+              v-html="item.feedescription1"
+              class="border-t border-gray-900/20 pt-2 text-sm text-gray-600"
+            ></div>
           </label>
         </div>
       </div>
       <div v-if="availablefees.insuranceoptions.length">
         <p class="my-3 text-xl font-bold">Damage Cover</p>
-        <div v-for="item in availablefees.insuranceoptions">
-          <label :for="'km' + item.id" class="flex justify-between">
-            <div>
+        <div
+          v-for="item in availablefees.insuranceoptions"
+          class="rounded px-2 py-2"
+          :class="{ 'bg-gray-200': selecteddamage == item.id }"
+        >
+          <label :for="'km' + item.id">
+            <div class="flex justify-between">
               <input
+                hidden
                 type="radio"
                 :id="'km' + item.id"
                 :name="'km' + item.id"
                 v-model="selecteddamage"
                 :value="item.id"
-                class="mr-2 accent-green-600"
-              />{{ item.name }}
+              />
+              <div>{{ item.name }}</div>
+              <div class="flex items-center min-w-[70px]">
+                <i class="fal fa-plus-circle mr-2"></i
+                >{{ currencysymbol + item.totalinsuranceamount }}
+              </div>
             </div>
-            {{ currencysymbol + item.totalinsuranceamount }}</label
-          >
+            <div
+              v-html="item.feedescription1"
+              class="border-t border-gray-900/20 pt-2 text-sm text-gray-600"
+            ></div>
+          </label>
         </div>
       </div>
       <div v-if="availablefees.kmcharges.length">
         <p class="my-3 text-xl font-bold">Daily Kilometre Options</p>
-        <div v-for="item in availablefees.kmcharges" :key="item.id">
+        <div
+          v-for="item in availablefees.kmcharges"
+          :key="item.id"
+          class="rounded px-2 py-2"
+          :class="{ 'bg-gray-200': selectedkm == item.id }"
+        >
           <label
             :for="'km' + item.id"
             class="flex justify-between"
@@ -59,6 +91,7 @@
           >
             <div>
               <input
+                hidden
                 :disabled="
                   isDowngrade(
                     item.totalamount,
@@ -70,12 +103,15 @@
                 :name="'km' + item.id"
                 v-model="selectedkm"
                 :value="item.id"
-                class="mr-2 accent-green-600"
-              />{{ item.description }}
+              />
+              <div>{{ item.description }}</div>
             </div>
-            <span>
-              {{ currencysymbol + item.totalamount }}
-            </span>
+            <div>
+              <div class="flex items-center min-w-[70px]">
+                <i class="fal fa-plus-circle mr-2"></i
+                >{{ currencysymbol + item.totalamount }}
+              </div>
+            </div>
           </label>
         </div>
       </div>
@@ -154,17 +190,16 @@ function editbooking() {
     customer: store.bookinginfo.customerinfo[0],
     optionalfees: selectedoptions.value,
   };
-  if (
-    params.bookingtype == 2 &&
+  if (params.bookingtype == 2) {
     confirm(
       "Are you sure you want to change your extras? Some changes may be undoable"
-    )
-  ) {
-    rcm(params).then((data) => {
-      loading.value = false;
-      emit("update");
-    });
+    );
   }
+  rcm(params).then((data) => {
+    loading.value = false;
+    emit("update");
+  });
+
   loading.value = false;
 }
 
