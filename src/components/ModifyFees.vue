@@ -6,7 +6,7 @@
       downgrade or remove certain options you have previously selected. Please
       contact us if you wish to change these options.
     </p>
-    <div v-if="availablefees">
+    <div v-if="availablefees" class="text-sm">
       <div class="flex flex-col gap-1" v-if="availablefees.optionalfees.length">
         <p class="my-3 text-xl font-bold">Optional Extras</p>
         <div
@@ -43,7 +43,7 @@
             </div>
             <div
               v-html="item.feedescription1"
-              class="border-t border-gray-900/20 pt-2 text-sm text-gray-600"
+              class="border-t border-gray-900/20 pt-2 text-gray-600"
             ></div>
           </label>
         </div>
@@ -76,7 +76,7 @@
             </div>
             <div
               v-html="item.feedescription1"
-              class="border-t border-gray-900/20 pt-2 text-sm text-gray-600"
+              class="border-t border-gray-900/20 pt-2 text-gray-600"
             ></div>
           </label>
         </div>
