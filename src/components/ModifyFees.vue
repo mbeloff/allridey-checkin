@@ -29,7 +29,14 @@
                 :value="{ id: item.id, qty: item.qty || 1 }"
               />
               <div>{{ item.name }}</div>
-              <div class="flex items-center min-w-[70px]">
+              <div
+                class="flex min-w-[70px] items-center"
+                :class="{
+                  'text-gray-400': !selectedoptions.find(
+                    (el) => el.id == item.id
+                  ),
+                }"
+              >
                 <i class="fal fa-plus-circle mr-2"></i
                 >{{ currencysymbol + item.totalfeeamount }}
               </div>
@@ -59,7 +66,10 @@
                 :value="item.id"
               />
               <div>{{ item.name }}</div>
-              <div class="flex items-center min-w-[70px]">
+              <div
+                class="flex min-w-[70px] items-center"
+                :class="{ 'text-gray-400': selecteddamage != item.id }"
+              >
                 <i class="fal fa-plus-circle mr-2"></i
                 >{{ currencysymbol + item.totalinsuranceamount }}
               </div>
@@ -107,7 +117,10 @@
               <div>{{ item.description }}</div>
             </div>
             <div>
-              <div class="flex items-center min-w-[70px]">
+              <div
+                class="flex min-w-[70px] items-center"
+                :class="{ 'text-gray-400': selectedkm != item.id }"
+              >
                 <i class="fal fa-plus-circle mr-2"></i
                 >{{ currencysymbol + item.totalamount }}
               </div>
