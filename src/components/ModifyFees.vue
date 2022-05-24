@@ -12,9 +12,11 @@
         <div
           v-for="item in availablefees.optionalfees"
           :key="item.id"
-          class="rounded px-2 py-2"
+          class="rounded bg-gray-200 px-2 py-2"
           :class="{
-            'bg-gray-200': selectedoptions.find((el) => el.id == item.id),
+            'bg-transparent opacity-80': !selectedoptions.find(
+              (el) => el.id == item.id
+            ),
           }"
         >
           <label :for="'option' + item.id">
@@ -30,7 +32,7 @@
               />
               <div>{{ item.name }}</div>
               <div
-                class="flex min-w-[70px] items-center"
+                class="flex min-w-[70px] items-center font-bold"
                 :class="{
                   'text-gray-400': !selectedoptions.find(
                     (el) => el.id == item.id
@@ -43,7 +45,7 @@
             </div>
             <div
               v-html="item.feedescription1"
-              class="border-t border-gray-900/20 pt-2 text-gray-600"
+              class="border-t border-gray-900/20 pt-2"
             ></div>
           </label>
         </div>
@@ -52,8 +54,8 @@
         <p class="my-3 text-xl font-bold">Damage Cover</p>
         <div
           v-for="item in availablefees.insuranceoptions"
-          class="rounded px-2 py-2"
-          :class="{ 'bg-gray-200': selecteddamage == item.id }"
+          class="rounded bg-gray-200 px-2 py-2"
+          :class="{ 'bg-transparent opacity-80': selecteddamage != item.id }"
         >
           <label :for="'km' + item.id">
             <div class="flex justify-between">
@@ -67,7 +69,7 @@
               />
               <div>{{ item.name }}</div>
               <div
-                class="flex min-w-[70px] items-center"
+                class="flex min-w-[70px] items-center font-bold"
                 :class="{ 'text-gray-400': selecteddamage != item.id }"
               >
                 <i class="fal fa-plus-circle mr-2"></i
@@ -86,18 +88,18 @@
         <div
           v-for="item in availablefees.kmcharges"
           :key="item.id"
-          class="rounded px-2 py-2"
-          :class="{ 'bg-gray-200': selectedkm == item.id }"
+          class="rounded bg-gray-200 px-2 py-2"
+          :class="{ 'bg-transparent opacity-80': selectedkm != item.id }"
         >
           <label
-            :for="'km' + item.id"
-            class="flex justify-between"
-            :class="{
-              'text-gray-400': isDowngrade(
+            v-if="
+              !isDowngrade(
                 item.totalamount,
                 store.bookinginfo.bookinginfo[0].kmcharges_totalfordailyrate
-              ),
-            }"
+              )
+            "
+            :for="'km' + item.id"
+            class="flex justify-between"
           >
             <div>
               <input
@@ -118,7 +120,7 @@
             </div>
             <div>
               <div
-                class="flex min-w-[70px] items-center"
+                class="flex min-w-[70px] items-center font-bold"
                 :class="{ 'text-gray-400': selectedkm != item.id }"
               >
                 <i class="fal fa-plus-circle mr-2"></i
