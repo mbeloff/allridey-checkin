@@ -56,7 +56,7 @@ const router = useRouter();
 const route = useRoute();
 const store = useStore();
 
-const resno = ref("88");
+const resno = ref("1630");
 const lastname = ref("TEST");
 const missinginput = ref(false);
 const error = ref("");
@@ -105,13 +105,14 @@ function findBooking(resno, lastname) {
       if (res.status == "OK") {
         let resref = res.results[0].reservationref;
         store.resref = resref;
-        router.push({ name: "Checkin" });
+        router.push({ name: "Manage" });
       } else if (res.status == "ERR") {
-        this.error = res.error;
+        error.value = res.error;
       }
+      loading.value = false
     })
     .catch((err) => {
-      this.loading = false;
+      loading.value  = false;
       console.log("find booking (error): " + err);
     });
 }
