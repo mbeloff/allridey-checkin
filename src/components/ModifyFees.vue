@@ -99,9 +99,8 @@
               )
             "
             :for="'km' + item.id"
-            class="flex justify-between"
           >
-            <div>
+            <div class="flex justify-between">
               <input
                 hidden
                 :disabled="
@@ -117,16 +116,22 @@
                 :value="item.id"
               />
               <div>{{ item.description }}</div>
-            </div>
-            <div>
-              <div
-                class="flex min-w-[70px] items-center font-bold"
-                :class="{ 'text-gray-400': selectedkm != item.id }"
-              >
-                <i class="fal fa-plus-circle mr-2"></i
-                >{{ currencysymbol + item.totalamount }}
+              <div>
+                <div
+                  class="flex min-w-[70px] items-center font-bold"
+                  :class="{ 'text-gray-400': selectedkm != item.id }"
+                >
+                  <i class="fal fa-plus-circle mr-2"></i
+                  >{{ currencysymbol + item.totalamount }}
+                </div>
               </div>
             </div>
+
+            <div
+              v-if="item.notes"
+              v-html="item.notes"
+              class="border-t border-gray-900/20 pt-2 text-gray-600"
+            ></div>
           </label>
         </div>
       </div>
