@@ -42,11 +42,31 @@ function getVaultUrl() {
   });
 }
 
+function convertQuote(vaultdata) {
+  let params = {
+    method: "convertquote",
+    reservationref: store.resref,
+    extrakmsid: store.bookinginfo.bookinginfo[0].kmcharges_id,
+    insuranceid: store.bookinginfo.extrafees.find((el) => el.isinsurancefee)
+      .extrafeeid,
+    customer: { ...store.bookinginfo.customerinfo[0] },
+    vaultdata: vaultdata,
+  };
+  rcm(params).then((data) => {
+    emit("update");
+  });
+}
+
 function vaultEntry(data) {
+  let base64 = btoa(data);
+  if (store.mode == 1) {
+    convertQuote(base64);
+    return;
+  }
   let params = {
     method: "vaultentry",
     reservationref: store.resref,
-    data: btoa(data),
+    data: base64,
     payscenario: 2,
     emailoption: 0,
   };

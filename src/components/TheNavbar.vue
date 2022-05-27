@@ -11,7 +11,7 @@
         </a>
         <div class="hidden h-full w-full flex-grow items-center md:flex">
           <a href="/" class="font-light text-gray-300 hover:text-blue-400"
-            >Check In</a
+            >Find Booking</a
           >
 
           <a
@@ -44,7 +44,7 @@
         v-if="expand"
         class="top-100 absolute flex w-full flex-col gap-4 bg-gray-200 py-5 shadow-xl md:hidden"
       >
-        <a class="text-gray-700 hover:text-blue-500" href="/">Check in</a>
+        <a class="text-gray-700 hover:text-blue-500" href="/">Find Booking</a>
 
         <a
           href="https://www.allridey.com.au"

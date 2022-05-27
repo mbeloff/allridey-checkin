@@ -1,7 +1,11 @@
 <template>
   <div class="gap-y-5 rounded border bg-white p-2 text-left">
-    <p class="my-3 text-sm text-gray-500">
-      Safely store your credit card in our vault. Payment will only be taken
+    <p class="my-3 text-sm text-gray-500" v-if="store.mode == 2">
+      Safely store your credit card using. Payment will only be taken
+      once your vehicle has been confirmed.
+    </p>
+    <p class="my-3 text-sm text-gray-500" v-else>
+      To convert this quote into a booking request, please provide a payment method using our secure form below. Payment will only be taken
       once your vehicle has been confirmed.
     </p>
     <div class="relative py-5">
@@ -47,22 +51,25 @@ import { useStore } from "@/store";
 const store = useStore();
 const rcm = inject("rcm");
 
-const loading = ref(true);
+const loading = ref(false);
 const vaultlist = ref([]);
 const showVault = ref(false);
 
 const emit = defineEmits(["missing"]);
 
 watch(vaultlist, () => {
-  emit("missing", { vault: !vaultlist.value.length });
+  store.missing.vault = vaultlist.value.length == 0;
 });
 
 onBeforeMount(() => {
-  getVaultList();
+  if (store.mode == 2) {
+    getVaultList();
+  } else vaultlist.value = [];
 });
 
 function getVaultList() {
   loading.value = true;
+  showVault.value = false;
   const params = {
     method: "vaultlist",
     reservationref: store.resref,
@@ -70,6 +77,7 @@ function getVaultList() {
   rcm(params).then((res) => {
     loading.value = false;
     vaultlist.value = res.results;
+    vaultlist.value.splice(3, res.results.length);
   });
 }
 </script>
