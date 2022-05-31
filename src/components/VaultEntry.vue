@@ -53,8 +53,16 @@ function convertQuote(vaultdata) {
     vaultdata: vaultdata,
   };
   rcm(params).then((data) => {
-    if (data.status == "ERR") console.log(data.error);
-    emit("update");
+    if (data.status == "ERR")
+      alert(
+        "We were unable to convert this quote to a booking request.\nPlease try again and contact us if the problem persists."
+      );
+    if (data.status == "OK") {
+      alert(
+        "Thank you for requesting a reservation!\nWe will be in touch once your booking has been confirmed."
+      );
+      emit("update");
+    }
   });
 }
 
@@ -75,7 +83,7 @@ function vaultEntry(data) {
     if (res.results.paymentsaved == true) {
       emit("update");
     } else {
-      alert("something went wrong, please try again");
+      alert("We were unable to save you payment details.\nPlease try again and contact us if the problem persists.");
       getVaultUrl();
     }
   });
