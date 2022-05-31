@@ -63,8 +63,8 @@ const router = useRouter();
 const route = useRoute();
 const store = useStore();
 
-const resno = ref("1630");
-const lastname = ref("TEST");
+const resno = ref("");
+const lastname = ref("");
 const missinginput = ref(false);
 const error = ref("");
 const loading = ref(true);
