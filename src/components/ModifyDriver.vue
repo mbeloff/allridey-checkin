@@ -186,37 +186,38 @@
 
       <div class="mt-auto grid h-9 grid-cols-2 gap-3">
         <template v-if="isExtra">
-        <button
+        <my-button
 
           class="btn-red"
           @click="deleteExtraDriver(-data.customerid)"
         >
           Delete Driver <i class="fas fa-trash-can-xmark"></i>
-        </button>
-        <button
+        </my-button>
+        <my-button
 
           class="btn-green col-start-2"
           @click="addExtraDriver(data.customerid)"
         >
           Update Driver
           <i class="far fa-cloud-upload"></i>
-        </button>
+        </my-button>
         </template>
         
 
-        <button
+        <my-button
           v-if="isPrimary"
           class="btn-green col-start-2"
           @click="editBooking()"
         >
           Save Changes <i class="far fa-cloud-upload"></i>
-        </button>
+        </my-button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import MyButton from '@/components/base/MyButton.vue'
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import "v-calendar/dist/style.css";
 import { ref, computed, inject, watch, onMounted } from "vue";

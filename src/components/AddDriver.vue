@@ -33,7 +33,7 @@
           placeholder="required"
         />
       </div>
-      <div class="group relative flex flex-grow flex-col mb-2 sm:mb-0">
+      <div class="group relative mb-2 flex flex-grow flex-col sm:mb-0">
         <label :for="'email' + cid" class="my-label">Email</label>
         <input
           :id="'email' + cid"
@@ -64,18 +64,19 @@
       </div>
     </div>
     <div class="mt-5 grid place-items-center">
-      <button
-        class="btn-green py-2 px-4"
+      <my-button
+        class="btn-green"
         @click="addExtraDriver(data.customerid)"
       >
         Add a Driver
-        <i class="far fa-cloud-upload"></i>
-      </button>
+        <i class="far fa-cloud-upload"></i
+      ></my-button>
     </div>
   </div>
 </template>
 
 <script setup>
+import MyButton from "@/components/base/MyButton.vue";
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import "v-calendar/dist/style.css";
 import { ref, inject } from "vue";
@@ -145,7 +146,7 @@ function addExtraDriver(id) {
         (data.value.email = ""),
         (data.value.mobile = "");
       v.value.$reset();
-      alert('Extra driver successfully added.');
+      alert("Extra driver successfully added.");
       savingChanges.value = false;
     })
     .catch((err) => console.log(err));

@@ -1,12 +1,13 @@
 <template>
   <div class="gap-y-5 rounded border bg-white p-2 text-left">
     <p class="my-3 text-sm text-gray-500" v-if="store.mode == 2">
-      Safely store your credit card using. Payment will only be taken
-      once your vehicle has been confirmed.
+      Safely store your credit card using. Payment will only be taken once your
+      vehicle has been confirmed.
     </p>
     <p class="my-3 text-sm text-gray-500" v-else>
-      To convert this quote into a booking request, please provide a payment method using our secure form below. Payment will only be taken
-      once your vehicle has been confirmed.
+      To convert this quote into a booking request, please provide a payment
+      method using our secure form below. Payment will only be taken once your
+      vehicle has been confirmed.
     </p>
     <div class="relative py-5">
       <loading-overlay v-if="loading"></loading-overlay>
@@ -27,22 +28,22 @@
         <span>{{ card.carddate }}</span>
       </div>
     </div>
-    <div class="grid place-items-center">
-      <button class="btn-green py-2 px-4" @click="showVault = !showVault">
-        <div v-if="!showVault">
-          <i class="far fa-plus-circle"></i> Add a Card
-        </div>
-        <div v-else><i class="far fa-minus-circle"></i> Cancel</div>
-      </button>
-    </div>
-
     <div v-if="showVault">
-      <vault-entry @update="getVaultList()"></vault-entry>
+      <vault-entry @update="getVaultList(), emit('update')"></vault-entry>
+    </div>
+    <div class="my-5 text-center">
+      <my-button class="btn-green" @click="showVault = !showVault">
+        <span v-if="!showVault">
+          <i class="far fa-plus-circle"></i> Add a Card
+        </span>
+        <span v-else><i class="far fa-minus-circle"></i> Cancel</span>
+      </my-button>
     </div>
   </div>
 </template>
 
 <script setup>
+import MyButton from "@/components/base/MyButton.vue";
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import VaultEntry from "@/components/VaultEntry.vue";
 import { ref, onBeforeMount, inject, watch } from "vue";
@@ -55,7 +56,7 @@ const loading = ref(false);
 const vaultlist = ref([]);
 const showVault = ref(false);
 
-const emit = defineEmits(["missing"]);
+const emit = defineEmits(["missing", "update"]);
 
 watch(vaultlist, () => {
   store.missing.vault = vaultlist.value.length == 0;

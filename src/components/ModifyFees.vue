@@ -137,18 +137,18 @@
       </div>
     </div>
     <div class="mt-5 grid place-items-center">
-      <button
+      <my-button
         v-show="changes.length"
         class="btn-green py-2 px-4"
         @click="editbooking"
+        >Save Changes</my-button
       >
-        Save Changes
-      </button>
     </div>
   </div>
 </template>
 
 <script setup>
+import MyButton from "@/components/base/MyButton.vue";
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import { useStore } from "@/store";
 import { ref, inject, computed } from "vue";
@@ -211,16 +211,20 @@ function editbooking() {
     optionalfees: selectedoptions.value,
   };
   if (params.bookingtype == 2) {
-    confirm(
-      "Are you sure you want to change your extras? Some changes may be undoable"
-    );
+    if (
+      !confirm(
+        "Are you sure you want to change your extras? Some changes may be undoable"
+      )
+    ) {
+      loading.value = false;
+      return;
+    }
   }
   rcm(params).then((data) => {
+    console.log(data);
     loading.value = false;
     emit("update");
   });
-
-  loading.value = false;
 }
 
 const initialkm = computed(() => store.bookinginfo.bookinginfo[0].kmcharges_id);

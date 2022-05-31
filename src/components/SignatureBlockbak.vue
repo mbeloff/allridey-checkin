@@ -17,10 +17,10 @@
         </div>
       </div>
       <div v-if="started && !saved" class="mt-2 grid grid-cols-2 gap-2">
-        <button class="btn-green" @click="save">Submit</button>
-        <button class="btn-red" @click="clear">Clear</button>
+        <my-button class="btn-green" @click="save">Submit</my-button>
+        <my-button class="btn-red" @click="clear">Clear</my-button>
       </div>
-      
+
       <div class="relative" v-if="props.signature.pngsig && sigid">
         <div
           :id="sigid"
@@ -45,14 +45,13 @@
       </p>
       <p v-else v-html="props.signature.signaturetemplatetext"></p>
     </div>
-    
   </div>
 </template>
 
 <script setup>
+import MyButton from "@/components/base/MyButton.vue";
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import {
-  reactive,
   inject,
   onMounted,
   onUpdated,

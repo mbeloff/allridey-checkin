@@ -17,8 +17,8 @@
         </div>
       </div>
       <div v-if="started && !saved" class="mt-2 grid grid-cols-2 gap-2">
-        <button class="btn-green" @click="save">Submit</button>
-        <button class="btn-red" @click="clear">Clear</button>
+        <my-button class="btn-green" @click="save">Submit</my-button>
+        <my-button class="btn-red" @click="clear">Clear</my-button>
       </div>
 
       <div class="relative" v-if="signature.pngsig">
@@ -54,6 +54,7 @@ import { mapState } from "pinia";
 import { useStore } from "@/store";
 import { inject } from "vue";
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
+import MyButton from "@/components/base/MyButton.vue";
 export default {
   setup() {
     const rcm = inject("rcm");
@@ -61,6 +62,7 @@ export default {
   },
   components: {
     LoadingOverlay,
+    MyButton,
   },
   name: "SignatureBlock",
   emits: ["updateSignature"],
