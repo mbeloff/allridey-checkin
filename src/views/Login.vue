@@ -1,8 +1,14 @@
 <template>
   <div class="relative flex h-full flex-col justify-center">
     <loading-overlay v-if="loading" class="z-10"></loading-overlay>
-    <div class="my-2 h-12">
-      <p v-show="error" class="text-center text-red-500">{{ error }}</p>
+    <div class="mb-5 h-full max-h-[30vh] w-full px-2">
+      <div
+        class="h-full w-full bg-contain bg-center bg-no-repeat"
+        :style="{ 'background-image': 'url(' + adventure + ')' }"
+      ></div>
+    </div>
+    <div class="my-2 h-12" v-show="error">
+      <p class="text-center text-red-500">{{ error }}</p>
     </div>
     <form for="resno" class="mx-auto flex max-w-sm flex-col text-left">
       <label class="group flex flex-grow flex-col">
@@ -34,13 +40,13 @@
         </div>
       </label>
       <button
-        class="group w-56 text-right text-4xl font-bold focus:outline-none"
+        class="group w-56 text-4xl font-bold focus:outline-none"
         @click.prevent="findBooking(resno, lastname)"
       >
-        <p class="mt-4 text-left text-4xl">online</p>
-        <span>check in</span>
+        <p class="mt-4 text-left text-4xl">find</p>
+        <span>booking</span>
         <i
-          class="fas fa-arrow-right z-0 transform align-middle transition duration-500 ease-out group-hover:translate-x-1 group-hover:text-blue-600"
+          class="fas fa-arrow-right z-0 ml-2 transform align-middle transition duration-500 ease-out group-hover:translate-x-1 group-hover:text-blue-600"
         ></i>
       </button>
     </form>
@@ -51,6 +57,7 @@ import LoadingOverlay from "@/components/LoadingOverlay.vue";
 import { ref, computed, watch, onMounted, inject } from "vue";
 import { useStore } from "@/store";
 import { useRouter, useRoute } from "vue-router";
+import adventure from "@/assets/adventure.svg";
 
 const router = useRouter();
 const route = useRoute();
@@ -109,28 +116,16 @@ function findBooking(resno, lastname) {
       } else if (res.status == "ERR") {
         error.value = res.error;
       }
-      loading.value = false
+      loading.value = false;
     })
     .catch((err) => {
-      loading.value  = false;
+      loading.value = false;
       console.log("find booking (error): " + err);
     });
 }
 </script>
 
 <style lang="postcss">
-.btn-green {
-  @apply rounded bg-green-500 text-sm text-white;
-}
-.btn-green:hover {
-  @apply hover:bg-green-700 hover:text-green-200;
-}
-.btn-red {
-  @apply rounded bg-red-500 text-sm text-white;
-}
-.btn-red:hover {
-  @apply hover:bg-red-700 hover:text-red-200;
-}
 .input-error {
   @apply ring-2 ring-orange-400;
 }
