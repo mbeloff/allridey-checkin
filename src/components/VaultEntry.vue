@@ -53,6 +53,7 @@ function convertQuote(vaultdata) {
     vaultdata: vaultdata,
   };
   rcm(params).then((data) => {
+    if (data.status == "ERR") console.log(data.error);
     emit("update");
   });
 }

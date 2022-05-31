@@ -2,9 +2,11 @@
   <div class="flex w-full flex-col gap-2">
     <expand-section
       :toggle="tab == 'main'"
-      :label="'Main Hirer'"
+      :label="'Customer Details'"
       @toggle="toggle('main')"
-      :actionRequired="hasMissing(customer.customerid)"
+      :actionRequired="
+        hasMissing(customer.customerid) || store.status == 'Reservation Request'
+      "
     >
       <modify-driver
         :key="customer.customerid"
@@ -41,6 +43,7 @@
         ></modify-driver>
         <modify-uploads :cid="driver.customerid"></modify-uploads>
         <modify-signatures
+          v-if="store.mode == 2"
           :cid="driver.customerid"
           :tabopen="tab == 'extras'"
         ></modify-signatures>
@@ -74,7 +77,7 @@
       @toggle="toggle('vault')"
       :actionRequired="store.missing.vault"
     >
-      <card-vault></card-vault>
+      <card-vault @update="emit('update')"></card-vault>
     </expand-section>
   </div>
 </template>

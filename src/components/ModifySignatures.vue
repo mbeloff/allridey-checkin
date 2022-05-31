@@ -3,10 +3,18 @@
     <p class="col-span-full my-3 text-xl font-bold text-green-500">
       E-signature
     </p>
-    <p class="my-3 text-sm text-gray-500">
+    <p class="my-3 text-sm text-gray-500" v-if="store.status == 'Reservation'">
       Please read and sign each required area using your mouse, or finger/stylus
       if you are using a touch-screen device.
     </p>
+    <p
+      class="my-3 text-sm font-bold text-orange-500"
+      v-if="store.status == 'Reservation Request'"
+    >
+      <i class="far fa-warning"></i> Please return here once your booking request has
+      been confirmed.
+    </p>
+
     <div
       v-for="signature in signatureList"
       :key="signature.signaturetemplateid"
