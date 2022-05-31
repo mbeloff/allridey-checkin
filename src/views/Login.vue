@@ -18,7 +18,9 @@
             v-model="resno"
             :class="{ 'input-error': missinginput && !resno.length }"
             class="my-input uppercase"
-            type="text"
+            type="tel"
+            pattern="[0-9]*"
+            novalidate
             name="resno"
             placeholder="Reservation number"
           />
