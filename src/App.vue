@@ -11,10 +11,8 @@
 import TheNavbar from "@/components/TheNavbar.vue";
 import { provide } from "vue";
 import { useStore } from "@/store";
-import { useRouter } from "vue-router";
 
 const store = useStore();
-const router = useRouter();
 
 const getToken = () => {
   var requestOptions = {

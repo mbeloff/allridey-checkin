@@ -122,7 +122,7 @@ function findBooking(resno, lastname) {
     })
     .catch((err) => {
       loading.value = false;
-      console.log("find booking (error): " + err);
+      console.log("error: " + err);
     });
 }
 </script>

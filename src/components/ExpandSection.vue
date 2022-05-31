@@ -27,11 +27,11 @@
       ></i>
     </button>
     <div class="reflow">
-      <transition name="fade">
+      <!-- <transition name="fade"> -->
         <div class="flex flex-col gap-1 px-2 pb-5 md:px-5" v-show="toggle">
           <slot></slot>
         </div>
-      </transition>
+      <!-- </transition> -->
     </div>
   </div>
 </template>
@@ -59,9 +59,9 @@ export default {
   mounted() {
     this.$smoothReflow({
       el: ".reflow",
-      transitionEvent: {
-        selector: "div",
-      },
+      // transitionEvent: {
+      //   selector: "div",
+      // },
     });
   },
 };
@@ -70,7 +70,7 @@ export default {
 <style lang="postcss" scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity .5s;
 }
 .fade-enter,
 .fade-leave-to {
