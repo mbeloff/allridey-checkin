@@ -6,7 +6,8 @@
         @convert="convertQuote()"
         v-if="gotBooking"
         :bookinginfo="bookinginfo"
-      ></the-summary>
+      >
+      </the-summary>
       <checkin-steps @update="getBooking()" v-if="gotBooking"></checkin-steps>
     </div>
   </div>
@@ -49,6 +50,7 @@ function checkStatus(trip) {
     router.push({ name: "Sign In", query: { validres: false } });
   }
   store.mode = s == "Quotation" ? 1 : 2;
+  store.status = s
 }
 
 function getBooking() {
