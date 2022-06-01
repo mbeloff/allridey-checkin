@@ -185,7 +185,7 @@
       </div>
 
       <div class="mt-auto grid h-9 grid-cols-2 gap-3"  v-if="isExtra">
-        <template>
+
         <my-button
 
           class="btn-red"
@@ -200,11 +200,7 @@
         >
           Update Driver
           <i class="far fa-cloud-upload"></i>
-        </my-button>
-        </template>
-        
-
-        
+        </my-button>     
       </div>
       <my-button
           v-if="isPrimary"

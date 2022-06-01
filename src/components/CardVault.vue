@@ -31,8 +31,8 @@
     <div v-if="showVault">
       <vault-entry @update="getVaultList(), emit('update')"></vault-entry>
     </div>
-    <div class="my-5 text-center">
-      <my-button class="btn-green" @click="showVault = !showVault">
+    <div class="flex w-full justify-center">
+      <my-button class="btn-green btn-green mt-5 rounded py-2 px-4 text-sm text-white w-full sm:w-1/2" @click="showVault = !showVault">
         <span v-if="!showVault">
           <i class="far fa-plus-circle"></i> Add a Card
         </span>

@@ -78,8 +78,11 @@
         ></textarea>
       </div>
 
+      
+    </div>
+    <div class="flex w-full justify-center">
       <my-button
-        class="btn-green mt-5 self-end sm:col-start-2"
+        class="btn-green mt-5 w-full sm:w-1/2"
         @click="editBooking()"
       >
         Save Changes <i class="far fa-cloud-upload"></i>

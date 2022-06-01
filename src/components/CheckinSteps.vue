@@ -27,12 +27,16 @@
     </expand-section>
 
     <expand-section
-      v-if="extraDrivers.length && store.mode == 2"
+      v-if="store.mode == 2"
       :toggle="tab == 'extras'"
       @toggle="toggle('extras')"
       :label="'Extra Drivers'"
       :actionRequired="hasMissing()"
     >
+      <add-driver
+        @update="emit('update')"
+        v-if="extraDrivers.length < 4 && store.mode == 2"
+      ></add-driver>
       <template v-for="(driver, i) in extraDrivers" :key="driver.customerid">
         <div class="rounded bg-gray-700 px-2 py-1 text-gray-400">
           Extra Driver #{{ i + 1 }}
@@ -49,16 +53,6 @@
           :tabopen="tab == 'extras'"
         ></modify-signatures>
       </template>
-    </expand-section>
-
-    <expand-section
-      v-if="extraDrivers.length < 4 && store.mode == 2"
-      :toggle="tab == 'add'"
-      @toggle="toggle('add')"
-      :label="'Add New Driver'"
-      :actionRequired="null"
-    >
-      <add-driver @update="emit('update')"></add-driver>
     </expand-section>
 
     <expand-section

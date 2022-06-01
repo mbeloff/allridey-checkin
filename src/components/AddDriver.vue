@@ -62,10 +62,8 @@
           class="my-input"
         />
       </div>
-    </div>
-    <div class="mt-5 grid place-items-center">
       <my-button
-        class="btn-green"
+        class="btn-green btn-green mt-5 rounded py-2 px-4 text-sm text-white sm:col-start-2"
         @click="addExtraDriver(data.customerid)"
       >
         Add a Driver
