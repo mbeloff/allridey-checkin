@@ -8,7 +8,7 @@
     </p>
     <div v-if="availablefees" class="text-sm">
       <div class="flex flex-col gap-1" v-if="availablefees.optionalfees.length">
-        <p class="my-3 text-xl font-bold">Optional Extras</p>
+        <p class="my-3 text-xl font-bold text-green-500">Optional Extras</p>
         <div
           v-for="item in availablefees.optionalfees"
           :key="item.id"
@@ -51,7 +51,7 @@
         </div>
       </div>
       <div v-if="availablefees.insuranceoptions.length">
-        <p class="my-3 text-xl font-bold">Damage Cover</p>
+        <p class="my-3 text-xl font-bold text-green-500">Damage Cover</p>
         <div
           v-for="item in availablefees.insuranceoptions"
           class="rounded bg-gray-200 px-2 py-2"
@@ -84,7 +84,9 @@
         </div>
       </div>
       <div v-if="availablefees.kmcharges.length">
-        <p class="my-3 text-xl font-bold">Daily Kilometre Options</p>
+        <p class="my-3 text-xl font-bold text-green-500">
+          Daily Kilometre Options
+        </p>
         <div
           v-for="item in availablefees.kmcharges"
           :key="item.id"

@@ -184,8 +184,8 @@
         />
       </div>
 
-      <div class="mt-auto grid h-9 grid-cols-2 gap-3">
-        <template v-if="isExtra">
+      <div class="mt-auto grid h-9 grid-cols-2 gap-3"  v-if="isExtra">
+        <template>
         <my-button
 
           class="btn-red"
@@ -204,14 +204,15 @@
         </template>
         
 
-        <my-button
+        
+      </div>
+      <my-button
           v-if="isPrimary"
-          class="btn-green col-start-2"
+          class="btn-green sm:col-start-2 mt-5"
           @click="editBooking()"
         >
           Save Changes <i class="far fa-cloud-upload"></i>
         </my-button>
-      </div>
     </div>
   </div>
 </template>
@@ -403,7 +404,7 @@ function editBooking() {
   let params = {
     method: "editbooking",
     reservationref: store.resref,
-    bookingtype: 2,
+    bookingtype: store.mode,
     insuranceid: ins,
     extrakmsid: store.bookinginfo.bookinginfo[0].kmcharges_id,
     numbertravelling: store.bookinginfo.bookinginfo[0].numbertravelling,
