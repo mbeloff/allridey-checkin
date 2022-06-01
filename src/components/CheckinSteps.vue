@@ -14,6 +14,7 @@
         :is-primary="true"
         @update="emit('update')"
       ></modify-driver>
+
       <modify-uploads
         v-if="store.mode == 2"
         :cid="customer.customerid"
@@ -66,6 +67,7 @@
       :label="'Booking Options'"
       :actionRequired="null"
     >
+      <modify-trip @update="emit('update')"></modify-trip>
       <suspense>
         <modify-fees @update="emit('update')"></modify-fees>
       </suspense>
@@ -84,6 +86,7 @@
 
 <script setup>
 import ModifyDriver from "@/components/ModifyDriver.vue";
+import ModifyTrip from "@/components/ModifyTrip.vue";
 import AddDriver from "@/components/AddDriver.vue";
 import ExpandSection from "@/components/ExpandSection.vue";
 import CardVault from "@/components/CardVault.vue";
