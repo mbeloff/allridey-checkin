@@ -22,7 +22,7 @@
             pattern="[0-9]*"
             novalidate
             name="resno"
-            placeholder="Reservation number"
+            placeholder="Booking number"
           />
           <i class="form-i fal fa-book fa-fw absolute -left-5 -ml-2 mr-2"></i>
         </div>
