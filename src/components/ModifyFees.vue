@@ -138,13 +138,14 @@
         </div>
       </div>
     </div>
-    <div class="mt-5 grid place-items-center">
+    <div class="flex w-full justify-end">
       <my-button
-        v-show="changes.length"
-        class="btn-green py-2 px-4"
-        @click="editbooking"
-        >Save Changes</my-button
+      v-show="changes.length"
+        class="btn-green mt-5 w-full sm:w-1/2"
+        @click="editbooking()"
       >
+        Save Changes <i class="far fa-cloud-upload"></i>
+      </my-button>
     </div>
   </div>
 </template>

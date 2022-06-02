@@ -1,7 +1,7 @@
 <template>
   <div class="relative gap-y-5 rounded border bg-white p-2 text-left">
     <p class="col-span-full my-3 text-xl font-bold text-green-500">
-      E-signature
+      {{ fullname }}
     </p>
     <p class="my-3 text-sm text-gray-500" v-if="store.status == 'Reservation'">
       Please read and sign each required area using your mouse, or finger/stylus
@@ -11,8 +11,8 @@
       class="my-3 text-sm font-bold text-orange-500"
       v-if="store.status == 'Reservation Request'"
     >
-      <i class="far fa-warning"></i> Please return here once your booking request has
-      been confirmed.
+      <i class="far fa-warning"></i> Please return here once your booking
+      request has been confirmed.
     </p>
 
     <div

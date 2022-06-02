@@ -1,15 +1,15 @@
 <template>
   <div class="gap-y-5 rounded border bg-white p-2 text-left">
     <p class="my-3 text-sm text-gray-500" v-if="store.mode == 2">
-      Safely store your credit card using. Payment will only be taken once your
-      vehicle has been confirmed.
+      Safely store your credit card using the form below. Payment will only be
+      taken once your vehicle has been confirmed.
     </p>
     <p class="my-3 text-sm text-gray-500" v-else>
       To convert this quote into a booking request, please provide a payment
       method using our secure form below. Payment will only be taken once your
       vehicle has been confirmed.
     </p>
-    <div class="relative py-5">
+    <div class="relative py-5 text-sm">
       <loading-overlay v-if="loading"></loading-overlay>
       <div v-if="vaultlist.length" class="grid grid-cols-4 border-b font-bold">
         <span>Type</span>
@@ -22,17 +22,20 @@
         v-for="card in vaultlist"
         :key="card.dateadded"
       >
-        <span> {{ card.cardtype }}</span>
-        <span>{{ card.cardname }}</span>
-        <span>{{ "**** " + card.lastfour }}</span>
-        <span>{{ card.carddate }}</span>
+        <span class=""> {{ card.cardtype }}</span>
+        <span class="truncate">{{ card.cardname }}</span>
+        <span class="">{{ "**** " + card.lastfour }}</span>
+        <span class="">{{ card.carddate }}</span>
       </div>
     </div>
     <div v-if="showVault">
       <vault-entry @update="getVaultList(), emit('update')"></vault-entry>
     </div>
     <div class="flex w-full justify-center">
-      <my-button class="btn-green btn-green mt-5 rounded py-2 px-4 text-sm text-white w-full sm:w-1/2" @click="showVault = !showVault">
+      <my-button
+        class="btn-green btn-green mt-5 w-full rounded py-2 px-4 text-sm text-white sm:w-1/2"
+        @click="showVault = !showVault"
+      >
         <span v-if="!showVault">
           <i class="far fa-plus-circle"></i> Add a Card
         </span>
@@ -78,7 +81,7 @@ function getVaultList() {
   rcm(params).then((res) => {
     loading.value = false;
     vaultlist.value = res.results;
-    vaultlist.value.splice(3, res.results.length);
+    vaultlist.value.splice(1, res.results.length);
   });
 }
 </script>

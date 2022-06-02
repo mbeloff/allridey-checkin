@@ -74,17 +74,12 @@
           maxlength="250"
           v-model="remark"
           rows="3"
-          class="my-input flex-initial"
+          class="my-input !flex-initial"
         ></textarea>
       </div>
-
-      
     </div>
-    <div class="flex w-full justify-center">
-      <my-button
-        class="btn-green mt-5 w-full sm:w-1/2"
-        @click="editBooking()"
-      >
+    <div class="flex w-full justify-end">
+      <my-button class="btn-green mt-5 w-full sm:w-1/2" @click="editBooking()">
         Save Changes <i class="far fa-cloud-upload"></i>
       </my-button>
     </div>

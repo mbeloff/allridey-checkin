@@ -4,9 +4,7 @@
       :toggle="tab == 'main'"
       :label="'Customer Details'"
       @toggle="toggle('main')"
-      :actionRequired="
-        hasMissing(customer.customerid) || store.status == 'Reservation Request'
-      "
+      :actionRequired="null"
     >
       <modify-driver
         :key="customer.customerid"
@@ -14,16 +12,7 @@
         :is-primary="true"
         @update="emit('update')"
       ></modify-driver>
-
-      <modify-uploads
-        v-if="store.mode == 2"
-        :cid="customer.customerid"
-      ></modify-uploads>
-      <modify-signatures
-        v-if="store.mode == 2"
-        :cid="customer.customerid"
-        :tabopen="tab == 'main'"
-      ></modify-signatures>
+      <modify-trip @update="emit('update')"></modify-trip>
     </expand-section>
 
     <expand-section
@@ -31,7 +20,7 @@
       :toggle="tab == 'extras'"
       @toggle="toggle('extras')"
       :label="'Extra Drivers'"
-      :actionRequired="hasMissing()"
+      :actionRequired="null"
     >
       <add-driver
         @update="emit('update')"
@@ -46,12 +35,6 @@
           :customer="driver"
           @update="emit('update')"
         ></modify-driver>
-        <modify-uploads :cid="driver.customerid"></modify-uploads>
-        <modify-signatures
-          v-if="store.mode == 2"
-          :cid="driver.customerid"
-          :tabopen="tab == 'extras'"
-        ></modify-signatures>
       </template>
     </expand-section>
 
@@ -61,10 +44,51 @@
       :label="'Booking Options'"
       :actionRequired="null"
     >
-      <modify-trip @update="emit('update')"></modify-trip>
       <suspense>
         <modify-fees @update="emit('update')"></modify-fees>
       </suspense>
+    </expand-section>
+
+    <expand-section
+      v-if="store.mode == 2"
+      :toggle="tab == 'uploads'"
+      @toggle="toggle('uploads')"
+      :label="'Uploads'"
+      :actionRequired="hasMissing('uploads')"
+    >
+      <modify-uploads
+        :customer="customer"
+        :cid="customer.customerid"
+      ></modify-uploads>
+      <modify-uploads
+        v-for="(driver, i) in extraDrivers"
+        :customer="driver"
+        :key="driver.customerid"
+        :cid="driver.customerid"
+      ></modify-uploads>
+    </expand-section>
+
+    <expand-section
+      v-if="store.mode == 2"
+      :toggle="tab == 'signatures'"
+      @toggle="toggle('signatures')"
+      :label="'E-signatures'"
+      :actionRequired="
+        hasMissing('signatures') || store.status == 'Reservation Request'
+      "
+    >
+      <modify-signatures
+        v-if="store.mode == 2"
+        :cid="customer.customerid"
+        :tabopen="tab == 'main'"
+      ></modify-signatures>
+      <template v-for="(driver, i) in extraDrivers" :key="driver.customerid">
+        <modify-signatures
+          v-if="store.mode == 2"
+          :cid="driver.customerid"
+          :tabopen="tab == 'extras'"
+        ></modify-signatures>
+      </template>
     </expand-section>
 
     <expand-section
@@ -104,22 +128,18 @@ function toggle(clicked) {
   }
 }
 
-function hasMissing(cid) {
-  if (store.missing.customers.hasOwnProperty(cid)) {
-    return (
-      store.missing.customers[cid].uploads > 0 ||
-      store.missing.customers[cid].signatures > 0
-    );
-  } else {
-    return (
-      Object.values(store.missing.customers).some(
-        (val) => val.extra && val.uploads
-      ) > 0 ||
-      Object.values(store.missing.customers).some(
-        (val) => val.extra && val.signatures
-      ) > 0
-    );
-  }
+function hasMissing(type) {
+  return Object.values(store.missing.customers).some((val) => val[type] > 0);
+}
+
+function uploadMissing() {
+  return Object.values(store.missing.customers).some((val) => val.uploads) > 0;
+}
+
+function signatureMissing() {
+  return (
+    Object.values(store.missing.customers).some((val) => val.signatures) > 0
+  );
 }
 
 const customer = computed(() => {

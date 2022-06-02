@@ -3,7 +3,7 @@
     class="relative grid w-full grid-cols-1 gap-x-2 gap-y-2 rounded bg-white p-2 text-left md:grid-cols-3"
   >
     <p class="col-span-full my-3 text-xl font-bold text-green-500">
-      Upload Documents
+      {{ fullname }}
     </p>
     <loading-overlay v-if="loading"></loading-overlay>
     <div
@@ -76,8 +76,12 @@ const rcm = inject("rcm");
 const store = useStore();
 const props = defineProps({
   cid: Number,
+  customer: Object,
 });
 
+const fullname = computed(() => {
+  return props.customer.firstname + " " + props.customer.lastname;
+});
 const loading = ref(false);
 const doclist = ref([]);
 const missing = computed(() => {
