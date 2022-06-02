@@ -54,6 +54,7 @@
           required
           type="tel"
           class="my-input"
+          :class="{ 'ring-2 ring-orange-500' : v.data.mobile.$error }"
         />
       </div>
 
@@ -85,6 +86,7 @@
           maxlength="70"
           type="text"
           class="my-input"
+          :class="{ 'ring-2 ring-orange-500' : v.data.licenseno.$error }"
         />
       </div>
 <div class="grid grid-cols-2 gap-2">
@@ -97,7 +99,6 @@
         <template #default="{ inputValue, inputEvents }">
           <label :for="'licexp' + cid" class="my-label">License Expiry</label>
           <div class="flex flex-row place-items-center">
-            <!-- <i class="form-i fal fa-calendar fa-fw mr-2"></i> -->
             <input
               :id="'licexp' + cid"
               class="my-input w-8"
@@ -136,6 +137,7 @@
           maxlength="80"
           type="text"
           class="my-input"
+          :class="{ 'ring-2 ring-orange-500' : v.data.address.$error }"
         />
       </div>
       <div class="group flex flex-grow flex-col">
@@ -146,6 +148,7 @@
           maxlength="50"
           type="text"
           class="my-input"
+          :class="{ 'ring-2 ring-orange-500' : v.data.city.$error }"
         />
       </div>
       <div class="grid grid-cols-2 gap-2">
@@ -157,6 +160,7 @@
           maxlength="30"
           type="text"
           class="my-input"
+          :class="{ 'ring-2 ring-orange-500' : v.data.state.$error }"
         />
       </div>
       <div class="group flex flex-col">
@@ -181,6 +185,7 @@
           maxlength="10"
           type="text"
           class="my-input"
+          :class="{ 'ring-2 ring-orange-500' : v.data.postcode.$error }"
         />
       </div>
 
@@ -220,7 +225,7 @@ import "v-calendar/dist/style.css";
 import { ref, computed, inject, watch, onMounted } from "vue";
 import { useStore } from "@/store";
 import useVuelidate from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
+import { required, email, minLength } from "@vuelidate/validators";
 
 const rcm = inject("rcm");
 const store = useStore();
@@ -234,7 +239,7 @@ const defaultDriver = {
   customerid: 0,
   firstname: "",
   lastname: "",
-  dateofbirth: "1/JAN/2000",
+  dateofbirth: "",
   email: "",
   phone: "",
   mobile: "",
@@ -255,7 +260,13 @@ const rules = {
     lastname: { required },
     email: { required, email },
     licenseno: { required },
-    licnseexpires: { required }
+    licenseexpires: { required },
+    dateofbirth: {required},
+    address: {required, minLength: minLength(2)},
+    mobile: {required, minLength: minLength(6)},
+    city: {required},
+    state: {required},
+    postcode: {required},
   },
 };
 
