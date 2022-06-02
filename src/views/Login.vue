@@ -7,7 +7,7 @@
         :style="{ 'background-image': 'url(' + adventure + ')' }"
       ></div>
     </div>
-    <div class="my-2 h-12" v-show="error">
+    <div class="my-2 h-12">
       <p class="text-center text-red-500">{{ error }}</p>
     </div>
     <form for="resno" class="mx-auto flex max-w-sm flex-col text-left">

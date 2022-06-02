@@ -46,6 +46,7 @@ function convertQuote(vaultdata) {
   let params = {
     method: "convertquote",
     reservationref: store.resref,
+    emailoption: 1,
     extrakmsid: store.bookinginfo.bookinginfo[0].kmcharges_id,
     insuranceid: store.bookinginfo.extrafees.find((el) => el.isinsurancefee)
       .extrafeeid,
@@ -83,7 +84,9 @@ function vaultEntry(data) {
     if (res.results.paymentsaved == true) {
       emit("update");
     } else {
-      alert("We were unable to save you payment details.\nPlease try again and contact us if the problem persists.");
+      alert(
+        "We were unable to save you payment details.\nPlease try again and contact us if the problem persists."
+      );
       getVaultUrl();
     }
   });

@@ -11,8 +11,7 @@
       class="my-3 text-sm font-bold text-orange-500"
       v-if="store.status == 'Reservation Request'"
     >
-      <i class="far fa-warning"></i> Please return here once your booking
-      request has been confirmed.
+      <i class="far fa-warning"></i> Please return here once your booking has been confirmed.
     </p>
 
     <div
