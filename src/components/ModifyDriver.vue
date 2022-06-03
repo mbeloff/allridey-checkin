@@ -272,10 +272,20 @@ const rules = {
 
 const v = useVuelidate(rules, {data},{$autoDirty: true})
 
+
+
 onMounted(() => {
   setDates();
   addToStore();
   v.value.$touch()
+})
+
+const invalid = computed(() => {
+  return v.value.$errors.length;
+}); 
+
+watch(invalid, (val) => {
+  store.missing.customers[cid.value].details = val
 });
 
 const emit = defineEmits(["update"]);
@@ -332,6 +342,7 @@ function addToStore() {
   store.missing.customers[props.customer.customerid] = {
     signatures: 0,
     uploads: 0,
+    details: 0,
     extra: props.isExtra,
   };
 }
