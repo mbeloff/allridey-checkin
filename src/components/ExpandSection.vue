@@ -12,7 +12,7 @@
       <p class="text-left text-xl text-blue-100/90">
         {{ label }}
         <span v-if="actionRequired" class="text-lg font-normal text-orange-400"
-          ><i class="far fa-warning mr-2"></i>action required</span
+          ><i class="far fa-warning mr-2"></i></span
         >
         <span v-if="actionRequired == false"
           ><i class="far fa-check-circle text-green-500"></i
