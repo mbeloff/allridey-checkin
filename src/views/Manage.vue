@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeMount, inject } from "vue";
+import { ref, computed, onBeforeMount, inject, watch } from "vue";
 import { useStore } from "@/store";
 import { useRouter } from "vue-router";
 import TheSummary from "@/components/Summary.vue";
@@ -50,7 +50,13 @@ function checkStatus(trip) {
     router.push({ name: "Sign In", query: { validres: false } });
   }
   store.mode = s == "Quotation" ? 1 : 2;
-  store.status = s
+  store.status = s;
+
+  if (trip.vehicle_registrationnumber.length) {
+    store.allocated = true;
+  } else {
+    store.allocated = false;
+  }
 }
 
 function getBooking() {
