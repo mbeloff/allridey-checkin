@@ -1,12 +1,16 @@
 <template>
   <div
-    class="mx-auto mb-10 flex w-full flex-col justify-between rounded bg-gray-300 py-4 text-sm"
+    class="mx-auto mb-5 flex w-full flex-col justify-between rounded bg-gray-300 py-4 text-sm"
   >
     <p class="mb-5 font-bold">
       {{ bookinginfo.bookinginfo[0].reservationstatus }}:
       {{ bookinginfo.bookinginfo[0].reservationdocumentno }}
-      <br>
-      {{ bookinginfo.customerinfo[0].firstname + ' ' + bookinginfo.customerinfo[0].lastname }}
+      <br />
+      {{
+        bookinginfo.customerinfo[0].firstname +
+        " " +
+        bookinginfo.customerinfo[0].lastname
+      }}
     </p>
     <p class="mb-5">
       {{ trip.vehiclecategory }}
@@ -26,7 +30,18 @@
       >
     </div>
 
-    <div class="mx-auto mb-5 w-full max-w-[400px] px-2 text-xs">
+    <div>
+      <p
+        class="mb-5 cursor-pointer italic text-blue-700 underline hover:no-underline"
+        @click="showMore = !showMore"
+      >
+        {{ showMore ? "hide details" : "show more details" }}
+      </p>
+    </div>
+    <div
+      class="mx-auto mb-5 w-full max-w-[400px] px-2 text-xs"
+      v-show="showMore"
+    >
       <div class="flex justify-between">
         <span>{{
           rate.numberofdays +
@@ -68,7 +83,7 @@
 
 <script setup>
 import { useStore } from "@/store.js";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 const props = defineProps({
   bookinginfo: {
     type: Object,
@@ -76,6 +91,7 @@ const props = defineProps({
     required: true,
   },
 });
+const showMore = ref(false);
 const store = useStore();
 const trip = computed(() => props.bookinginfo.bookinginfo[0]);
 const fees = computed(() => props.bookinginfo.extrafees);
