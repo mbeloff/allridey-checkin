@@ -1,10 +1,26 @@
 <template>
   <div class="flex w-full flex-col gap-2">
+    <div
+      v-if="showMessage"
+      @click="showMessage = false"
+      class="group mb-5 flex cursor-pointer rounded bg-gray-200 py-2 px-2 text-sm shadow-lg hover:bg-gray-100 hover:ring-2"
+    >
+      <div class="flex flex-1 flex-col gap-2 text-left">
+        <p>
+          Please review each section below and ensure all details are correct.
+        </p>
+        <p>
+          <i class="far fa-warning text-orange-500"></i> This symbol indicates a
+          section that is incomplete.
+        </p>
+      </div>
+      <i class="far fa-times group-hover:text-blue-500"></i>
+    </div>
     <expand-section
       :toggle="tab == 'main'"
       :label="'Customer Details'"
       @toggle="toggle('main')"
-      :actionRequired="null"
+      :actionRequired="missingDetails() && store.mode == 2"
     >
       <modify-driver
         :key="customer.customerid"
@@ -20,7 +36,7 @@
       :toggle="tab == 'extras'"
       @toggle="toggle('extras')"
       :label="'Extra Drivers'"
-      :actionRequired="null"
+      :actionRequired="missingDetails(true) && store.mode == 2"
     >
       <add-driver
         @update="emit('update')"
@@ -73,10 +89,17 @@
       :toggle="tab == 'signatures'"
       @toggle="toggle('signatures')"
       :label="'E-signatures'"
-      :actionRequired="
-        hasMissing('signatures') || store.status == 'Reservation Request'
-      "
+      :actionRequired="hasMissing('signatures') || !store.allocated"
     >
+      <div
+        class="relative gap-y-5 rounded border bg-white p-2 text-left"
+        v-if="!store.allocated"
+      >
+        <p class="text-sm">
+          This reservation has not yet been allocated a vehicle. This section
+          can't be completed yet.
+        </p>
+      </div>
       <modify-signatures
         v-if="store.mode == 2"
         :cid="customer.customerid"
@@ -117,7 +140,7 @@ import { useStore } from "@/store";
 const emit = defineEmits(["update"]);
 
 const store = useStore();
-
+const showMessage = ref(true);
 const tab = ref("");
 
 function toggle(clicked) {
@@ -132,14 +155,14 @@ function hasMissing(type) {
   return Object.values(store.missing.customers).some((val) => val[type] > 0);
 }
 
-function uploadMissing() {
-  return Object.values(store.missing.customers).some((val) => val.uploads) > 0;
-}
-
-function signatureMissing() {
-  return (
-    Object.values(store.missing.customers).some((val) => val.signatures) > 0
-  );
+function missingDetails(isExtra) {
+  if (!isExtra && store.missing.customers[customer.value.customerid]) {
+    return store.missing.customers[customer.value.customerid].details > 0;
+  } else {
+    return Object.values(store.missing.customers).some(
+      (val) => val.details > 0
+    );
+  }
 }
 
 const customer = computed(() => {
