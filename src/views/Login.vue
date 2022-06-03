@@ -64,14 +64,12 @@ import adventure from "@/assets/adventure.svg";
 const router = useRouter();
 const route = useRoute();
 const store = useStore();
-
 const resno = ref("");
 const lastname = ref("");
 const missinginput = ref(false);
 const error = ref("");
 const loading = ref(true);
 const token = computed(() => store.token);
-
 const rcm = inject("rcm");
 const getToken = inject("getToken");
 
@@ -104,7 +102,7 @@ function findBooking(resno, lastname) {
     lastname: lastname,
   };
   if (!resno || !lastname) {
-    error.value = "Please enter reservation number and your last name.";
+    error.value = "Please enter reservation or quote number and your last name.";
     missinginput.value = true;
     loading.value = false;
     return;
