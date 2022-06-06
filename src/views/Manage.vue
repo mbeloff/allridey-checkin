@@ -89,7 +89,7 @@ function getBooking() {
       loading.value = false;
     })
     .catch((err) => {
-      console.log("could't get booking info: " + err);
+      console.log("couldn't get booking info: " + err);
       router.push({
         name: "Sign In",
       });
@@ -97,6 +97,12 @@ function getBooking() {
 }
 
 onBeforeMount(() => {
+  // reset previous booking info in store
+  store.bookinginfo = {};
+  store.missing = {
+    customers: {},
+    vault: false,
+  };
   getCountries();
   getBooking();
 });
