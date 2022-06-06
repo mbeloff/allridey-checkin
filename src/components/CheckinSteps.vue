@@ -6,13 +6,18 @@
       class="group mb-5 flex cursor-pointer rounded bg-gray-200 py-2 px-2 text-sm shadow-lg hover:bg-gray-100 hover:ring-2"
     >
       <div class="flex flex-1 flex-col gap-2 text-left">
-        <p>
-          Please review each section below and ensure all details are correct.
-        </p>
-        <p>
-          <i class="far fa-warning text-orange-500"></i> This symbol indicates a
-          section that is incomplete.
-        </p>
+        <template v-if="store.mode == 2"
+          ><p>
+            Please review each section below and ensure all details are complete and correct prior to picking up your vehicle.
+          </p>
+          <p>
+            <i class="far fa-warning text-orange-500"></i> This symbol indicates
+            a section that is incomplete.
+          </p>
+        </template>
+        <template v-else>
+          <p><i class="far fa-check-circle text-green-500"></i> To convert this quote into a booking request, please add a payment method below.</p>
+        </template>
       </div>
       <i class="far fa-times group-hover:text-blue-500"></i>
     </div>
@@ -20,7 +25,7 @@
       :toggle="tab == 'main'"
       :label="'Customer Details'"
       @toggle="toggle('main')"
-      :actionRequired="missingDetails() && store.mode == 2"
+      :actionRequired="missingDetails(false) && store.mode == 2"
     >
       <modify-driver
         :key="customer.customerid"
@@ -158,10 +163,11 @@ function hasMissing(type) {
 function missingDetails(isExtra) {
   if (!isExtra && store.missing.customers[customer.value.customerid]) {
     return store.missing.customers[customer.value.customerid].details > 0;
-  } else {
-    return Object.values(store.missing.customers).some(
-      (val) => val.details > 0
-    );
+  }
+  if (isExtra) {
+    return Object.values(store.missing.customers).some((val) => {
+      return val.details > 0 && val.extra == true;
+    });
   }
 }
 
