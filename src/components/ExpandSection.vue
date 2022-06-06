@@ -2,7 +2,7 @@
   <div
     class="rounded bg-gray-800 border border-gray-900"
     :class="{
-      'ring-2 ring-orange-500': actionRequired,
+      'ring-2 ring-orange-400/70': actionRequired,
     }"
   >
     <button

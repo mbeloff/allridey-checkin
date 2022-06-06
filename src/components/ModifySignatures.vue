@@ -4,7 +4,7 @@
       {{ fullname }}
     </p>
     <p class="my-3 text-sm text-gray-500" v-if="store.allocated">
-      Please read and sign each required area using your mouse, or finger/stylus
+      Please read and sign each required section using your mouse, or finger/stylus
       if you are using a touch-screen device.
     </p>
     
