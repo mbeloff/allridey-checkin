@@ -135,7 +135,6 @@ function handleDoc(doc) {
 
 function uploadFile($event, doc) {
   loading.value = true;
-  console.log("uploading");
   const file = $event.target.files[0];
   const formData = new FormData();
   formData.append("file", file);

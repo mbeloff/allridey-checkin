@@ -131,7 +131,6 @@ export default {
       }
     },
     onBegin() {
-      console.log("---started---");
       this.pad.resizeCanvas();
       this.started = true;
     },

@@ -68,7 +68,7 @@ const resno = ref("");
 const lastname = ref("");
 const missinginput = ref(false);
 const error = ref("");
-const loading = ref(true);
+const loading = ref(false);
 const token = computed(() => store.token);
 const rcm = inject("rcm");
 const getToken = inject("getToken");
@@ -81,9 +81,8 @@ watch(token, (val) => {
 
 onMounted(() => {
   if (!store.token) {
+    loading.value = true
     getToken();
-  } else {
-    loading.value = false;
   }
   if (route.query.validquote == "false") {
     error.value = "This quotation is no longer valid.";
@@ -102,7 +101,8 @@ function findBooking(resno, lastname) {
     lastname: lastname,
   };
   if (!resno || !lastname) {
-    error.value = "Please enter reservation or quote number and your last name.";
+    error.value =
+      "Please enter reservation or quote number and your last name.";
     missinginput.value = true;
     loading.value = false;
     return;
