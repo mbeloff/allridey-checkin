@@ -13,7 +13,7 @@
           <a
             href="tel:0417740307"
             class="ml-auto min-w-max font-bold text-gray-300 hover:text-blue-400"
-            >0417 740 307</a
+            >1800 24 68 69</a
           >
           <a
             href="https://www.allridey.com.au"
@@ -25,6 +25,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 
 </script>

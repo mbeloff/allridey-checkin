@@ -1,14 +1,16 @@
 <template>
   <div id="app" class="max-w-screen grid min-h-screen">
-    <TheNavbar></TheNavbar>
+    <the-navbar></the-navbar>
     <main class="-mt-20 min-h-screen pt-20">
       <router-view />
     </main>
+    <the-footer></the-footer>
   </div>
 </template>
 
 <script setup>
 import TheNavbar from "@/components/TheNavbar.vue";
+import TheFooter from '@/components/TheFooter.vue'
 import { provide } from "vue";
 import { useStore } from "@/store";
 

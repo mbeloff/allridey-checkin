@@ -1,5 +1,5 @@
 <template>
-  <div class="relative grid h-full content-start gap-5 bg-gray-700 py-10 px-2">
+  <div class="relative grid h-full content-start gap-5 bg-gray-700 py-10 px-2 pb-40">
     <loading-overlay v-if="loading"></loading-overlay>
     <div class="mx-auto w-full max-w-screen-lg">
       <the-summary
