@@ -3,14 +3,15 @@
     <div class="w-full max-w-screen-lg py-10">
       <div class="flex flex-col justify-between gap-2 text-left">
         <a href="https://allridey.com.au/contact"
-          ><i class="fal fa-comment-alt mr-2 text-blue-500"></i> Message Us</a
+          ><i class="fal fa-comment-alt fa-fw mr-2 text-blue-500"></i>Message
+          Us</a
         >
-        <a :href="`tel:${store.company.phone}`"
-          ><i class="fal fa-phone mr-2 text-blue-500"></i
+        <a :href="`tel:${store.company.phone.replaceAll(' ', '')}`"
+          ><i class="fal fa-phone fa-fw mr-2 text-blue-500"></i
           >{{ store.company.phone }}</a
         >
         <a :href="`mailto:${store.company.email}`"
-          ><i class="fal fa-envelope mr-2 text-blue-500"></i
+          ><i class="fal fa-envelope fa-fw mr-2 text-blue-500"></i
           >{{ store.company.email }}</a
         >
       </div>
