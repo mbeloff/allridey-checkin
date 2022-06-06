@@ -8,7 +8,9 @@
       <div class="flex flex-1 flex-col gap-2 text-left">
         <template v-if="store.mode == 2"
           ><p>
-            Please review each section below and ensure all details are complete and correct prior to picking up your vehicle.
+            <span class="font-bold">Welcome to Online Checkin:</span> Please
+            review each section below and ensure all details are complete and
+            correct prior to your pickup date.
           </p>
           <p>
             <i class="far fa-warning text-orange-500"></i> This symbol indicates
@@ -16,7 +18,10 @@
           </p>
         </template>
         <template v-else>
-          <p><i class="far fa-check-circle text-green-500"></i> To convert this quote into a booking request, please add a payment method below.</p>
+          <p>
+            <i class="far fa-check-circle text-green-500"></i> To convert this
+            quote into a booking request, please add a payment method below.
+          </p>
         </template>
       </div>
       <i class="far fa-times group-hover:text-blue-500"></i>
