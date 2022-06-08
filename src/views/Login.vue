@@ -56,7 +56,7 @@
 </template>
 <script setup>
 import LoadingOverlay from "@/components/LoadingOverlay.vue";
-import { ref, computed, watch, onMounted, inject } from "vue";
+import { ref, computed, watch, onMounted, onBeforeMount, inject } from "vue";
 import { useStore } from "@/store";
 import { useRouter, useRoute } from "vue-router";
 import adventure from "@/assets/adventure.svg";
@@ -76,14 +76,21 @@ const getToken = inject("getToken");
 watch(token, (val) => {
   if (val) {
     loading.value = false;
+    if (route.query.refID) {
+      store.resref = route.query.refID;
+      router.push({ name: "Manage" });
+    }
+  }
+});
+
+onBeforeMount(() => {
+  if (!store.token) {
+    loading.value = true;
+    getToken();
   }
 });
 
 onMounted(() => {
-  if (!store.token) {
-    loading.value = true
-    getToken();
-  }
   if (route.query.validquote == "false") {
     error.value = "This quotation is no longer valid.";
   }
